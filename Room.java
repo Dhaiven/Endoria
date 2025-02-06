@@ -47,12 +47,12 @@ public class Room
      * @return un String de touts les sorties disposables
      */
     public String getExitString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String direction : exits.keySet()) {
-            result += direction + " ";
+            result.append(direction).append(" ");
         }
         
-        return result;
+        return result.toString();
     }
 
     /**

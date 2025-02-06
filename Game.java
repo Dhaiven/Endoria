@@ -100,7 +100,7 @@ public class Game
      */
     private void printHelp() {
         System.out.println("\nYou are lost. You are alone.\n\nYour command words are:");
-        aParser.showCommands();
+        System.out.println(aParser.getCommands());
     }
 
     /**
@@ -127,7 +127,7 @@ public class Game
      */
     private void look(Command pCommand) {
         if (pCommand.hasSecondWord()) {
-            System.out.println("I don't know how to look at something in particular yet.".);
+            System.out.println("I don't know how to look at something in particular yet.");
             return;
         }
 

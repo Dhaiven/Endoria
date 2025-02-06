@@ -71,7 +71,7 @@ public class Parser
     /**
      * Print la liste des commandes disponibles
      */
-    public void showCommands() {
-        aValidCW.showAll();
+    public String getCommands() {
+        return aValidCW.getCommandList();
     }
 } // Parser

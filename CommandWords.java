@@ -33,10 +33,11 @@ public class CommandWords
     /**
      * Print la liste des commandes disponibles
      */
-    public void showAll() {
+    public String getCommandList() {
+        StringBuilder result = new StringBuilder();
         for (String command : this.aValidCommands) {
-            System.out.println(command);
+            result.append(command).append(" ");
         }
-        System.out.println();
+        return result.toString();
     }
 } // CommandWords
