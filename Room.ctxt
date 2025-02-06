@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Room
+comment0.text=\r\n\ Classe\ Room\ -\ un\ lieu\ du\ jeu\ d'aventure\ Zuul.\r\n\r\n\ @author\ DEBELLE\ Hugo\r\n
+comment1.params=pDescription
+comment1.target=Room(java.lang.String)
+comment1.text=\r\n\ Construct\ de\ Room\r\n
+comment2.params=
+comment2.target=java.lang.String\ getDescription()
+comment2.text=\r\n\ @return\ la\ description\ de\ la\ room\r\n
+comment3.params=pDirection
+comment3.target=Room\ getExit(java.lang.String)
+comment3.text=\r\n\ @param\ pDirection\ -\ direction\ southeast\r\n\ @return\ la\ salle\ disposable\ dans\ la\ direction\ donn\u00E9e\r\n
+comment4.params=
+comment4.target=java.lang.String\ getExitString()
+comment4.text=\r\n\ @return\ un\ String\ de\ touts\ les\ sorties\ disposables\r\n
+comment5.params=direction\ exit
+comment5.target=void\ setExit(java.lang.String,\ Room)
+comment5.text=\r\n\ set\ une\ room\ de\ sortie\ \u00E0\ la\ direction\ donn\u00E9es\r\n
+comment6.params=pNorthExit\ pEastExit\ pSouthExit\ pWestExit
+comment6.target=void\ setExits(Room,\ Room,\ Room,\ Room)
+comment6.text=\r\n\ Set\ les\ rooms\ dans\ les\ direction\ north,\ east,\ south\ et\ west\r\n\ @deprecated\r\n
+numComments=7
