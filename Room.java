@@ -11,13 +11,20 @@ public class Room
     private String aDescription;
 
     private HashMap<String, Room> exits;
+    private String aImageName;
 
     /**
      * Construct de Room
      */
     public Room(final String pDescription) {
+       this(pDescription, null);
+    }
+
+    public Room(final String pDescription, final String pImage)
+    {
         this.aDescription = pDescription;
-        exits = new HashMap<>();
+        this.exits = new HashMap<>();
+        this.aImageName = pImage;
     }
 
     /**
@@ -63,26 +70,9 @@ public class Room
     }
 
     /**
-     * Set les rooms dans les direction north, east, south et west
-     * @deprecated
+     * Return a string describing the room's image name
      */
-    public void setExits(
-        final Room pNorthExit,
-        final Room pEastExit,
-        final Room pSouthExit,
-        final Room pWestExit
-    ) {
-        if (pNorthExit != null) {
-            exits.put("north", pNorthExit);
-        }
-        if (pEastExit != null) {
-            exits.put("east", pEastExit);
-        }
-        if (pSouthExit != null) {
-            exits.put("south", pSouthExit);
-        }
-        if (pWestExit != null) {
-            exits.put("west", pWestExit);
-        }
+    public String getImageName() {
+        return this.aImageName;
     }
 } // Room
