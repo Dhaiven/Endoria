@@ -53,15 +53,15 @@ public class GameEngine
      * Procédure pour créer toutes les rooms
      */
     private void createRooms() {
-        Room main = new Room("Main Room", "mainImage.png");
-        Room prehistoric = new Room("Prehistoric");
-        Room moyenAge = new Room("Moyen Age");
-        Room antiquity = new Room("Antiquity");
-        Room egypte = new Room("Egypte");
-        Room romaine = new Room("Romaine");
-        Room grece = new Room("Grece");
-        Room maya = new Room("Maya");
-        Room china = new Room("China");
+        Room main = new Room("Main Room", "images/mainImage.png");
+        Room prehistoric = new Room("Prehistoric", "images/prehistoricImage.png");
+        Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
+        Room antiquity = new Room("Antiquity", "images/antiquityImage.png");
+        Room egypte = new Room("Egypte", "images/egypteImage.png");
+        Room romaine = new Room("Romaine", "images/romanImage.png");
+        Room grece = new Room("Grece", "images/greceImage.png");
+        Room maya = new Room("Maya", "images/mayaImage.png");
+        Room china = new Room("China", "images/chinaImage.png");
 
         main.setExit("north", moyenAge);
         main.setExit("south", maya);

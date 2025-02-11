@@ -98,7 +98,6 @@ public class UserInterface implements ActionListener
 
         var aButton = new JButton("Help");
         aButton.addActionListener( this );
-
         JPanel vPanel = new JPanel();
         vPanel.setLayout( new BorderLayout() ); // ==> only five places
         vPanel.add( this.aImage, BorderLayout.NORTH );
