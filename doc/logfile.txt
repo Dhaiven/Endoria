@@ -1,8 +1,15 @@
-Project documentation
+Class documentation
 <---- javadoc command: ---->
 C:\Program Files\BlueJ\jdk\bin\javadoc.exe
--sourcepath
-C:\Users\Hugo\Code\Cours\E1\IPO\zuul4
+-author
+-version
+-nodeprecated
+-package
+-Xdoclint:none
+-noindex
+-notree
+-nohelp
+-nonavbar
 -source
 17
 -classpath
@@ -13,43 +20,20 @@ C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc
 UTF-8
 -charset
 UTF-8
--doctitle
-zuul4
--windowtitle
-zuul4
--author
--version
--nodeprecated
--package
--Xdoclint:none
--link
-https://docs.oracle.com/en/java/javase/17/docs/api/
-C:\Users\Hugo\Code\Cours\E1\IPO\zuul4/Game.java
-C:\Users\Hugo\Code\Cours\E1\IPO\zuul4/Command.java
-C:\Users\Hugo\Code\Cours\E1\IPO\zuul4/CommandWords.java
-C:\Users\Hugo\Code\Cours\E1\IPO\zuul4/Room.java
-C:\Users\Hugo\Code\Cours\E1\IPO\zuul4/Parser.java
+C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Game.java
 <---- end of javadoc command ---->
 Loading source file C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Game.java...
-Loading source file C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Command.java...
-Loading source file C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\CommandWords.java...
-Loading source file C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Room.java...
-Loading source file C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Parser.java...
 Constructing Javadoc information...
-Building index for all the packages and classes...
-Standard Doclet version 17.0.4.1+1
-Building tree for all the packages and classes...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\Command.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\CommandWords.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\Game.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\Parser.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\Room.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\package-summary.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\package-tree.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\overview-tree.html...
-Building index for all classes...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\allclasses-index.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\allpackages-index.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\index-all.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\index.html...
-Generating C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\doc\help-doc.html...
+C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Room.java:21: error: '(' or '[' expected
+        Room[] e = new Room|3];
+                           ^
+C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Room.java:21: error: ';' expected
+        Room[] e = new Room|3];
+                             ^
+C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Room.java:22: error: not a statement
+        e[2]
+         ^
+C:\Users\Hugo\Code\Cours\E1\IPO\zuul4\Room.java:22: error: ';' expected
+        e[2]
+            ^
+4 errors

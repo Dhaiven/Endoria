@@ -43,7 +43,6 @@ public class Game
         moyenAge.setExit("south", main);
         moyenAge.setExit("east", antiquity);
 
-        antiquity.setExit("west", moyenAge);
         antiquity.setExit("south", egypte);
 
         egypte.setExit("west", main);
@@ -144,6 +143,11 @@ public class Game
      * @return true si le jeu dois se stoper sinon false
      */
     private boolean processCommand(final Command pCommand) {
+        if (pCommand.isUnknown()) {
+            System.out.println("I don't know what you mean...");
+            return false;
+        }
+        
         switch (pCommand.getCommandWord()) {
             case "help" -> this.printHelp();
             case "go" -> this.goRoom(pCommand);
