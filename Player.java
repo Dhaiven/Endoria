@@ -22,6 +22,10 @@ public class Player {
         return this.aCurrentRoom;
     }
 
+    public ItemList getItemList() {
+        return this.aItemList;
+    }
+
     /**
      * Fonction permettant d'aller dans la salle souhaiter
      * @param direction

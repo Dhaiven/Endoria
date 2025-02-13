@@ -149,6 +149,7 @@ public class GameEngine
                     }
                 }
             }
+            case "inventory" -> this.inventory();
             default -> this.aGui.println("I don't know what you mean...");
         }
     }
@@ -232,6 +233,11 @@ public class GameEngine
         } catch (FileNotFoundException _) {} catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void inventory() {
+        this.aGui.println("Inventaire: ");
+        this.aGui.println(this.aCurrentPlayer.getItemList().getItemString());
     }
 
     private void endGame()

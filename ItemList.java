@@ -33,7 +33,7 @@ public class ItemList {
      */
     public String getItemString() {
         if (this.aItems.isEmpty()) {
-            return "No item here.";
+            return "No item.";
         }
 
         StringBuilder result = new StringBuilder();
