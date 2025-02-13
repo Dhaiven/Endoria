@@ -1,0 +1,6 @@
+go east
+look
+go south
+look
+go west
+look

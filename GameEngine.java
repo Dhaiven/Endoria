@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.List;
 import java.util.Stack;
 
@@ -127,6 +128,7 @@ public class GameEngine
             case "look" -> this.look(vCommand);
             case "eat" -> this.eat();
             case "back" -> this.back(vCommand);
+            case "test" -> this.test(vCommand);
             default -> this.aGui.println("I don't know what you mean...");
         }
     }
@@ -199,6 +201,23 @@ public class GameEngine
 
         this.aCurrentRoom = this.aLastRooms.pop();
         this.printLocationInfo();
+    }
+
+    private void test(final Command pCommand) {
+        if (!pCommand.hasSecondWord()) {
+            this.aGui.println("Quel fichier ?");
+            return;
+        }
+
+        File file = new File(pCommand.getSecondWord() + ".txt");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                this.interpretCommand(line);
+            }
+        } catch (FileNotFoundException _) {} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void endGame()
