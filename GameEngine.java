@@ -127,6 +127,28 @@ public class GameEngine
             case "eat" -> this.eat();
             case "back" -> this.back(vCommand);
             case "test" -> this.test(vCommand);
+            case "take" -> {
+                if (!vCommand.hasSecondWord()) {
+                    this.aGui.println("Take what?");
+                } else {
+                    if (this.aCurrentPlayer.take(vCommand.getSecondWord())) {
+                        this.printLocationInfo();
+                    } else {
+                        this.aGui.println("Cet item n'existe pas");
+                    }
+                }
+            }
+            case "drop" -> {
+                if (!vCommand.hasSecondWord()) {
+                    this.aGui.println("Drop what?");
+                } else {
+                    if (this.aCurrentPlayer.drop(vCommand.getSecondWord())) {
+                        this.printLocationInfo();
+                    } else {
+                        this.aGui.println("Vous ne possédez pas cet item");
+                    }
+                }
+            }
             default -> this.aGui.println("I don't know what you mean...");
         }
     }

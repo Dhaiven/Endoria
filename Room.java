@@ -91,6 +91,10 @@ public class Room
         this.aItems.put(pItem.getName(), pItem);
     }
 
+    public void removeItem(final Item pItem) {
+        this.aItems.remove(pItem.getName());
+    }
+
     /**
      * @return un String de touts les items disposables
      */

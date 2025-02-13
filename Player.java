@@ -46,4 +46,29 @@ public class Player {
         this.aCurrentRoom = this.aLastRooms.pop();
         return true;
     }
+
+    public boolean take(final String pItemName) {
+        Item item = this.aCurrentRoom.getItemByName(pItemName);
+        if (item == null) {
+            return false;
+        }
+
+        this.aCurrentRoom.removeItem(item);
+        this.aItems.put(pItemName, item);
+
+        return true;
+    }
+
+    public boolean drop(final String pItemName) {
+        Item item = this.aItems.get(pItemName);
+        if (item == null) {
+            return false;
+        }
+
+        this.aItems.remove(pItemName);
+        this.aCurrentRoom.addItem(item);
+
+        return true;
+    }
+
 }
