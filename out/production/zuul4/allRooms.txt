@@ -1,11 +1,22 @@
+take arme
+inventory
+take test
 go west
 look
+take cookie
+drop arme
+take cookie
+inventory
+eat cookie
+take arme
 back
 look
 go up
 look
 go down
 look
+take test
+inventory
 go south
 look
 go north
@@ -20,3 +31,4 @@ go south
 look
 go west
 look
+inventory

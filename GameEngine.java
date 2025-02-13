@@ -244,7 +244,9 @@ public class GameEngine
             while ((line = br.readLine()) != null) {
                 this.interpretCommand(line);
             }
-        } catch (FileNotFoundException _) {} catch (IOException e) {
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
