@@ -1,4 +1,3 @@
-import java.util.HashMap;
 import java.util.Stack;
 
 public class Player {
@@ -8,14 +7,13 @@ public class Player {
     private Room aCurrentRoom;
     private Stack<Room> aLastRooms;
 
-    private HashMap<String, Item> aItems;
+    private ItemList aItemList = new ItemList();
 
     public Player(String pName, Room pCurrentRoom) {
         this.aName = pName;
         this.aCurrentRoom = pCurrentRoom;
 
         this.aLastRooms = new Stack<>();
-        this.aItems = new HashMap<>();
     }
 
     public Room getCurrentRoom() {
@@ -48,25 +46,25 @@ public class Player {
     }
 
     public boolean take(final String pItemName) {
-        Item item = this.aCurrentRoom.getItemByName(pItemName);
+        Item item = this.aCurrentRoom.getItemList().getItemByName(pItemName);
         if (item == null) {
             return false;
         }
 
-        this.aCurrentRoom.removeItem(item);
-        this.aItems.put(pItemName, item);
+        this.aCurrentRoom.getItemList().removeItem(item);
+        this.aItemList.addItem(item);
 
         return true;
     }
 
     public boolean drop(final String pItemName) {
-        Item item = this.aItems.get(pItemName);
+        Item item = this.aItemList.getItemByName(pItemName);
         if (item == null) {
             return false;
         }
 
-        this.aItems.remove(pItemName);
-        this.aCurrentRoom.addItem(item);
+        this.aItemList.removeItem(item);
+        this.aCurrentRoom.getItemList().addItem(item);
 
         return true;
     }

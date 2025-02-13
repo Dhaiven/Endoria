@@ -58,8 +58,8 @@ public class GameEngine
      */
     private void createRooms() {
         Room main = new Room("Main Room", "images/mainImage.png");
-        main.addItem(new Item("test", "1er item test", 2));
-        main.addItem(new Item("arme", "une arme", 17));
+        main.getItemList().addItem(new Item("test", "1er item test", 2));
+        main.getItemList().addItem(new Item("arme", "une arme", 17));
 
         Room prehistoric = new Room("Prehistoric", "images/prehistoricImage.png");
         Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
@@ -187,7 +187,7 @@ public class GameEngine
      */
     private void look(Command pCommand) {
         if (pCommand.hasSecondWord()) {
-            Item actualItem = this.aCurrentPlayer.getCurrentRoom().getItemByName(pCommand.getSecondWord());
+            Item actualItem = this.aCurrentPlayer.getCurrentRoom().getItemList().getItemByName(pCommand.getSecondWord());
             if (actualItem != null) {
                 this.aGui.println(actualItem.getLongDescription());
                 return;
