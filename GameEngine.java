@@ -96,7 +96,7 @@ public class GameEngine
 
         china.setExit("down", main);
 
-        this.aCurrentPlayer = new Player("Joueur 1", main);
+        this.aCurrentPlayer = new Player("Joueur 1", main, 18);
     }
 
     /**
@@ -134,7 +134,7 @@ public class GameEngine
                     if (this.aCurrentPlayer.take(vCommand.getSecondWord())) {
                         this.printLocationInfo();
                     } else {
-                        this.aGui.println("Cet item n'existe pas");
+                        this.aGui.println("Vous ne pouvez pas prendre cet item");
                     }
                 }
             }

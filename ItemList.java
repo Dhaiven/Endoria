@@ -12,6 +12,14 @@ public class ItemList {
         return this.aItems.get(pName);
     }
 
+    public int getWeight() {
+        int sum = 0;
+        for (Item item : this.aItems.values()) {
+            sum += item.getWeight();
+        }
+        return sum;
+    }
+
     public void addItem(final Item pItem) {
         this.aItems.put(pItem.getName(), pItem);
     }
