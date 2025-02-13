@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.Stack;
+
 /**
  *  This class is part of the "World of Zuul" application.
  *  "World of Zuul" is a very simple, text based adventure game.
@@ -13,6 +16,7 @@ public class GameEngine
 {
     private Parser        aParser;
     private Room          aCurrentRoom;
+    private Stack<Room> aLastRooms;
     private UserInterface aGui;
 
     /**
@@ -21,6 +25,7 @@ public class GameEngine
     public GameEngine()
     {
         this.aParser = new Parser();
+        this.aLastRooms = new Stack<>();
         this.createRooms();
     }
 
@@ -54,6 +59,9 @@ public class GameEngine
      */
     private void createRooms() {
         Room main = new Room("Main Room", "images/mainImage.png");
+        main.addItem(new Item("test", "1er item test", 2));
+        main.addItem(new Item("arme", "une arme", 17));
+
         Room prehistoric = new Room("Prehistoric", "images/prehistoricImage.png");
         Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
         Room antiquity = new Room("Antiquity", "images/antiquityImage.png");
@@ -118,6 +126,7 @@ public class GameEngine
             }
             case "look" -> this.look(vCommand);
             case "eat" -> this.eat();
+            case "back" -> this.back();
             default -> this.aGui.println("I don't know what you mean...");
         }
     }
@@ -150,6 +159,7 @@ public class GameEngine
             return;
         }
 
+        this.aLastRooms.push(this.aCurrentRoom);
         this.aCurrentRoom = vNextRoom;
         this.printLocationInfo();
     }
@@ -159,6 +169,12 @@ public class GameEngine
      */
     private void look(Command pCommand) {
         if (pCommand.hasSecondWord()) {
+            Item actualItem = this.aCurrentRoom.getItemByName(pCommand.getSecondWord());
+            if (actualItem != null) {
+                this.aGui.println(actualItem.getLongDescription());
+                return;
+            }
+
             this.aGui.println("I don't know how to look at something in particular yet.");
             return;
         }
@@ -168,6 +184,13 @@ public class GameEngine
 
     private void eat() {
         this.aGui.println("You have eaten now and you are not hungry any more.");
+    }
+
+    private void back() {
+        if (this.aLastRooms.isEmpty()) {
+
+        }
+        this.aCurrentRoom = this.aLastRooms.peek();
     }
 
     private void endGame()
