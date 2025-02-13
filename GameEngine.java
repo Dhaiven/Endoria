@@ -16,9 +16,9 @@ import java.util.Stack;
 public class GameEngine
 {
     private Parser        aParser;
-    private Room          aCurrentRoom;
-    private Stack<Room> aLastRooms;
     private UserInterface aGui;
+
+    private Player aCurrentPlayer;
 
     /**
      * Constructor for objects of class GameEngine
@@ -26,7 +26,6 @@ public class GameEngine
     public GameEngine()
     {
         this.aParser = new Parser();
-        this.aLastRooms = new Stack<>();
         this.createRooms();
     }
 
@@ -42,17 +41,16 @@ public class GameEngine
     private void printWelcome() {
         this.aGui.println("Welcome to the World of Zuul!\nYour goal: solve puzzles.\nType 'help' if you need help.\n\n");
         this.printLocationInfo();
-        if (this.aCurrentRoom.getImageName() != null)
-            this.aGui.showImage(this.aCurrentRoom.getImageName());
     }
 
     /**
      * procédure affichant la room actualle ansi que toutes les sorties disponibles
      */
     private void printLocationInfo() {
-        this.aGui.println(this.aCurrentRoom.getLongDescription());
-        if ( this.aCurrentRoom.getImageName() != null )
-            this.aGui.showImage( this.aCurrentRoom.getImageName() );
+        this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
+        if (this.aCurrentPlayer.getCurrentRoom().getImageName() != null) {
+            this.aGui.showImage(this.aCurrentPlayer.getCurrentRoom().getImageName());
+        }
     }
 
     /**
@@ -98,7 +96,7 @@ public class GameEngine
 
         china.setExit("down", main);
 
-        this.aCurrentRoom = main;
+        this.aCurrentPlayer = new Player("Joueur 1", main);
     }
 
     /**
@@ -155,15 +153,11 @@ public class GameEngine
             return;
         }
 
-        Room vNextRoom = this.aCurrentRoom.getExit(pCommand.getSecondWord());
-        if (vNextRoom == null) {
+        if (this.aCurrentPlayer.goRoom(pCommand.getSecondWord())) {
+            this.printLocationInfo();
+        } else {
             this.aGui.println("There is no door !");
-            return;
         }
-
-        this.aLastRooms.push(this.aCurrentRoom);
-        this.aCurrentRoom = vNextRoom;
-        this.printLocationInfo();
     }
 
     /**
@@ -171,7 +165,7 @@ public class GameEngine
      */
     private void look(Command pCommand) {
         if (pCommand.hasSecondWord()) {
-            Item actualItem = this.aCurrentRoom.getItemByName(pCommand.getSecondWord());
+            Item actualItem = this.aCurrentPlayer.getCurrentRoom().getItemByName(pCommand.getSecondWord());
             if (actualItem != null) {
                 this.aGui.println(actualItem.getLongDescription());
                 return;
@@ -181,7 +175,7 @@ public class GameEngine
             return;
         }
 
-        this.aGui.println(this.aCurrentRoom.getLongDescription());
+        this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
     }
 
     private void eat() {
@@ -194,13 +188,11 @@ public class GameEngine
             return;
         }
 
-        if (this.aLastRooms.isEmpty()) {
+        if (this.aCurrentPlayer.back()) {
+            this.printLocationInfo();
+        } else {
             this.aGui.println("Vous ne pouvez plus revenir en arrière");
-            return;
         }
-
-        this.aCurrentRoom = this.aLastRooms.pop();
-        this.printLocationInfo();
     }
 
     private void test(final Command pCommand) {

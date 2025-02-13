@@ -12,7 +12,7 @@ go north
 look
 go north
 look
-go west
+go east
 look
 go south
 look
