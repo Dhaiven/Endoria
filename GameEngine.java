@@ -126,7 +126,7 @@ public class GameEngine
             }
             case "look" -> this.look(vCommand);
             case "eat" -> this.eat();
-            case "back" -> this.back();
+            case "back" -> this.back(vCommand);
             default -> this.aGui.println("I don't know what you mean...");
         }
     }
@@ -186,11 +186,19 @@ public class GameEngine
         this.aGui.println("You have eaten now and you are not hungry any more.");
     }
 
-    private void back() {
-        if (this.aLastRooms.isEmpty()) {
-
+    private void back(final Command pCommand) {
+        if (pCommand.hasSecondWord()) {
+            this.aGui.println("Cette commande n'accept pas de second paramètre");
+            return;
         }
-        this.aCurrentRoom = this.aLastRooms.peek();
+
+        if (this.aLastRooms.isEmpty()) {
+            this.aGui.println("Vous ne pouvez plus revenir en arrière");
+            return;
+        }
+
+        this.aCurrentRoom = this.aLastRooms.pop();
+        this.printLocationInfo();
     }
 
     private void endGame()
