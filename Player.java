@@ -8,7 +8,7 @@ public class Player {
     private Stack<Room> aLastRooms;
 
     private ItemList aItemList = new ItemList();
-    private final int aMaxWeight;
+    private int aMaxWeight;
 
     public Player(String pName, Room pCurrentRoom, int pMaxWeight) {
         this.aName = pName;
@@ -24,6 +24,14 @@ public class Player {
 
     public ItemList getItemList() {
         return this.aItemList;
+    }
+
+    public int getMaxWeight() {
+        return this.aMaxWeight;
+    }
+
+    public void setMaxWeight(int aMaxWeight) {
+        this.aMaxWeight = aMaxWeight;
     }
 
     /**
@@ -75,5 +83,10 @@ public class Player {
         this.aCurrentRoom.getItemList().addItem(item);
 
         return true;
+    }
+
+    public void use(Item pItem) {
+        this.aItemList.removeItem(pItem);
+        pItem.onUse(this);
     }
 }

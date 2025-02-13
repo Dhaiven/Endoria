@@ -62,6 +62,8 @@ public class GameEngine
         main.getItemList().addItem(new Item("arme", "une arme", 17));
 
         Room prehistoric = new Room("Prehistoric", "images/prehistoricImage.png");
+        prehistoric.getItemList().addItem(new MagicCookie());
+
         Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
         Room antiquity = new Room("Antiquity", "images/antiquityImage.png");
         Room egypte = new Room("Egypte", "images/egypteImage.png");
@@ -124,7 +126,7 @@ public class GameEngine
                 }
             }
             case "look" -> this.look(vCommand);
-            case "eat" -> this.eat();
+            case "eat" -> this.eat(vCommand);
             case "back" -> this.back(vCommand);
             case "test" -> this.test(vCommand);
             case "take" -> {
@@ -201,8 +203,20 @@ public class GameEngine
         this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
     }
 
-    private void eat() {
-        this.aGui.println("You have eaten now and you are not hungry any more.");
+    private void eat(final Command pCommand) {
+        if (!pCommand.hasSecondWord()) {
+            this.aGui.println("Eat what ?");
+            return;
+        }
+
+        Item item = this.aCurrentPlayer.getItemList().getItemByName(pCommand.getSecondWord());
+        if (item == null) {
+            this.aGui.println("Vous ne possédez pas cet item.");
+            return;
+        }
+
+        this.aCurrentPlayer.use(item);
+        this.aGui.println("Vous venez de manger cette item");
     }
 
     private void back(final Command pCommand) {

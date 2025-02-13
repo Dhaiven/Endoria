@@ -25,4 +25,8 @@ public class Item {
     public int getWeight() {
         return this.aWeight;
     }
+
+    public void onUse(Player player) {
+
+    }
 }
