@@ -228,7 +228,7 @@ public class GameEngine
         if (this.aCurrentPlayer.back()) {
             this.printLocationInfo();
         } else {
-            this.aGui.println("Vous ne pouvez plus revenir en arrière");
+            this.aGui.println("Vous ne pouvez pas revenir en arrière");
         }
     }
 

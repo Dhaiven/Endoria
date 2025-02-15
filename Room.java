@@ -44,6 +44,16 @@ public class Room
         return "You are " + aDescription + "\nExits: " + this.getExitString() + "\n" + this.aItemList.getItemString();
     }
 
+    public boolean isExit(Room pRoom) {
+        for (Room exit : this.exits.values()) {
+            if (exit.getDescription().equals(pRoom.getDescription())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param pDirection - direction souhaité
      * @return la salle disposable dans la direction donnée

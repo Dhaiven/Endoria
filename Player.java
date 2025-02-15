@@ -55,6 +55,11 @@ public class Player {
             return false;
         }
 
+        Room vLastRoom = this.aLastRooms.peek();
+        if (!this.aCurrentRoom.isExit(vLastRoom)) {
+            return false;
+        }
+
         this.aCurrentRoom = this.aLastRooms.pop();
         return true;
     }
