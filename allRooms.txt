@@ -1,6 +1,9 @@
 take arme
 inventory
 take test
+go south
+take key
+back
 go west
 look
 take cookie
