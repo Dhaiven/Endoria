@@ -10,7 +10,7 @@ public class Room
     
     private String aDescription;
 
-    private HashMap<String, Room> exits;
+    private HashMap<String, Door> exits;
     private String aImageName;
 
     private ItemList aItemList = new ItemList();
@@ -45,8 +45,8 @@ public class Room
     }
 
     public boolean isExit(Room pRoom) {
-        for (Room exit : this.exits.values()) {
-            if (exit.getDescription().equals(pRoom.getDescription())) {
+        for (Door door : this.exits.values()) {
+            if (door.getTo().getDescription().equals(pRoom.getDescription())) {
                 return true;
             }
         }
@@ -56,9 +56,9 @@ public class Room
 
     /**
      * @param pDirection - direction souhaité
-     * @return la salle disposable dans la direction donnée
+     * @return la porte disposable dans la direction donnée
      */
-    public Room getExit(String pDirection) {
+    public Door getExit(String pDirection) {
         return this.exits.get(pDirection);
     }
 
@@ -78,7 +78,15 @@ public class Room
      * set une room de sortie à la direction données
      */
     public void setExit(String direction, Room exit) {
-        exits.put(direction, exit);
+        exits.put(direction, new Door(exit));
+    }
+
+    /**
+     * set une room de sortie à la direction données
+     * Cette sortie nécéssite une clé pour être emprumpté
+     */
+    public void setLockedExit(String direction, Room exit, Item key) {
+        exits.put(direction, new LockDoor(exit, key));
     }
 
     /**

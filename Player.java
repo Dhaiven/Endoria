@@ -49,13 +49,13 @@ public class Player {
      * @return boolean true si il est dans la nouvelle piece else false
      */
     public boolean goRoom(final String direction) {
-        Room vNextRoom = this.aCurrentRoom.getExit(direction);
-        if (vNextRoom == null) {
+        Door vNextDoor = this.aCurrentRoom.getExit(direction);
+        if (vNextDoor == null || !vNextDoor.canPass(this)) {
             return false;
         }
 
         this.aLastRooms.push(this.aCurrentRoom);
-        this.aCurrentRoom = vNextRoom;
+        this.aCurrentRoom = vNextDoor.getTo();
         return true;
     }
 

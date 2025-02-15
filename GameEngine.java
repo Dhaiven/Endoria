@@ -65,6 +65,7 @@ public class GameEngine
         Room prehistoric = new Room("Prehistoric", "images/prehistoricImage.png");
         prehistoric.getItemList().addItem(new MagicCookie());
 
+
         Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
         moyenAge.getItemList().addItem(new Beamer());
 
@@ -72,13 +73,17 @@ public class GameEngine
         Room egypte = new Room("Egypte", "images/egypteImage.png");
         Room romaine = new Room("Romaine", "images/romanImage.png");
         Room grece = new Room("Grece", "images/greceImage.png");
+
         Room maya = new Room("Maya", "images/mayaImage.png");
+        Item prehistoricKey = new Item("key", "prehistoric key", 1);
+        maya.getItemList().addItem(prehistoricKey);
+
         Room china = new Room("China", "images/chinaImage.png");
 
         main.setExit("north", moyenAge);
         main.setExit("south", maya);
         main.setExit("east", egypte);
-        main.setExit("west", prehistoric);
+        main.setLockedExit("west", prehistoric, prehistoricKey);
         main.setExit("up", china);
 
         prehistoric.setExit("east", main);
