@@ -2,6 +2,7 @@ import java.util.Stack;
 
 public class Player {
 
+    private UserInterface aUserInterface;
     private String aName;
 
     private Room aCurrentRoom;
@@ -16,6 +17,14 @@ public class Player {
         this.aMaxWeight = pMaxWeight;
 
         this.aLastRooms = new Stack<>();
+    }
+
+    public UserInterface getUserInterface() {
+        return this.aUserInterface;
+    }
+
+    public void setUserInterface(UserInterface pUserInterface) {
+        this.aUserInterface = pUserInterface;
     }
 
     public Room getCurrentRoom() {
@@ -47,6 +56,12 @@ public class Player {
 
         this.aLastRooms.push(this.aCurrentRoom);
         this.aCurrentRoom = vNextRoom;
+        return true;
+    }
+
+    public boolean goRoom(Room pRoom) {
+        this.aLastRooms.push(this.aCurrentRoom);
+        this.aCurrentRoom = pRoom;
         return true;
     }
 

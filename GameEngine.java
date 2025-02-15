@@ -32,6 +32,7 @@ public class GameEngine
     public void setGUI( final UserInterface pUserInterface )
     {
         this.aGui = pUserInterface;
+        this.aCurrentPlayer.setUserInterface(pUserInterface);
         this.printWelcome();
     }
 
@@ -46,7 +47,7 @@ public class GameEngine
     /**
      * procédure affichant la room actualle ansi que toutes les sorties disponibles
      */
-    private void printLocationInfo() {
+    public void printLocationInfo() {
         this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
         if (this.aCurrentPlayer.getCurrentRoom().getImageName() != null) {
             this.aGui.showImage(this.aCurrentPlayer.getCurrentRoom().getImageName());
@@ -65,6 +66,8 @@ public class GameEngine
         prehistoric.getItemList().addItem(new MagicCookie());
 
         Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
+        moyenAge.getItemList().addItem(new Beamer());
+
         Room antiquity = new Room("Antiquity", "images/antiquityImage.png");
         Room egypte = new Room("Egypte", "images/egypteImage.png");
         Room romaine = new Room("Romaine", "images/romanImage.png");
@@ -147,6 +150,22 @@ public class GameEngine
                 }
             }
             case INVENTORY -> this.inventory();
+            case CHARGE -> {
+                Item item = this.aCurrentPlayer.getItemList().getItemByName("beamer");
+                if (item instanceof Beamer) {
+                    this.charge((Beamer) item);
+                } else {
+                    this.aGui.println("Vous n'avez pas de beamer à chargé");
+                }
+            }
+            case FIRE -> {
+                Item item = this.aCurrentPlayer.getItemList().getItemByName("beamer");
+                if (item instanceof Beamer) {
+                    this.fire((Beamer) item);
+                } else {
+                    this.aGui.println("Vous n'avez pas de beamer à utilisé");
+                }
+            }
             default -> this.aGui.println("I don't know what you mean...");
         }
     }
@@ -254,6 +273,29 @@ public class GameEngine
     private void inventory() {
         this.aGui.println("Inventaire: ");
         this.aGui.println(this.aCurrentPlayer.getItemList().getItemString());
+    }
+
+    public void charge(Beamer pBeamer) {
+        if (!pBeamer.isFired()) {
+            pBeamer.setFired(true);
+            pBeamer.setFiredRoom(this.aCurrentPlayer.getCurrentRoom());
+            this.aGui.println("Rechargement !");
+        } else {
+            this.aGui.println("Le beamer est déjà chargé");
+        }
+    }
+
+    public void fire(Beamer pBeamer) {
+        if (pBeamer.isFired()) {
+            this.aGui.println("Téléportation...");
+            pBeamer.setFired(false);
+            this.aCurrentPlayer.goRoom(pBeamer.getFiredRoom());
+
+            pBeamer.setFiredRoom(null);
+            this.printLocationInfo();
+        } else {
+            this.aGui.println("Le beamer n'est pas chargé");
+        }
     }
 
     private void endGame()
