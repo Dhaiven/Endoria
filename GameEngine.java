@@ -1,6 +1,5 @@
+import javax.swing.*;
 import java.io.*;
-import java.util.List;
-import java.util.Stack;
 
 /**
  *  This class is part of the "World of Zuul" application.
@@ -19,6 +18,8 @@ public class GameEngine
     private UserInterface aGui;
 
     private Player aCurrentPlayer;
+
+    private int helpLimit = 5;
 
     /**
      * Constructor for objects of class GameEngine
@@ -158,6 +159,11 @@ public class GameEngine
      * procédure affichant l'aide
      */
     private void printHelp() {
+        helpLimit--;
+        if (helpLimit <= 0) {
+            this.aGui.println("Vous avez taper trop de fois la commande help");
+            return;
+        }
         this.aGui.println("\nYou are lost. You are alone.\n\nYour command words are:");
         this.aGui.println(aParser.getCommandString());
     }
