@@ -2,6 +2,7 @@ import java.util.Stack;
 
 public class Player {
 
+    private GameEngine gameEngine;
     private UserInterface aUserInterface;
     private String aName;
 
@@ -11,12 +12,17 @@ public class Player {
     private ItemList aItemList = new ItemList();
     private int aMaxWeight;
 
-    public Player(String pName, Room pCurrentRoom, int pMaxWeight) {
+    public Player(GameEngine gameEngine, String pName, Room pCurrentRoom, int pMaxWeight) {
+        this.gameEngine = gameEngine;
         this.aName = pName;
         this.aCurrentRoom = pCurrentRoom;
         this.aMaxWeight = pMaxWeight;
 
         this.aLastRooms = new Stack<>();
+    }
+
+    public GameEngine getGameEngine() {
+        return gameEngine;
     }
 
     public UserInterface getUserInterface() {

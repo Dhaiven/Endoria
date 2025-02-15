@@ -18,8 +18,6 @@ public class GameEngine
 
     private Player aCurrentPlayer;
 
-    private int helpLimit = 5;
-
     /**
      * Constructor for objects of class GameEngine
      */
@@ -106,7 +104,7 @@ public class GameEngine
 
         china.setExit("down", main);
 
-        this.aCurrentPlayer = new Player("Joueur 1", main, 18);
+        this.aCurrentPlayer = new Player(this, "Joueur 1", main, 18);
     }
 
     /**
@@ -117,196 +115,10 @@ public class GameEngine
     public void interpretCommand(final String pCommandLine) {
         this.aGui.println( "> " + pCommandLine);
         Command vCommand = this.aParser.getCommand(pCommandLine);
-
-        switch (vCommand.getCommandWord()) {
-            case HELP -> this.printHelp();
-            case GO -> this.goRoom(vCommand);
-            case QUIT -> {
-                if ( vCommand.hasSecondWord() ) {
-                    this.aGui.println( "Quit what?" );
-                } else {
-                    this.endGame();
-                }
-            }
-            case LOOK -> this.look(vCommand);
-            case EAT -> this.eat(vCommand);
-            case BACK -> this.back(vCommand);
-            case TEST -> this.test(vCommand);
-            case TAKE -> {
-                if (!vCommand.hasSecondWord()) {
-                    this.aGui.println("Take what?");
-                } else {
-                    if (this.aCurrentPlayer.take(vCommand.getSecondWord())) {
-                        this.printLocationInfo();
-                    } else {
-                        this.aGui.println("Vous ne pouvez pas prendre cet item");
-                    }
-                }
-            }
-            case DROP -> {
-                if (!vCommand.hasSecondWord()) {
-                    this.aGui.println("Drop what?");
-                } else {
-                    if (this.aCurrentPlayer.drop(vCommand.getSecondWord())) {
-                        this.printLocationInfo();
-                    } else {
-                        this.aGui.println("Vous ne possédez pas cet item");
-                    }
-                }
-            }
-            case INVENTORY -> this.inventory();
-            case CHARGE -> {
-                Item item = this.aCurrentPlayer.getItemList().getItemByName("beamer");
-                if (item instanceof Beamer) {
-                    this.charge((Beamer) item);
-                } else {
-                    this.aGui.println("Vous n'avez pas de beamer à chargé");
-                }
-            }
-            case FIRE -> {
-                Item item = this.aCurrentPlayer.getItemList().getItemByName("beamer");
-                if (item instanceof Beamer) {
-                    this.fire((Beamer) item);
-                } else {
-                    this.aGui.println("Vous n'avez pas de beamer à utilisé");
-                }
-            }
-            default -> this.aGui.println("I don't know what you mean...");
-        }
-    }
-
-
-    // implementations of user commands:
-
-    /**
-     * procédure affichant l'aide
-     */
-    private void printHelp() {
-        helpLimit--;
-        if (helpLimit <= 0) {
-            this.aGui.println("Vous avez taper trop de fois la commande help");
-            return;
-        }
-        this.aGui.println("\nYou are lost. You are alone.\n\nYour command words are:");
-        this.aGui.println(aParser.getCommandString());
-    }
-
-    /**
-     * Procédure permettant d'aller dans la salle souhaiter
-     * après l'execution de la commande {@code go <nom de la salle>}
-     * @param pCommand
-     */
-    private void goRoom(final Command pCommand) {
-        if (!pCommand.hasSecondWord()) {
-            this.aGui.println("Go where ?");
-            return;
-        }
-
-        if (this.aCurrentPlayer.goRoom(pCommand.getSecondWord())) {
-            this.printLocationInfo();
+        if (vCommand == null) {
+            this.aGui.println("I don't know what you mean...");
         } else {
-            this.aGui.println("There is no door !");
+            vCommand.execute(this.aCurrentPlayer, vCommand.getSecondWord());
         }
     }
-
-    /**
-     * procédure affichant la room actualle ansi que toutes les sorties disponibles
-     */
-    private void look(Command pCommand) {
-        if (pCommand.hasSecondWord()) {
-            Item actualItem = this.aCurrentPlayer.getCurrentRoom().getItemList().getItemByName(pCommand.getSecondWord());
-            if (actualItem != null) {
-                this.aGui.println(actualItem.getLongDescription());
-                return;
-            }
-
-            this.aGui.println("I don't know how to look at something in particular yet.");
-            return;
-        }
-
-        this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
-    }
-
-    private void eat(final Command pCommand) {
-        if (!pCommand.hasSecondWord()) {
-            this.aGui.println("Eat what ?");
-            return;
-        }
-
-        Item item = this.aCurrentPlayer.getItemList().getItemByName(pCommand.getSecondWord());
-        if (item == null) {
-            this.aGui.println("Vous ne possédez pas cet item.");
-            return;
-        }
-
-        this.aCurrentPlayer.use(item);
-        this.aGui.println("Vous venez de manger cette item");
-    }
-
-    private void back(final Command pCommand) {
-        if (pCommand.hasSecondWord()) {
-            this.aGui.println("Cette commande n'accept pas de second paramètre");
-            return;
-        }
-
-        if (this.aCurrentPlayer.back()) {
-            this.printLocationInfo();
-        } else {
-            this.aGui.println("Vous ne pouvez pas revenir en arrière");
-        }
-    }
-
-    private void test(final Command pCommand) {
-        if (!pCommand.hasSecondWord()) {
-            this.aGui.println("Quel fichier ?");
-            return;
-        }
-
-        File file = new File(pCommand.getSecondWord() + ".txt");
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                this.interpretCommand(line);
-            }
-        } catch (FileNotFoundException e) {
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void inventory() {
-        this.aGui.println("Inventaire: ");
-        this.aGui.println(this.aCurrentPlayer.getItemList().getItemString());
-    }
-
-    public void charge(Beamer pBeamer) {
-        if (!pBeamer.isFired()) {
-            pBeamer.setFired(true);
-            pBeamer.setFiredRoom(this.aCurrentPlayer.getCurrentRoom());
-            this.aGui.println("Rechargement !");
-        } else {
-            this.aGui.println("Le beamer est déjà chargé");
-        }
-    }
-
-    public void fire(Beamer pBeamer) {
-        if (pBeamer.isFired()) {
-            this.aGui.println("Téléportation...");
-            pBeamer.setFired(false);
-            this.aCurrentPlayer.goRoom(pBeamer.getFiredRoom());
-
-            pBeamer.setFiredRoom(null);
-            this.printLocationInfo();
-        } else {
-            this.aGui.println("Le beamer n'est pas chargé");
-        }
-    }
-
-    private void endGame()
-    {
-        this.aGui.println( "Thank you for playing.  Good bye." );
-        this.aGui.enable( false );
-    }
-
 }
