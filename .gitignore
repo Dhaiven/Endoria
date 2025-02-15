@@ -1,5 +1,8 @@
 .idea
 doc
+out
+progdoc
+userdoc
 
 *.claas
 *.ctxt
