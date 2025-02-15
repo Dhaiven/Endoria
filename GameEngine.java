@@ -106,30 +106,25 @@ public class GameEngine
      * If this command ends the game, true is returned, otherwise false is
      * returned.
      */
-    public void interpretCommand( final String pCommandLine ) {
-        this.aGui.println( "> " + pCommandLine );
-        Command vCommand = this.aParser.getCommand( pCommandLine );
-
-        if ( vCommand.isUnknown() ) {
-            this.aGui.println( "I don't know what you mean..." );
-            return;
-        }
+    public void interpretCommand(final String pCommandLine) {
+        this.aGui.println( "> " + pCommandLine);
+        Command vCommand = this.aParser.getCommand(pCommandLine);
 
         switch (vCommand.getCommandWord()) {
-            case "help" -> this.printHelp();
-            case "go" -> this.goRoom(vCommand);
-            case "quit" -> {
+            case HELP -> this.printHelp();
+            case GO -> this.goRoom(vCommand);
+            case QUIT -> {
                 if ( vCommand.hasSecondWord() ) {
                     this.aGui.println( "Quit what?" );
                 } else {
                     this.endGame();
                 }
             }
-            case "look" -> this.look(vCommand);
-            case "eat" -> this.eat(vCommand);
-            case "back" -> this.back(vCommand);
-            case "test" -> this.test(vCommand);
-            case "take" -> {
+            case LOOK -> this.look(vCommand);
+            case EAT -> this.eat(vCommand);
+            case BACK -> this.back(vCommand);
+            case TEST -> this.test(vCommand);
+            case TAKE -> {
                 if (!vCommand.hasSecondWord()) {
                     this.aGui.println("Take what?");
                 } else {
@@ -140,7 +135,7 @@ public class GameEngine
                     }
                 }
             }
-            case "drop" -> {
+            case DROP -> {
                 if (!vCommand.hasSecondWord()) {
                     this.aGui.println("Drop what?");
                 } else {
@@ -151,7 +146,7 @@ public class GameEngine
                     }
                 }
             }
-            case "inventory" -> this.inventory();
+            case INVENTORY -> this.inventory();
             default -> this.aGui.println("I don't know what you mean...");
         }
     }

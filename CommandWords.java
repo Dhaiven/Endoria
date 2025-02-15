@@ -1,4 +1,4 @@
- 
+import java.util.HashMap;
 
 /**
  * This class is part of the "World of Zuul" application. 
@@ -12,30 +12,35 @@
  */
 public class CommandWords
 {
-    // a constant array that will hold all valid command words
-    private final String[] aValidCommands = { "go", "help", "quit", "look", "eat", "back", "test", "take", "drop", "inventory" };
+    private final HashMap<String, CommandWord> aValidCommands = new HashMap();
+
+    public CommandWords() {
+        for (CommandWord command : CommandWord.values()) {
+            aValidCommands.put(command.name().toLowerCase(), command);
+        }
+    }
 
     /**
-     * Check whether a given String is a valid command word. 
-     * @return true if a given string is a valid command,
-     * false if it isn't.
+     * Find the CommandWord associated with a command word.
+     * @param commandWord The word to look up.
+     * @return The CommandWord correspondng to commandWord, or UNKNOWN
+     *         if it is not a valid command word.
      */
-    public boolean isCommand( final String pString )
-    {
-        for ( int vI=0; vI<this.aValidCommands.length; vI++ ) {
-            if ( this.aValidCommands[vI].equals( pString ) )
-                return true;
-        } // for
-        // if we get here, the string was not found in the commands :
-        return false;
-    } // isCommand()
+    public CommandWord getCommandWord(String commandWord) {
+        CommandWord command = this.aValidCommands.get(commandWord);
+        if (command != null) {
+            return command;
+        }
+
+        return CommandWord.UNKNOWN;
+    }
 
     /**
      * Print la liste des commandes disponibles
      */
     public String getCommandList() {
         StringBuilder result = new StringBuilder();
-        for (String command : this.aValidCommands) {
+        for (String command : this.aValidCommands.keySet()) {
             result.append(command).append(" ");
         }
         return result.toString();
