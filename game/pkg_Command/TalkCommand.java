@@ -3,7 +3,11 @@ package game.pkg_Command;
 import game.pkg_Entity.Character;
 import game.pkg_Entity.pkg_Player.Player;
 
-public class TalkCommand$ extends Command {
+/**
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
+public class TalkCommand extends Command {
 
     @Override
     public boolean execute(Player player, String secondWord) {
