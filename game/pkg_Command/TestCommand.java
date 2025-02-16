@@ -4,6 +4,10 @@ import game.pkg_Entity.pkg_Player.Player;
 
 import java.io.*;
 
+/**
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class TestCommand extends Command {
 
     @Override

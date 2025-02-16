@@ -2,6 +2,13 @@ package game.pkg_Entity;
 
 import game.pkg_Entity.pkg_Player.Player;
 
+/**
+ * Classe représentant le PNJ dans
+ * la pièce Egypte
+ *
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class EgypteCharacter extends Character {
 
     public EgypteCharacter(String pName) {

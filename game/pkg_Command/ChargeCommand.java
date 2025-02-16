@@ -4,6 +4,10 @@ import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.Beamer;
 import game.pkg_Item.Item;
 
+/**
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class ChargeCommand extends Command {
 
     @Override

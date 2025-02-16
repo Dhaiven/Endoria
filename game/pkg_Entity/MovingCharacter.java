@@ -7,6 +7,13 @@ import game.pkg_Room.Room;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe représentant un personnage qui bouge
+ * à chaque commande
+ *
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class MovingCharacter extends Character {
 
     public MovingCharacter(String pName) {

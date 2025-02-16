@@ -3,6 +3,10 @@ package game.pkg_Command;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.Item;
 
+/**
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class EatCommand extends Command {
 
     @Override

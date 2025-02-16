@@ -125,6 +125,9 @@ public class Room
         exits.put(direction, new LockDoor(exit, key));
     }
 
+    /**
+     * @return tous les personnages de la classe
+     */
     public HashMap<String, Character> getCharacters() {
         return this.aCharacters;
     }

@@ -2,6 +2,10 @@ package game.pkg_Command;
 
 import game.pkg_Entity.pkg_Player.Player;
 
+/**
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class GoCommand extends Command {
 
     @Override
