@@ -75,6 +75,22 @@ public class Room
     }
 
     /**
+     * Fonction qui retourne toutes les sorties possibles
+     */
+    public HashMap<String, Door> getExits() {
+        HashMap<String, Door> result = new HashMap<>();
+        for (String direction : this.exits.keySet()) {
+            /**
+             * Check le getExit comme ça si une class le override,
+             * ça tient compte du changement
+             */
+            result.put(direction, this.getExit(direction));
+        }
+
+        return result;
+    }
+
+    /**
      * @param pDirection direction souhaitée
      * @return la porte disposable dans la direction donnée
      */
@@ -109,6 +125,10 @@ public class Room
         exits.put(direction, new LockDoor(exit, key));
     }
 
+    public HashMap<String, Character> getCharacters() {
+        return this.aCharacters;
+    }
+
     /**
      * Get un personnage en fonction de son nom
      * @param pName le nom du personnage
@@ -123,6 +143,13 @@ public class Room
      */
     public void addCharacter(Character pCharacter) {
         this.aCharacters.put(pCharacter.getName(), pCharacter);
+    }
+
+    /**
+     * Supprime un personnage présent dans cette pièce
+     */
+    public void removeCharacter(Character pCharacter) {
+        this.aCharacters.remove(pCharacter.getName());
     }
 
     /**

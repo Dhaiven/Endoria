@@ -2,7 +2,9 @@ package game;
 
 import game.pkg_Command.Command;
 import game.pkg_Command.Parser;
+import game.pkg_Entity.Character;
 import game.pkg_Entity.EgypteCharacter;
+import game.pkg_Entity.MovingCharacter;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Entity.pkg_Player.UserInterface;
 import game.pkg_Item.Beamer;
@@ -89,6 +91,8 @@ public class GameEngine
         egypte.addCharacter(new EgypteCharacter("egypte"));
 
         Room romaine = new TransporterRoom(this, "Romaine", "game/images/romanImage.png");
+        romaine.addCharacter(new MovingCharacter("moving"));
+
         Room grece = new Room("Grece", "game/images/greceImage.png");
 
         Room maya = new Room("Maya", "game/images/mayaImage.png");
@@ -171,6 +175,12 @@ public class GameEngine
         if (vCommand == null) {
             this.aGui.println("I don't know what you mean...");
         } else {
+            for (Character character : this.aCurrentPlayer.getCurrentRoom().getCharacters().values()) {
+                if (character instanceof MovingCharacter) {
+                    character.onInteract(this.aCurrentPlayer);
+                }
+            }
+
             vCommand.execute(this.aCurrentPlayer, vCommand.getSecondWord());
         }
     }
