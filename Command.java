@@ -4,19 +4,41 @@
  *
  * @author Alban Fournier--Cibray
  */
-public abstract class Command {
+public class Command
+{ 
+    private CommandWord aCommandWord;
+    private String aSecondWord;
+    
+    public Command(final CommandWord pCommandWord, final String pSecondWord) {
+        this.aCommandWord = pCommandWord;
+        this.aSecondWord = pSecondWord;
+    }
 
-    private String secondWord = null;
+    /**
+     * @return le premier mot taper dans la commande
+     */
+    public CommandWord getCommandWord() {
+        return this.aCommandWord;
+    }
 
+    /**
+     * @return le deuxième mot taper dans la commande
+     */
     public String getSecondWord() {
-        return secondWord;
+        return this.aSecondWord;
     }
 
-    public Command setSecondWord(String secondWord) {
-        this.secondWord = secondWord;
-        return this;
+    /**
+     * @return true si la commande contient un deuxieme mot
+     */
+    public boolean hasSecondWord() {
+        return this.aSecondWord != null;
     }
 
-    abstract public boolean execute(Player player, String secondWord);
-
+    /**
+     * @return true si la commande ne contient pas de premier mot
+     */
+    public boolean isUnknown() {
+        return this.aCommandWord == CommandWord.UNKNOWN;
+    }
 }// Command

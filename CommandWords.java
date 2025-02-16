@@ -13,40 +13,26 @@ import java.util.HashMap;
 public class CommandWords
 {
     private final HashMap<String, CommandWord> aValidCommands = new HashMap();
-    private final HashMap<CommandWord, Command> aCommands = new HashMap();
 
     public CommandWords() {
         for (CommandWord command : CommandWord.values()) {
             aValidCommands.put(command.name().toLowerCase(), command);
         }
-
-        this.aCommands.put(CommandWord.BACK, new BackCommand());
-        this.aCommands.put(CommandWord.GO, new GoCommand());
-        this.aCommands.put(CommandWord.HELP, new HelpCommand(this));
-        this.aCommands.put(CommandWord.QUIT, new QuitCommand());
-        this.aCommands.put(CommandWord.DROP, new DropCommand());
-        this.aCommands.put(CommandWord.INVENTORY, new InventoryCommand());
-        this.aCommands.put(CommandWord.TAKE, new TakeCommand());
-        this.aCommands.put(CommandWord.TEST, new TestCommand());
-        this.aCommands.put(CommandWord.LOOK, new LookCommand());
-        this.aCommands.put(CommandWord.EAT, new EatCommand());
-        this.aCommands.put(CommandWord.FIRE, new FireCommand());
-        this.aCommands.put(CommandWord.CHARGE, new ChargeCommand());
     }
 
     /**
      * Find the CommandWord associated with a command word.
      * @param commandWord The word to look up.
-     * @return The Command correspondng to commandWord, or null
+     * @return The CommandWord correspondng to commandWord, or UNKNOWN
      *         if it is not a valid command word.
      */
-    public Command getCommand(String commandWord) {
+    public CommandWord getCommandWord(String commandWord) {
         CommandWord command = this.aValidCommands.get(commandWord);
         if (command != null) {
-            return this.aCommands.get(command);
+            return command;
         }
 
-        return null;
+        return CommandWord.UNKNOWN;
     }
 
     /**
