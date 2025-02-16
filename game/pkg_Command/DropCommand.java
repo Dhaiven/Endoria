@@ -1,6 +1,6 @@
 package game.pkg_Command;
 
-import game.Player;
+import game.pkg_Entity.pkg_Player.Player;
 
 public class DropCommand extends Command {
 

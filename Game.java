@@ -1,5 +1,5 @@
 import game.GameEngine;
-import game.UserInterface;
+import game.pkg_Entity.pkg_Player.UserInterface;
 
 /**
  *  This class is the main class of the "World of Zuul" application.

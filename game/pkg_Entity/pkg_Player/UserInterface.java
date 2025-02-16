@@ -1,4 +1,6 @@
-package game;
+package game.pkg_Entity.pkg_Player;
+
+import game.GameEngine;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,5 +1,6 @@
 package game.pkg_Room;
 
+import game.pkg_Entity.Character;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 
@@ -17,6 +18,8 @@ public class Room
     private String aDescription;
 
     private HashMap<String, Door> exits;
+    private HashMap<String, Character> aCharacters;
+
     private String aImageName;
 
     private ItemList aItemList = new ItemList();
@@ -32,6 +35,7 @@ public class Room
     {
         this.aDescription = pDescription;
         this.exits = new HashMap<>();
+        this.aCharacters = new HashMap<>();
         this.aImageName = pImage;
     }
 
@@ -47,7 +51,13 @@ public class Room
      * et les sorties disponibles
      */
     public String getLongDescription() {
-        return "You are " + aDescription + "\nExits: " + this.getExitString() + "\n" + this.aItemList.getItemString();
+        return "You are " + aDescription +
+                "\n" +
+                "Exits: " + this.getExitString() +
+                "\n" +
+                this.aItemList.getItemString() +
+                "\n" +
+                "Characters :" + this.getCharacterString();
     }
 
     /**
@@ -97,6 +107,34 @@ public class Room
      */
     public void setLockedExit(String direction, Room exit, Item key) {
         exits.put(direction, new LockDoor(exit, key));
+    }
+
+    /**
+     * Get un personnage en fonction de son nom
+     * @param pName le nom du personnage
+     * @return Character si le personage exist else null
+     */
+    public Character getaCharacterByName(String pName) {
+        return this.aCharacters.get(pName);
+    }
+
+    /**
+     * Ajoute un personnage dans cette pièce
+     */
+    public void addCharacter(Character pCharacter) {
+        this.aCharacters.put(pCharacter.getName(), pCharacter);
+    }
+
+    /**
+     * @return un String de tous les personnages disposables
+     */
+    public String getCharacterString() {
+        StringBuilder result = new StringBuilder();
+        for (String name : this.aCharacters.keySet()) {
+            result.append(name).append(" ");
+        }
+
+        return result.toString();
     }
 
     /**

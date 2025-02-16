@@ -1,7 +1,4 @@
-package game;
-
-import game.pkg_Command.Command;
-import game.pkg_Command.CommandWords;
+package game.pkg_Command;
 
 import java.util.StringTokenizer;
 

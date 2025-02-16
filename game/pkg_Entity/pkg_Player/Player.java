@@ -1,5 +1,6 @@
-package game;
+package game.pkg_Entity.pkg_Player;
 
+import game.GameEngine;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Room.Door;

@@ -34,6 +34,7 @@ public class CommandWords
         this.aCommands.put(CommandWord.EAT, new EatCommand());
         this.aCommands.put(CommandWord.FIRE, new FireCommand());
         this.aCommands.put(CommandWord.CHARGE, new ChargeCommand());
+        this.aCommands.put(CommandWord.TALK, new TalkCommand$());
     }
 
     /**

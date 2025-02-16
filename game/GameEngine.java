@@ -1,6 +1,10 @@
 package game;
 
 import game.pkg_Command.Command;
+import game.pkg_Command.Parser;
+import game.pkg_Entity.EgypteCharacter;
+import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Entity.pkg_Player.UserInterface;
 import game.pkg_Item.Beamer;
 import game.pkg_Item.Item;
 import game.pkg_Item.MagicCookie;
@@ -23,7 +27,7 @@ import java.util.List;
  */
 public class GameEngine
 {
-    private Parser        aParser;
+    private Parser aParser;
     private UserInterface aGui;
 
     private Player aCurrentPlayer;
@@ -80,7 +84,10 @@ public class GameEngine
         moyenAge.getItemList().addItem(new Beamer());
 
         Room antiquity = new Room("Antiquity", "game/images/antiquityImage.png");
+
         Room egypte = new Room("Egypte", "game/images/egypteImage.png");
+        egypte.addCharacter(new EgypteCharacter("egypte"));
+
         Room romaine = new TransporterRoom(this, "Romaine", "game/images/romanImage.png");
         Room grece = new Room("Grece", "game/images/greceImage.png");
 

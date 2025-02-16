@@ -1,6 +1,6 @@
 package game.pkg_Item;
 
-import game.Player;
+import game.pkg_Entity.pkg_Player.Player;
 
 /**
  *  Cette classe représente un MagicCookie

@@ -1,6 +1,6 @@
 package game.pkg_Room;
 
-import game.Player;
+import game.pkg_Entity.pkg_Player.Player;
 
 /**
  *  Cette classe implémente une porte classique

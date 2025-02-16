@@ -1,6 +1,6 @@
 package game.pkg_Command;
 
-import game.Player;
+import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.Item;
 
 public class EatCommand extends Command {
