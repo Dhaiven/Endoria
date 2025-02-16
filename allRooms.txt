@@ -35,3 +35,6 @@ look
 go west
 look
 inventory
+alea China
+go east
+look

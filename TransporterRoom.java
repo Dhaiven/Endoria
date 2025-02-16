@@ -16,14 +16,31 @@ public class TransporterRoom extends Room {
 
     @Override
     public Door getExit(String pDirection) {
-        return new RoomRandomizer().find(this.aEngine.getRooms());
+        return new RoomRandomizer(this.aEngine).find();
     }
 
     public static class RoomRandomizer {
 
-        public Door find(List<Room> rooms) {
+        private final GameEngine aEngine;
+
+        public RoomRandomizer(GameEngine aEngine) {
+            this.aEngine = aEngine;
+        }
+
+        public Door find() {
+            if (aEngine.getAlea() != null) {
+                for (Room room : aEngine.getRooms()) {
+                    if (room.getDescription().equals(aEngine.getAlea())) {
+                        return new Door(room);
+                    }
+                }
+
+                return null;
+            }
+
             Random random = new Random();
-            Room randomRoom = rooms.get(random.nextInt(rooms.size()));
+            List<Room> vRooms = this.aEngine.getRooms();
+            Room randomRoom = vRooms.get(random.nextInt(vRooms.size()));
             return new Door(randomRoom);
         }
     }

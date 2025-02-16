@@ -21,6 +21,7 @@ public class GameEngine
     private Player aCurrentPlayer;
 
     private List<Room> aRooms = new ArrayList<>();
+    private String alea = null;
 
     private int helpLimit = 5;
 
@@ -68,7 +69,6 @@ public class GameEngine
 
         Room prehistoric = new Room("Prehistoric", "images/prehistoricImage.png");
         prehistoric.getItemList().addItem(new MagicCookie());
-
 
         Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
         moyenAge.getItemList().addItem(new Beamer());
@@ -127,12 +127,25 @@ public class GameEngine
         return this.aRooms;
     }
 
+    public String getAlea() {
+        return alea;
+    }
+
     /**
      * Given a command, process (that is: execute) the command.
      * If this command ends the game, true is returned, otherwise false is
      * returned.
      */
     public void interpretCommand(final String pCommandLine) {
+        this.interpretCommand(pCommandLine, false);
+    }
+
+    /**
+     * Given a command, process (that is: execute) the command.
+     * If this command ends the game, true is returned, otherwise false is
+     * returned.
+     */
+    public void interpretCommand(final String pCommandLine, boolean inTest) {
         this.aGui.println( "> " + pCommandLine);
         Command vCommand = this.aParser.getCommand(pCommandLine);
 
@@ -188,6 +201,14 @@ public class GameEngine
                 } else {
                     this.aGui.println("Vous n'avez pas de beamer à utilisé");
                 }
+            }
+            case ALEA -> {
+                if (!inTest) {
+                    this.aGui.println("Cette commande est disponible que durant une phase de test");
+                    return;
+                }
+
+                this.alea = vCommand.getSecondWord();
             }
             default -> this.aGui.println("I don't know what you mean...");
         }
@@ -284,7 +305,7 @@ public class GameEngine
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line;
             while ((line = br.readLine()) != null) {
-                this.interpretCommand(line);
+                this.interpretCommand(line, true);
             }
         } catch (FileNotFoundException e) {
 
