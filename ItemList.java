@@ -1,5 +1,11 @@
 import java.util.HashMap;
 
+/**
+ *  Cette classe représente une list contenant des items
+ *
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class ItemList {
 
     private HashMap<String, Item> aItems;
@@ -12,6 +18,9 @@ public class ItemList {
         return this.aItems.get(pName);
     }
 
+    /**
+     * @return la somme du poids de chaque item
+     */
     public int getWeight() {
         int sum = 0;
         for (Item item : this.aItems.values()) {
@@ -20,16 +29,22 @@ public class ItemList {
         return sum;
     }
 
+    /**
+     * Ajoute un item
+     */
     public void addItem(final Item pItem) {
         this.aItems.put(pItem.getName(), pItem);
     }
 
+    /**
+     * Supprime un item
+     */
     public void removeItem(final Item pItem) {
         this.aItems.remove(pItem.getName());
     }
 
     /**
-     * @return un String de touts les items disposables
+     * @return un String de tout les items disposables
      */
     public String getItemString() {
         if (this.aItems.isEmpty()) {

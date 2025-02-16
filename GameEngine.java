@@ -42,7 +42,7 @@ public class GameEngine
     }
 
     /**
-     * procédure affichant le message au marriage du jeu
+     * Procédure affichant le message au marriage du jeu
      */
     private void printWelcome() {
         this.aGui.println("Welcome to the World of Zuul!\nYour goal: solve puzzles.\nType 'help' if you need help.\n\n");
@@ -50,7 +50,7 @@ public class GameEngine
     }
 
     /**
-     * procédure affichant la room actualle ansi que toutes les sorties disponibles
+     * Procédure affichant la room actualle ansi que toutes les sorties disponibles
      */
     public void printLocationInfo() {
         this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
@@ -123,10 +123,16 @@ public class GameEngine
         this.aCurrentPlayer = new Player("Joueur 1", main, 18);
     }
 
+    /**
+     * @return toutes les rooms créent
+     */
     public List<Room> getRooms() {
         return this.aRooms;
     }
 
+    /**
+     * @return un String si il y a un alea else null
+     */
     public String getAlea() {
         return alea;
     }
@@ -144,6 +150,7 @@ public class GameEngine
      * Given a command, process (that is: execute) the command.
      * If this command ends the game, true is returned, otherwise false is
      * returned.
+     * @param inTest true si la commande est exécuté par la commande test else false
      */
     public void interpretCommand(final String pCommandLine, boolean inTest) {
         this.aGui.println( "> " + pCommandLine);
@@ -218,7 +225,7 @@ public class GameEngine
     // implementations of user commands:
 
     /**
-     * procédure affichant l'aide
+     * Procédure affichant l'aide
      */
     private void printHelp() {
         helpLimit--;
@@ -232,8 +239,7 @@ public class GameEngine
 
     /**
      * Procédure permettant d'aller dans la salle souhaiter
-     * après l'execution de la commande {@code go <nom de la salle>}
-     * @param pCommand
+     * après execution de la commande {@code go <nom de la salle>}
      */
     private void goRoom(final Command pCommand) {
         if (!pCommand.hasSecondWord()) {
@@ -249,7 +255,7 @@ public class GameEngine
     }
 
     /**
-     * procédure affichant la room actualle ansi que toutes les sorties disponibles
+     * Procédure affichant la room actualle ansi que toutes les sorties disponibles
      */
     private void look(Command pCommand) {
         if (pCommand.hasSecondWord()) {
@@ -266,6 +272,9 @@ public class GameEngine
         this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
     }
 
+    /**
+     * Procédure appellé quand le joueur éxecute la commande eat
+     */
     private void eat(final Command pCommand) {
         if (!pCommand.hasSecondWord()) {
             this.aGui.println("Eat what ?");
@@ -282,9 +291,12 @@ public class GameEngine
         this.aGui.println("Vous venez de manger cette item");
     }
 
+    /**
+     * Procédure appellé quand le joueur éxecute la commande back
+     */
     private void back(final Command pCommand) {
         if (pCommand.hasSecondWord()) {
-            this.aGui.println("Cette commande n'accept pas de second paramètre");
+            this.aGui.println("Cette commande n'accepte pas de second paramètre");
             return;
         }
 
@@ -295,6 +307,9 @@ public class GameEngine
         }
     }
 
+    /**
+     * Procédure appellé quand le joueur éxecute la commande test
+     */
     private void test(final Command pCommand) {
         if (!pCommand.hasSecondWord()) {
             this.aGui.println("Quel fichier ?");
@@ -314,11 +329,17 @@ public class GameEngine
         }
     }
 
+    /**
+     * Procédure appellé quand le joueur éxecute la commande inventory
+     */
     private void inventory() {
         this.aGui.println("Inventaire: ");
         this.aGui.println(this.aCurrentPlayer.getItemList().getItemString());
     }
 
+    /**
+     * Procédure appellé quand le joueur éxecute la commande charge
+     */
     public void charge(Beamer pBeamer) {
         if (!pBeamer.isFired()) {
             pBeamer.setFired(true);
@@ -329,6 +350,9 @@ public class GameEngine
         }
     }
 
+    /**
+     * Procédure appellé quand le joueur éxecute la commande fire
+     */
     public void fire(Beamer pBeamer) {
         if (pBeamer.isFired()) {
             this.aGui.println("Téléportation...");
@@ -342,6 +366,9 @@ public class GameEngine
         }
     }
 
+    /**
+     * Procédure appellé quand le joueur éxecute la commande quit
+     */
     private void endGame()
     {
         this.aGui.println( "Thank you for playing.  Good bye." );

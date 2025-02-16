@@ -1,6 +1,13 @@
 import java.util.List;
 import java.util.Random;
 
+/**
+ *  Cette classe représente une pièce
+ *  téléportant dans une pièce aléatoire quand on en sort
+ *
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class TransporterRoom extends Room {
 
     private final GameEngine aEngine;
@@ -27,6 +34,9 @@ public class TransporterRoom extends Room {
             this.aEngine = aEngine;
         }
 
+        /**
+         * @return la porte aléatoire si alea est null else la porte vers la pièce spécifiée par aléa
+         */
         public Door find() {
             if (aEngine.getAlea() != null) {
                 for (Room room : aEngine.getRooms()) {
