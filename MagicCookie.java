@@ -1,3 +1,11 @@
+/**
+ *  Cette classe représente un MagicCookie
+ *  Un item permettant de mettre le poids maximum du
+ *  joueur à 100.
+ *
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class MagicCookie extends Item {
 
     public MagicCookie() {

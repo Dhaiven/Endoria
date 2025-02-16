@@ -1,3 +1,10 @@
+/**
+ *  Cette classe représente une porte fermée.
+ *  Elle peut s'ouvrit que si le joueur possède la bonne clé
+ *
+ * @author  DEBELLE Hugp
+ * @version 2.0 (Février 2025)
+ */
 public class LockDoor extends Door {
 
     private final Item key;

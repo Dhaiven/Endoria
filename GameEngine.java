@@ -1,4 +1,5 @@
-import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  This class is part of the "World of Zuul" application.
@@ -18,6 +19,9 @@ public class GameEngine
 
     private Player aCurrentPlayer;
 
+    private List<Room> aRooms = new ArrayList<>();
+    private String alea = null;
+
     /**
      * Constructor for objects of class GameEngine
      */
@@ -35,7 +39,7 @@ public class GameEngine
     }
 
     /**
-     * procédure affichant le message au marriage du jeu
+     * Procédure affichant le message au marriage du jeu
      */
     private void printWelcome() {
         this.aGui.println("Welcome to the World of Zuul!\nYour goal: solve puzzles.\nType 'help' if you need help.\n\n");
@@ -43,7 +47,7 @@ public class GameEngine
     }
 
     /**
-     * procédure affichant la room actualle ansi que toutes les sorties disponibles
+     * Procédure affichant la room actualle ansi que toutes les sorties disponibles
      */
     public void printLocationInfo() {
         this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
@@ -63,13 +67,12 @@ public class GameEngine
         Room prehistoric = new Room("Prehistoric", "images/prehistoricImage.png");
         prehistoric.getItemList().addItem(new MagicCookie());
 
-
         Room moyenAge = new Room("Moyen Age", "images/moyenAgeImage.png");
         moyenAge.getItemList().addItem(new Beamer());
 
         Room antiquity = new Room("Antiquity", "images/antiquityImage.png");
         Room egypte = new Room("Egypte", "images/egypteImage.png");
-        Room romaine = new Room("Romaine", "images/romanImage.png");
+        Room romaine = new TransporterRoom(this, "Romaine", "images/romanImage.png");
         Room grece = new Room("Grece", "images/greceImage.png");
 
         Room maya = new Room("Maya", "images/mayaImage.png");
@@ -104,7 +107,31 @@ public class GameEngine
 
         china.setExit("down", main);
 
-        this.aCurrentPlayer = new Player(this, "Joueur 1", main, 18);
+        this.aRooms.add(main);
+        this.aRooms.add(moyenAge);
+        this.aRooms.add(antiquity);
+        this.aRooms.add(egypte);
+        this.aRooms.add(romaine);
+        this.aRooms.add(grece);
+        this.aRooms.add(maya);
+        this.aRooms.add(china);
+        this.aRooms.add(prehistoric);
+
+        this.aCurrentPlayer = new Player("Joueur 1", main, 18);
+    }
+
+    /**
+     * @return toutes les rooms créent
+     */
+    public List<Room> getRooms() {
+        return this.aRooms;
+    }
+
+    /**
+     * @return un String si il y a un alea else null
+     */
+    public String getAlea() {
+        return alea;
     }
 
     /**
@@ -113,6 +140,16 @@ public class GameEngine
      * returned.
      */
     public void interpretCommand(final String pCommandLine) {
+        this.interpretCommand(pCommandLine, false);
+    }
+
+    /**
+     * Given a command, process (that is: execute) the command.
+     * If this command ends the game, true is returned, otherwise false is
+     * returned.
+     * @param inTest true si la commande est exécuté par la commande test else false
+     */
+    public void interpretCommand(final String pCommandLine, boolean inTest) {
         this.aGui.println( "> " + pCommandLine);
         Command vCommand = this.aParser.getCommand(pCommandLine);
         if (vCommand == null) {
