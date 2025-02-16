@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  This class is part of the "World of Zuul" application.
@@ -17,6 +19,8 @@ public class GameEngine
     private UserInterface aGui;
 
     private Player aCurrentPlayer;
+
+    private List<Room> aRooms = new ArrayList<>();
 
     private int helpLimit = 5;
 
@@ -71,7 +75,7 @@ public class GameEngine
 
         Room antiquity = new Room("Antiquity", "images/antiquityImage.png");
         Room egypte = new Room("Egypte", "images/egypteImage.png");
-        Room romaine = new Room("Romaine", "images/romanImage.png");
+        Room romaine = new TransporterRoom(this, "Romaine", "images/romanImage.png");
         Room grece = new Room("Grece", "images/greceImage.png");
 
         Room maya = new Room("Maya", "images/mayaImage.png");
@@ -106,7 +110,21 @@ public class GameEngine
 
         china.setExit("down", main);
 
+        this.aRooms.add(main);
+        this.aRooms.add(moyenAge);
+        this.aRooms.add(antiquity);
+        this.aRooms.add(egypte);
+        this.aRooms.add(romaine);
+        this.aRooms.add(grece);
+        this.aRooms.add(maya);
+        this.aRooms.add(china);
+        this.aRooms.add(prehistoric);
+
         this.aCurrentPlayer = new Player("Joueur 1", main, 18);
+    }
+
+    public List<Room> getRooms() {
+        return this.aRooms;
     }
 
     /**
