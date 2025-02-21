@@ -1,9 +1,11 @@
 package game.pkg_Entity;
 
 import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Object.Position;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Random;
 
@@ -14,10 +16,10 @@ import java.util.Random;
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class MovingCharacter extends Character {
+public abstract class MovingCharacter extends Character {
 
-    public MovingCharacter(String pName) {
-        super(pName);
+    public MovingCharacter(JComponent paintedOn, Sprite sprite, Position position, FacingDirection facing) {
+        super(paintedOn, sprite, position, facing);
     }
 
     @Override

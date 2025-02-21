@@ -11,8 +11,13 @@ import game.pkg_Entity.pkg_Player.Player;
  */
 public class EgypteCharacter extends Character {
 
-    public EgypteCharacter(String pName) {
-        super(pName);
+    public EgypteCharacter() {
+        super(null, null, null, null);
+    }
+
+    @Override
+    public String getName() {
+        return "egypte";
     }
 
     @Override

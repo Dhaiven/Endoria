@@ -1,11 +1,15 @@
 package game.pkg_Entity.pkg_Player;
 
-import game.GameEngine;
+import game.pkg_Entity.Entity;
+import game.pkg_Object.Position;
+import game.pkg_Room.Room;
+import game.pkg_Tile.Tile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * This class implements a simple graphical user interface with a
@@ -14,9 +18,10 @@ import java.net.URL;
  * @author Michael Kolling
  * @version 1.0 (Jan 2003) DB edited (2023)
  */
-public class UserInterface implements ActionListener
+public class UserInterface extends JPanel implements ActionListener
 {
-    private GameEngine aEngine;
+    private final Player player;
+
     private JFrame     aMyFrame;
     private JTextField aEntryField;
     private JTextArea  aLog;
@@ -26,12 +31,11 @@ public class UserInterface implements ActionListener
      * Construct a UserInterface. As a parameter, a Game Engine
      * (an object processing and executing the game commands) is
      * needed.
-     *
-     * @param pGameEngine  The GameEngine object implementing the game logic.
      */
-    public UserInterface( final GameEngine pGameEngine )
+    public UserInterface(Player player)
     {
-        this.aEngine = pGameEngine;
+        System.out.println("UserInterface");
+        this.player = player;
         this.createGUI();
     } // UserInterface(.)
 
@@ -87,9 +91,20 @@ public class UserInterface implements ActionListener
     /**
      * Set up graphical user interface.
      */
-    private void createGUI()
+    public void createGUI()
     {
-        this.aMyFrame = new JFrame( "My GAME" ); // change the title !
+        System.out.println("load");
+        this.aMyFrame = new JFrame("Jeux test");
+        this.aMyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.aMyFrame.setSize(700, 700);
+
+        this.aMyFrame.add(this);
+        this.aMyFrame.addKeyListener(player);
+        this.aMyFrame.setVisible(true);
+
+        /**this.aEntryField = new JTextField( 34 );
+
+        /**this.aMyFrame = new JFrame( "My GAME" ); // change the title !
         this.aEntryField = new JTextField( 34 );
 
         this.aLog = new JTextArea();
@@ -98,18 +113,10 @@ public class UserInterface implements ActionListener
         vListScroller.setPreferredSize( new Dimension(200, 200) );
         vListScroller.setMinimumSize( new Dimension(100,100) );
 
-        this.aImage = new JLabel();
-
-        var aButton = new JButton("Help");
-        aButton.addActionListener( this );
         JPanel vPanel = new JPanel();
-        vPanel.setLayout( new BorderLayout() ); // ==> only five places
-        vPanel.add( this.aImage, BorderLayout.NORTH );
-        vPanel.add( vListScroller, BorderLayout.CENTER );
-        vPanel.add( this.aEntryField, BorderLayout.SOUTH );
-        vPanel.add( aButton, BorderLayout.EAST );
-
-        this.aMyFrame.getContentPane().add( vPanel, BorderLayout.CENTER );
+        vPanel.setLayout(new BorderLayout()); // ==> only five places
+        //vPanel.add(this.aMyFrame, BorderLayout.NORTH);
+        vPanel.add(this.aEntryField, BorderLayout.SOUTH);
 
         // add some event listeners to some components
         this.aEntryField.addActionListener( this );
@@ -125,7 +132,7 @@ public class UserInterface implements ActionListener
 
         this.aMyFrame.pack();
         this.aMyFrame.setVisible( true );
-        this.aEntryField.requestFocus();
+        this.aEntryField.requestFocus();*/
     } // createGUI()
 
     /**
@@ -134,7 +141,7 @@ public class UserInterface implements ActionListener
     @Override public void actionPerformed( final ActionEvent pE )
     {
         if (pE.getSource() instanceof JButton) {
-            this.aEngine.interpretCommand("help");
+            //this.aEngine.interpretCommand("help");
             return;
         }
         // no need to check the type of action at the moment
@@ -151,6 +158,27 @@ public class UserInterface implements ActionListener
         String vInput = this.aEntryField.getText();
         this.aEntryField.setText( "" );
 
-        this.aEngine.interpretCommand( vInput );
+        //this.aEngine.interpretCommand( vInput );
     } // processCommand()
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        System.out.println("paintComponent");
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        Room room = player.getPosition().getRoom();
+        for (int layer = 1; layer < 5; layer++) {
+            for (Map.Entry<Position, Tile> entry : room.getWorldsTilesCacheAtLayer(layer).entrySet()) {
+                entry.getValue().paint(g2d, entry.getKey());
+            }
+
+            for (Entity entity : room.getEntities()) {
+                if (entity.getLayer() == layer) {
+                    entity.paint(g2d);
+                }
+            }
+        }
+    }
 } // UserInterface

@@ -16,7 +16,7 @@ public class Beamer extends Item {
     private Room aFiredRoom;
 
     public Beamer() {
-        super("beamer", "Permet de se téléporter", 100);
+        super(null, "beamer", "Permet de se téléporter", 100);
     }
 
     /**

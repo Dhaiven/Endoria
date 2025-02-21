@@ -1,6 +1,8 @@
 package game.pkg_Item;
 
 import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Object.GameObject;
+import game.pkg_Entity.Sprite;
 
 /**
  *  Cette classe représente un Item de base
@@ -8,13 +10,14 @@ import game.pkg_Entity.pkg_Player.Player;
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class Item {
+public class Item extends GameObject {
 
     private String aName;
     private String aDescription;
     private int aWeight;
 
-    public Item(String pName, String pDescription, int pWeight) {
+    public Item(Sprite sprite, String pName, String pDescription, int pWeight) {
+        super(sprite);
         this.aName = pName;
         this.aDescription = pDescription;
         this.aWeight = pWeight;

@@ -1,6 +1,9 @@
 package game.pkg_Entity;
 
 import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Object.Position;
+
+import javax.swing.*;
 
 /**
  * Classe représentant un PNJ
@@ -8,20 +11,16 @@ import game.pkg_Entity.pkg_Player.Player;
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class Character {
+public abstract class Character extends Entity {
 
-    private String aName;
-
-    public Character(String pName) {
-        this.aName = pName;
+    public Character(JComponent paintedOn, Sprite sprite, Position position, FacingDirection facing) {
+        super(paintedOn, sprite, position, facing);
     }
 
     /**
      * @return le nom du personnage
      */
-    public String getName() {
-        return this.aName;
-    }
+    abstract public String getName();
 
     /**
      * Procédure appellé quand le joueur "intéragis" avec ce personnage

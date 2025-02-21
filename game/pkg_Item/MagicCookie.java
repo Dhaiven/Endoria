@@ -13,7 +13,7 @@ import game.pkg_Entity.pkg_Player.Player;
 public class MagicCookie extends Item {
 
     public MagicCookie() {
-        super("cookie", "Un cookie magique qui augmente la poids max", 5);
+        super(null, "cookie", "Un cookie magique qui augmente la poids max", 5);
     }
 
     @Override

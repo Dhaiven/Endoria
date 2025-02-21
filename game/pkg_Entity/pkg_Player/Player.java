@@ -1,12 +1,21 @@
 package game.pkg_Entity.pkg_Player;
 
 import game.GameEngine;
+import game.pkg_Entity.Entity;
+import game.pkg_Entity.FacingDirection;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
+import game.pkg_Object.Position;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
+import game.pkg_Entity.Sprite;
 
+import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Stack;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  *  Cette classe représente un Joueur
@@ -14,7 +23,7 @@ import java.util.Stack;
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class Player {
+public class Player extends Entity implements KeyListener {
 
     private GameEngine gameEngine;
     private UserInterface aUserInterface;
@@ -26,14 +35,21 @@ public class Player {
     private ItemList aItemList = new ItemList();
     private int aMaxWeight;
 
-    public Player(GameEngine gameEngine, String pName, Room pCurrentRoom, int pMaxWeight) {
+    // TODO: faut pas devoir reset paintedOn après le super
+    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Position position, FacingDirection facing) {
+        super(null, sprite, position, facing);
+        this.aUserInterface = userInterface.apply(this);
+        this.paintedOn = this.aUserInterface;
+    }
+
+    /**public Player(GameEngine gameEngine, String pName, Room pCurrentRoom, int pMaxWeight) {
         this.gameEngine = gameEngine;
         this.aName = pName;
         this.aCurrentRoom = pCurrentRoom;
         this.aMaxWeight = pMaxWeight;
 
         this.aLastRooms = new Stack<>();
-    }
+    }*/
 
     public GameEngine getGameEngine() {
         return gameEngine;
@@ -171,5 +187,28 @@ public class Player {
     public void use(Item pItem) {
         this.aItemList.removeItem(pItem);
         pItem.onUse(this);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_Z) {
+            move(FacingDirection.NORTH);
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            move(FacingDirection.SOUTH);
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            move(FacingDirection.EAST);
+        } else if (e.getKeyCode() == KeyEvent.VK_Q) {
+            move(FacingDirection.WEST);
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

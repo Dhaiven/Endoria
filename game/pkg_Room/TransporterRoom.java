@@ -1,6 +1,8 @@
 package game.pkg_Room;
 
 import game.GameEngine;
+import game.pkg_World.Layers;
+import game.pkg_World.World;
 
 import java.util.List;
 import java.util.Random;
@@ -14,15 +16,19 @@ import java.util.Random;
  */
 public class TransporterRoom extends Room {
 
-    private final GameEngine aEngine;
+    private GameEngine aEngine;
 
-    public TransporterRoom(final GameEngine gameEngine, final String pDescription) {
+    /**public TransporterRoom(final GameEngine gameEngine, final String pDescription) {
         this(gameEngine, pDescription, null);
     }
 
     public TransporterRoom(final GameEngine gameEngine, final String pDescription, final String pImage)  {
         super(pDescription, pImage);
         this.aEngine = gameEngine;
+    }*/
+
+    public TransporterRoom(World world, String name, Layers layers) {
+        super(world, name, layers);
     }
 
     @Override
@@ -44,7 +50,7 @@ public class TransporterRoom extends Room {
         public Door find() {
             if (aEngine.getAlea() != null) {
                 for (Room room : aEngine.getRooms()) {
-                    if (room.getDescription().equals(aEngine.getAlea())) {
+                    if (room.getName().equals(aEngine.getAlea())) {
                         return new Door(room);
                     }
                 }

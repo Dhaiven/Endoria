@@ -32,7 +32,7 @@ public class GameEngine
     private Parser aParser;
     private UserInterface aGui;
 
-    private Player aCurrentPlayer;
+    public Player aCurrentPlayer;
 
     private List<Room> aRooms = new ArrayList<>();
     private String alea = null;
@@ -43,7 +43,7 @@ public class GameEngine
     public GameEngine()
     {
         this.aParser = new Parser();
-        this.createRooms();
+        //this.createRooms();
     }
 
     public void setGUI( final UserInterface pUserInterface )
@@ -74,7 +74,7 @@ public class GameEngine
     /**
      * Procédure pour créer toutes les rooms
      */
-    private void createRooms() {
+    /**private void createRooms() {
         Room main = new Room("Main Room", "game/images/mainImage.png");
         main.getItemList().addItem(new Item("test", "1er item test", 2));
         main.getItemList().addItem(new Item("arme", "une arme", 17));
@@ -138,7 +138,7 @@ public class GameEngine
         this.aRooms.add(prehistoric);
 
         this.aCurrentPlayer = new Player(this, "Joueur 1", main, 18);
-    }
+    }*/
 
     /**
      * @return toutes les rooms créent
