@@ -16,7 +16,7 @@ public class TakeCommand extends Command {
         }
         
         if (player.take(secondWord)) {
-            player.getGameEngine().printLocationInfo();
+            //player.getGameEngine().printLocationInfo();
             return true;
         }
 

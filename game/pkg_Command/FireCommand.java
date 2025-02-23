@@ -20,7 +20,7 @@ public class FireCommand extends Command {
                 player.goRoom(beamer.getFiredRoom());
 
                 beamer.setFiredRoom(null);
-                player.getGameEngine().printLocationInfo();
+                //player.getGameEngine().printLocationInfo();
                 return true;
             }
 

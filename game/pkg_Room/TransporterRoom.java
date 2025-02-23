@@ -1,9 +1,12 @@
 package game.pkg_Room;
 
 import game.GameEngine;
+import game.pkg_Entity.FacingDirection;
+import game.pkg_Object.Vector2;
 import game.pkg_World.Layers;
 import game.pkg_World.World;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +17,7 @@ import java.util.Random;
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class TransporterRoom extends Room {
+/**public class TransporterRoom extends Room {
 
     private GameEngine aEngine;
 
@@ -25,15 +28,15 @@ public class TransporterRoom extends Room {
     public TransporterRoom(final GameEngine gameEngine, final String pDescription, final String pImage)  {
         super(pDescription, pImage);
         this.aEngine = gameEngine;
-    }*/
+    }
 
-    public TransporterRoom(World world, String name, Layers layers) {
-        super(world, name, layers);
+    public TransporterRoom(Shape shape, String name, Layers layers) {
+        super(shape, name, layers);
     }
 
     @Override
-    public Door getExit(String pDirection) {
-        return new RoomRandomizer(this.aEngine).find();
+    public Door getExit(Vector2 position, FacingDirection direction) {
+        return new RoomRandomizer()
     }
 
     public static class RoomRandomizer {
@@ -46,7 +49,7 @@ public class TransporterRoom extends Room {
 
         /**
          * @return la porte aléatoire si alea est null else la porte vers la pièce spécifiée par aléa
-         */
+
         public Door find() {
             if (aEngine.getAlea() != null) {
                 for (Room room : aEngine.getRooms()) {
@@ -65,3 +68,4 @@ public class TransporterRoom extends Room {
         }
     }
 }
+*/

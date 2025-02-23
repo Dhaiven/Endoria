@@ -2,6 +2,10 @@ package game.pkg_Entity;
 
 import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
+import game.pkg_Object.Vector2;
+import game.pkg_Room.Door;
+import game.pkg_Room.Room;
+import game.pkg_Util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,27 +18,35 @@ public class Entity extends PlaceableGameObject {
 
     protected boolean isSpawned = false;
 
-    public Entity(JComponent paintedOn, Sprite sprite, Position position, FacingDirection facing) {
-        super(paintedOn, sprite, position);
+    public Entity(JComponent paintedOn, Sprite sprite, Position position, int layer) {
+        this(paintedOn, sprite, position, layer, FacingDirection.NORTH);
+    }
+
+    public Entity(JComponent paintedOn, Sprite sprite, Position position, int layer, FacingDirection facing) {
+        super(paintedOn, sprite, position, layer);
         this.facing = facing;
     }
 
     public int getLayer() {
-        return position.getLayer();
+        return layer;
+    }
+
+    public FacingDirection getFacing() {
+        return facing;
     }
 
     public void spawn() {
         isSpawned = true;
-        position.getRoom().getEntities().add(this);
+        position.room().getEntities().add(this);
 
-        getPaintedOn().repaint(position.getX(), position.getY(), sprite.getWidth(), sprite.getHeight());
+        getPaintedOn().repaint(position.x(), position.y(), sprite.getWidth(), sprite.getHeight());
     }
 
     public void despawn() {
-        position.getRoom().getEntities().remove(this);
+        position.room().getEntities().remove(this);
         isSpawned = false;
 
-        getPaintedOn().repaint(position.getX(), position.getY(), sprite.getWidth(), sprite.getHeight());
+        getPaintedOn().repaint(position.x(), position.y(), sprite.getWidth(), sprite.getHeight());
     }
 
     @Override
@@ -53,31 +65,39 @@ public class Entity extends PlaceableGameObject {
         } / 7;
     }
 
-    /**
-     * Pour un repaint totale, moyenne d'execution: 42123 nanosecondes
-     * Pour un repaint partiel, moyenne d'execution: 33888 nanosecondes
-     */
     public void move(FacingDirection facing) {
         this.lastPosition = position;
 
         int movementFactor = getMovementFactor(facing);
-        switch (facing) {
-            case NORTH -> {
-                this.position = new Position(position.getX(), position.getY() - movementFactor, position.getLayer(), position.getRoom());
-                getPaintedOn().repaint(position.getX(), position.getY(), sprite.getWidth(), sprite.getHeight() + movementFactor + 1);
-            }
-            case SOUTH -> {
-                this.position = new Position(position.getX(), position.getY() + movementFactor, position.getLayer(), position.getRoom());
-                getPaintedOn().repaint(position.getX(), lastPosition.getY(), sprite.getWidth(), sprite.getHeight() + movementFactor + 1);
-            }
-            case EAST -> {
-                this.position = new Position(position.getX() + movementFactor, position.getY(), position.getLayer(), position.getRoom());
-                getPaintedOn().repaint(lastPosition.getX(), position.getY(), sprite.getWidth() + movementFactor + 1, sprite.getHeight());
-            }
-            case WEST -> {
-                this.position = new Position(position.getX() - movementFactor, position.getY(), position.getLayer(), position.getRoom());
-                getPaintedOn().repaint(position.getX(), position.getY(), sprite.getWidth() + movementFactor + 1, sprite.getHeight());
-            }
+        Vector2 newPosition = switch (facing) {
+            case NORTH -> new Vector2(position.x(), position.y() - movementFactor);
+            case SOUTH -> new Vector2(position.x(), position.y() + movementFactor);
+            case EAST -> new Vector2(position.x() + movementFactor, position.y());
+            case WEST -> new Vector2(position.x() - movementFactor, position.y());
+        };
+
+        if (position.room().contains(newPosition)) {
+            this.position = new Position(newPosition, this.position.room());
+        } else {
+            Door exit = position.room().getExit(newPosition, facing);
+            if (exit == null) return;
+
+            this.onChangeRoom(exit, facing);
         }
+
+        this.paintedOn.repaint();
+    }
+
+    public void onChangeRoom(Door byDoor, FacingDirection direction) {
+        this.position.room().getEntities().remove(this);
+
+        this.position = new Position(Utils.getCenterPosition(byDoor.getShape(), direction), byDoor.getTo());
+
+        this.position.room().getEntities().add(this);
+    }
+
+    protected void changeRoom(Room room) {
+        this.position = new Position(position.x(), position.y(), room);
+        // TODO: change position
     }
 }

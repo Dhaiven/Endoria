@@ -21,7 +21,7 @@ public class TestCommand extends Command {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line;
             while ((line = br.readLine()) != null) {
-                player.getGameEngine().interpretCommand(line);
+                //player.getGameEngine().interpretCommand(line);
             }
         } catch (FileNotFoundException e) {
 

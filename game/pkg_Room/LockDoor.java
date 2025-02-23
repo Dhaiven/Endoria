@@ -3,6 +3,8 @@ package game.pkg_Room;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.Item;
 
+import java.awt.*;
+
 /**
  *  Cette classe représente une porte fermée.
  *  Elle peut s'ouvrit que si le joueur possède la bonne clé
@@ -14,8 +16,8 @@ public class LockDoor extends Door {
 
     private final Item key;
 
-    public LockDoor(Room from, Item key) {
-        super(from);
+    public LockDoor(Shape shape, Room to, Item key) {
+        super(shape, to);
         this.key = key;
     }
 

@@ -1,6 +1,5 @@
 package game.pkg_Entity.pkg_Player;
 
-import game.GameEngine;
 import game.pkg_Entity.Entity;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Item.Item;
@@ -10,12 +9,12 @@ import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 import game.pkg_Entity.Sprite;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  *  Cette classe représente un Joueur
@@ -25,36 +24,20 @@ import java.util.function.Supplier;
  */
 public class Player extends Entity implements KeyListener {
 
-    private GameEngine gameEngine;
     private UserInterface aUserInterface;
-    private String aName;
 
-    private Room aCurrentRoom;
     private Stack<Room> aLastRooms;
 
     private ItemList aItemList = new ItemList();
     private int aMaxWeight;
 
     // TODO: faut pas devoir reset paintedOn après le super
-    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Position position, FacingDirection facing) {
-        super(null, sprite, position, facing);
+    // TODO: custom layer
+    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Position position) {
+        super(null, sprite, position, 2);
         this.aUserInterface = userInterface.apply(this);
         this.paintedOn = this.aUserInterface;
     }
-
-    /**public Player(GameEngine gameEngine, String pName, Room pCurrentRoom, int pMaxWeight) {
-        this.gameEngine = gameEngine;
-        this.aName = pName;
-        this.aCurrentRoom = pCurrentRoom;
-        this.aMaxWeight = pMaxWeight;
-
-        this.aLastRooms = new Stack<>();
-    }*/
-
-    public GameEngine getGameEngine() {
-        return gameEngine;
-    }
-
     /**
      * @return l'interface utilisateur permettant d'afficher des messages
      */
@@ -63,18 +46,10 @@ public class Player extends Entity implements KeyListener {
     }
 
     /**
-     * Permet de changer l'interface du joueur
-     * NE PAS UTILISER AUTRE PAR QUE DANS GAME ENGINE
-     */
-    public void setUserInterface(UserInterface pUserInterface) {
-        this.aUserInterface = pUserInterface;
-    }
-
-    /**
      * @return la pièce dans laquelle se trouve actuellement le joueur
      */
     public Room getCurrentRoom() {
-        return this.aCurrentRoom;
+        return this.position.room();
     }
 
     /**
@@ -105,13 +80,18 @@ public class Player extends Entity implements KeyListener {
      * @param direction la direction souhaitée
      * @return boolean true s'il est dans la nouvelle piece else false
      */
-    public boolean goRoom(final String direction) {
-        Door vNextDoor = this.aCurrentRoom.getExit(direction);
-        if (vNextDoor == null || !vNextDoor.canPass(this)) {
+    public boolean goRoom(final FacingDirection direction) {
+        List<Door> vNextDoors = this.position.room().getExits(direction);
+        if (vNextDoors.isEmpty()) {
             return false;
+        } else if (vNextDoors.size() == 1) {
+            return this.goRoom(vNextDoors.get(0).getTo());
         }
 
-        return this.goRoom(vNextDoor.getTo());
+        // Si plusieurs salles, prends une aléatoire
+        Random rand = new Random();
+        int index = rand.nextInt(vNextDoors.size());
+        return this.goRoom(vNextDoors.get(index).getTo());
     }
 
     /**
@@ -120,8 +100,8 @@ public class Player extends Entity implements KeyListener {
      * @return boolean true s'il est dans la nouvelle piece else false
      */
     public boolean goRoom(Room pRoom) {
-        this.aLastRooms.push(this.aCurrentRoom);
-        this.aCurrentRoom = pRoom;
+        this.aLastRooms.push(this.position.room());
+        this.changeRoom(pRoom);
         return true;
     }
 
@@ -135,11 +115,11 @@ public class Player extends Entity implements KeyListener {
         }
 
         Room vLastRoom = this.aLastRooms.peek();
-        if (!this.aCurrentRoom.isExit(vLastRoom)) {
+        if (!this.position.room().isExit(vLastRoom)) {
             return false;
         }
 
-        this.aCurrentRoom = this.aLastRooms.pop();
+        this.changeRoom(this.aLastRooms.pop());
         return true;
     }
 
@@ -149,14 +129,14 @@ public class Player extends Entity implements KeyListener {
      * @return true si le joueur a pris l'item else false
      */
     public boolean take(final String pItemName) {
-        Item item = this.aCurrentRoom.getItemList().getItemByName(pItemName);
+        Item item = this.position.room().getItemList().getItemByName(pItemName);
         if (item == null) {
             return false;
         } else if (this.aItemList.getWeight() + item.getWeight() > this.aMaxWeight) {
             return false;
         }
 
-        this.aCurrentRoom.getItemList().removeItem(item);
+        this.position.room().getItemList().removeItem(item);
         this.aItemList.addItem(item);
 
         return true;
@@ -174,7 +154,7 @@ public class Player extends Entity implements KeyListener {
         }
 
         this.aItemList.removeItem(item);
-        this.aCurrentRoom.getItemList().addItem(item);
+        this.position.room().getItemList().addItem(item);
 
         return true;
     }

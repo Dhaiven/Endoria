@@ -15,11 +15,11 @@ public class GoCommand extends Command {
             return false;
         }
 
-        if (player.goRoom(secondWord)) {
-            player.getGameEngine().printLocationInfo();
+        /**if (player.goRoom(secondWord)) {
+            //player.getGameEngine().printLocationInfo();
         } else {
             player.getUserInterface().println("There is no door !");
-        }
+        }*/
 
         return true;
     }

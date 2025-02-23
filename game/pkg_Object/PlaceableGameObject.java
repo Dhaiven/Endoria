@@ -9,11 +9,13 @@ public class PlaceableGameObject extends GameObject {
 
     protected JComponent paintedOn;
     protected Position position;
+    protected final int layer;
 
-    public PlaceableGameObject(JComponent paintedOn, Sprite sprite, Position position) {
+    public PlaceableGameObject(JComponent paintedOn, Sprite sprite, Position position, int layer) {
         super(sprite);
         this.paintedOn = paintedOn;
         this.position = position;
+        this.layer = layer;
     }
 
     public Position getPosition() {
@@ -27,6 +29,6 @@ public class PlaceableGameObject extends GameObject {
     public void paint(Graphics2D g2d) {
         if (!canPaint(g2d)) return;
 
-        g2d.drawImage(sprite.get(), position.getX(), position.getY(), null);
+        g2d.drawImage(sprite.get(), position.x(), position.y(), null);
     }
 }

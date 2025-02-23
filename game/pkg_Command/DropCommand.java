@@ -16,7 +16,7 @@ public class DropCommand extends Command {
         }
 
         if (player.drop(secondWord)) {
-            player.getGameEngine().printLocationInfo();
+            //player.getGameEngine().printLocationInfo();
             return true;
         }
 

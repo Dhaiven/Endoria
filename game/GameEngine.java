@@ -11,7 +11,6 @@ import game.pkg_Item.Beamer;
 import game.pkg_Item.Item;
 import game.pkg_Item.MagicCookie;
 import game.pkg_Room.Room;
-import game.pkg_Room.TransporterRoom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,6 @@ public class GameEngine
     public void setGUI( final UserInterface pUserInterface )
     {
         this.aGui = pUserInterface;
-        this.aCurrentPlayer.setUserInterface(pUserInterface);
         this.printWelcome();
     }
 

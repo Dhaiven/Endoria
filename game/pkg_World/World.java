@@ -12,12 +12,15 @@ public class World {
     private final Layers layers;
     private final List<Room> rooms = new ArrayList<>();
 
-    private Room spawnRoom = new Room(this, "Test", Layers.builder().build());
+    private Room spawnRoom;
     protected boolean isLoaded = false;
 
-    public World(String name, Layers layers) {
+    public World(String name, List<Room> pRooms, Layers layers) {
         this.name = name;
+        this.rooms.addAll(pRooms);
         this.layers = layers;
+
+        this.spawnRoom = this.rooms.get(0);
     }
 
     public String getName() {
@@ -30,15 +33,5 @@ public class World {
 
     public Layers getLayers() {
         return layers;
-    }
-
-    public Room getRommAt(int row, int column) {
-        return this.getSpawnRoom();
-    }
-
-    public void setTile(Tile tile, int row, int column, int layer) {
-        Room room = getRommAt(row, column);
-        //TODO: fix row & column must be less room pos
-        room.setTile(tile, row, column, layer);
     }
 }

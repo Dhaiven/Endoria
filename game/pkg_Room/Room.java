@@ -2,16 +2,21 @@ package game.pkg_Room;
 
 import game.pkg_Entity.Character;
 import game.pkg_Entity.Entity;
+import game.pkg_Entity.FacingDirection;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
+import game.pkg_Object.Vector2;
 import game.pkg_Tile.Tile;
 import game.pkg_Tile.behavior.TileBehavior;
 import game.pkg_World.Layers;
 import game.pkg_World.World;
 
+import java.awt.*;
+import java.awt.geom.Area;
 import java.util.*;
+import java.util.List;
 
 /**
  *  Cette classe représente une pièce
@@ -22,13 +27,12 @@ import java.util.*;
 public class Room
 {
 
-    protected final World world;
-
+    private final Shape shape;
     private final String name;
     private final Layers layers;
-    private final Map<Position, Tile>[] tiles;
+    private final Map<Vector2, Tile>[] tiles;
 
-    private HashMap<String, Door> exits = new HashMap<>();
+    private HashMap<FacingDirection, List<Door>> exits = new HashMap<>();
     private HashMap<String, Character> aCharacters = new HashMap<>();
 
     private String aImageName;
@@ -39,8 +43,8 @@ public class Room
 
     private final List<Entity> entities = new ArrayList<>();
 
-    public Room(World world, String name, Layers layers) {
-        this.world = world;
+    public Room(Shape shape, String name, Layers layers) {
+        this.shape = shape;
         this.name = name;
         this.layers = layers;
 
@@ -48,10 +52,14 @@ public class Room
         for (int i = 0; i < layers.size(); i++) {
             tiles[i] = new HashMap<>();
         }
+
+        for (FacingDirection direction : FacingDirection.values()) {
+            exits.put(direction, new ArrayList<>());
+        }
     }
 
-    public World getWorld() {
-        return world;
+    public Area getArea() {
+        return new Area(shape);
     }
 
     public String getName() {
@@ -77,6 +85,10 @@ public class Room
         entities.clear();
     }
 
+    public boolean contains(Vector2 vector) {
+        return this.shape.contains(vector.x(), vector.y());
+    }
+
     public Layers getLayers() {
         return layers;
     }
@@ -84,7 +96,7 @@ public class Room
     /**
      * @return UnmodifiableMap
      */
-    public Map<Position, Tile> getWorldsTilesCacheAtLayer(int layer) {
+    public Map<Vector2, Tile> getWorldsTilesCacheAtLayer(int layer) {
         return Collections.unmodifiableMap(tiles[layer - 1]);
     }
 
@@ -97,11 +109,15 @@ public class Room
     }
 
     public void setTile(Tile tile, int row, int column, int layer, Player player) {
-        setTile(tile, new Position(column * tile.getSprite().getHeight(), row * tile.getSprite().getWidth(), layer, this), player);
+        setTile(tile, new Vector2(column * tile.getSprite().getHeight(), row * tile.getSprite().getWidth()), layer, player);
     }
 
-    public void setTile(Tile tile, Position position, Player player) {
-        tiles[position.getLayer() - 1].put(position, tile);
+    public void setTile(Tile tile, Vector2 position, int layer) {
+        setTile(tile, position, layer, null);
+    }
+
+    public void setTile(Tile tile, Vector2 position, int layer, Player player) {
+        tiles[layer - 1].put(position, tile);
 
         for (TileBehavior behavior : tile.getBehaviors()) {
             behavior.onPlace(tile, position, player);
@@ -134,9 +150,11 @@ public class Room
      * @return true s'il existe une sortie amenant à cette pièce else false
      */
     public boolean isExit(Room pRoom) {
-        for (Door door : this.exits.values()) {
-            if (door.getTo().equals(pRoom)) {
-                return true;
+        for (List<Door> doors : this.exits.values()) {
+            for (Door door : doors) {
+                if (door.getTo().equals(pRoom)) {
+                    return true;
+                }
             }
         }
 
@@ -146,25 +164,31 @@ public class Room
     /**
      * Fonction qui retourne toutes les sorties possibles
      */
-    public HashMap<String, Door> getExits() {
-        HashMap<String, Door> result = new HashMap<>();
-        for (String direction : this.exits.keySet()) {
-            /**
-             * Check le getExit comme ça si une class le override,
-             * ça tient compte du changement
-             */
-            result.put(direction, this.getExit(direction));
-        }
+    public HashMap<FacingDirection, List<Door>> getExits() {
+        return this.exits;
+    }
 
-        return result;
+    /**
+     * Fonction qui retourne toutes les sorties possibles en fonction
+     * de la direction
+     */
+    public List<Door> getExits(FacingDirection direction) {
+        return this.exits.get(direction);
     }
 
     /**
      * @param pDirection direction souhaitée
      * @return la porte disposable dans la direction donnée
      */
-    public Door getExit(String pDirection) {
-        return this.exits.get(pDirection);
+    public Door getExit(Vector2 position, FacingDirection direction) {
+        List<Door> possibleDoors = this.exits.get(direction);
+        for (Door door : possibleDoors) {
+            if (door.getShape().contains(position.x(), position.y())) {
+                return door;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -172,26 +196,15 @@ public class Room
      */
     public String getExitString() {
         StringBuilder result = new StringBuilder();
-        for (String direction : exits.keySet()) {
-            result.append(direction).append(" ");
+        for (FacingDirection direction : exits.keySet()) {
+            result.append(direction.getName()).append(" ");
         }
         
         return result.toString();
     }
 
-    /**
-     * Set une room de sortie à la direction donnée
-     */
-    public void setExit(String direction, Room exit) {
-        exits.put(direction, new Door(exit));
-    }
-
-    /**
-     * Set une room de sortie à la direction donnée
-     * Cette sortie nécessite une clé pour être emprunté
-     */
-    public void setLockedExit(String direction, Room exit, Item key) {
-        exits.put(direction, new LockDoor(exit, key));
+    public void addExit(FacingDirection direction, Door door) {
+        exits.get(direction).add(door);
     }
 
     /**
@@ -248,5 +261,12 @@ public class Room
      */
     public ItemList getItemList() {
         return this.aItemList;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "name='" + name + '\'' +
+                '}';
     }
 } // Room

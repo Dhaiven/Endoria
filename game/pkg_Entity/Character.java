@@ -2,6 +2,7 @@ package game.pkg_Entity;
 
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Object.Position;
+import game.pkg_Object.Vector2;
 
 import javax.swing.*;
 
@@ -13,8 +14,8 @@ import javax.swing.*;
  */
 public abstract class Character extends Entity {
 
-    public Character(JComponent paintedOn, Sprite sprite, Position position, FacingDirection facing) {
-        super(paintedOn, sprite, position, facing);
+    public Character(JComponent paintedOn, Sprite sprite, Position position, int layer) {
+        super(paintedOn, sprite, position, layer);
     }
 
     /**

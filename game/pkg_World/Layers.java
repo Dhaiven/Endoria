@@ -33,8 +33,6 @@ public class Layers {
         list.add(entityLayer);
         list.add(decorationBehindEntityLayer);
 
-        System.out.println(groundLayer);
-        System.out.println(list.stream().sorted().toList());
         return list.stream().sorted().toList();
     }
 
@@ -65,7 +63,6 @@ public class Layers {
         private int decorationBehindEntityLayer;
 
         public LayersBuilder setGroundLayer(int groundLayer) {
-            System.out.println("setGroundLayer " + groundLayer);
             this.groundLayer = groundLayer;
             return this;
         }
@@ -86,7 +83,6 @@ public class Layers {
         }
         
         public Layers build() {
-            System.out.println("getGroundLayer " + groundLayer);
             return new Layers(
                     groundLayer,
                     decorationLayer,

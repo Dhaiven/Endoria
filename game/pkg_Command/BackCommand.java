@@ -16,7 +16,7 @@ public class BackCommand extends Command {
         }
 
         if (player.back()) {
-            player.getGameEngine().printLocationInfo();
+            //player.getGameEngine().printLocationInfo();
             return true;
         }
 

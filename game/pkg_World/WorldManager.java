@@ -11,7 +11,7 @@ public class WorldManager {
     private final List<World> worlds = new ArrayList<>();
 
     public WorldManager() {
-        worlds.add(TmxWorldLoader.loadWorld("museum"));
+        worlds.add(new TmxWorldLoader().loadWorld("museum"));
     }
 
     public List<World> getWorlds() {

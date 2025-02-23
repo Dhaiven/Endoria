@@ -3,6 +3,7 @@ import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Entity.pkg_Player.UserInterface;
 import game.pkg_Object.Position;
 import game.pkg_Entity.Sprite;
+import game.pkg_Object.Vector2;
 import game.pkg_Util.FileUtils;
 import game.pkg_World.WorldManager;
 
@@ -17,7 +18,7 @@ public class Game extends JPanel {
         try {
             var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player.png"));
             var worldManager = new WorldManager();
-            Player player = new Player(UserInterface::new, new Sprite(playerSprite.getSubimage(0, 0, 64, 64)), new Position(100, 100, 1, worldManager.getWorld("museum").getSpawnRoom()), FacingDirection.NORTH);
+            Player player = new Player(UserInterface::new, new Sprite(playerSprite.getSubimage(0, 0, 64, 64)), new Position(100, 100, worldManager.getWorld("museum").getSpawnRoom()));
             player.spawn();
         } catch (IOException e) {
             e.printStackTrace();
