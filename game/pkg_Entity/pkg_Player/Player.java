@@ -1,16 +1,16 @@
 package game.pkg_Entity.pkg_Player;
 
-import game.pkg_Entity.Entity;
-import game.pkg_Entity.FacingDirection;
+import game.pkg_Command.Command;
+import game.pkg_Entity.*;
+import game.pkg_Entity.Character;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
+import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
-import game.pkg_Entity.Sprite;
+import game.pkg_Util.Pair;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.Random;
 import java.util.Stack;
@@ -22,11 +22,11 @@ import java.util.function.Function;
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class Player extends Entity implements KeyListener {
+public class Player extends Entity {
 
     private UserInterface aUserInterface;
 
-    private Stack<Room> aLastRooms;
+    private Stack<Door> aLastRooms = new Stack<>();
 
     private ItemList aItemList = new ItemList();
     private int aMaxWeight;
@@ -85,13 +85,15 @@ public class Player extends Entity implements KeyListener {
         if (vNextDoors.isEmpty()) {
             return false;
         } else if (vNextDoors.size() == 1) {
-            return this.goRoom(vNextDoors.get(0).getTo());
+            this.onChangeRoom(vNextDoors.get(0));
+        } else {
+            // Si plusieurs salles, prends une aléatoire
+            Random rand = new Random();
+            int index = rand.nextInt(vNextDoors.size());
+            this.onChangeRoom(vNextDoors.get(index));
         }
 
-        // Si plusieurs salles, prends une aléatoire
-        Random rand = new Random();
-        int index = rand.nextInt(vNextDoors.size());
-        return this.goRoom(vNextDoors.get(index).getTo());
+        return true;
     }
 
     /**
@@ -100,9 +102,15 @@ public class Player extends Entity implements KeyListener {
      * @return boolean true s'il est dans la nouvelle piece else false
      */
     public boolean goRoom(Room pRoom) {
-        this.aLastRooms.push(this.position.room());
-        this.changeRoom(pRoom);
+        this.aLastRooms.push(new Door(null, new Vector2(this.position.x(), this.position.y()), pRoom));
+        //this.changeRoom(pRoom);
         return true;
+    }
+
+    @Override
+    public void onChangeRoom(Door byDoor) {
+        this.aLastRooms.push(new Door(null, new Vector2(this.position.x(), this.position.y()), this.position.room()));
+        super.onChangeRoom(byDoor);
     }
 
     /**
@@ -113,13 +121,20 @@ public class Player extends Entity implements KeyListener {
         if (this.aLastRooms.isEmpty()) {
             return false;
         }
+        System.out.println("back");
 
-        Room vLastRoom = this.aLastRooms.peek();
+        Door vLastDoor = this.aLastRooms.pop();
+        Room vLastRoom = vLastDoor.getTo();
+        System.out.println("vLastRoom = " + vLastRoom);
         if (!this.position.room().isExit(vLastRoom)) {
             return false;
         }
 
-        this.changeRoom(this.aLastRooms.pop());
+        System.out.println("onChnageRoomByRoomExist");
+
+        // Met super et pas this car on veut pas que ça ajoute
+        // la salle actuelle comme la dernière
+        super.onChangeRoom(vLastDoor);
         return true;
     }
 
@@ -169,26 +184,13 @@ public class Player extends Entity implements KeyListener {
         pItem.onUse(this);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_Z) {
-            move(FacingDirection.NORTH);
-        } else if (e.getKeyCode() == KeyEvent.VK_S) {
-            move(FacingDirection.SOUTH);
-        } else if (e.getKeyCode() == KeyEvent.VK_D) {
-            move(FacingDirection.EAST);
-        } else if (e.getKeyCode() == KeyEvent.VK_Q) {
-            move(FacingDirection.WEST);
+    public void onExecuteCommand(Command command, String[] params) {
+        for (Character character : this.position.room().getCharacters().values()) {
+            if (character instanceof MovingCharacter) {
+                character.onInteract(this);
+            }
         }
-    }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-
+        command.execute(this, params);
     }
 }

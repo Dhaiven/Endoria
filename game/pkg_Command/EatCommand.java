@@ -9,14 +9,18 @@ import game.pkg_Item.Item;
  */
 public class EatCommand extends Command {
 
+    public EatCommand() {
+        super("eat", "Mange un item de votre inventaire");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
-        if (secondWord == null) {
+    public boolean execute(Player player, String[] args) {
+        if (args.length == 0) {
             player.getUserInterface().println("Eat what ?");
             return false;
         }
 
-        Item item = player.getItemList().getItemByName(secondWord);
+        Item item = player.getItemList().getItemByName(args[0]);
         if (item == null) {
             player.getUserInterface().println("Vous ne possédez pas cet item.");
             return false;

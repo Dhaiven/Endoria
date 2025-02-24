@@ -9,20 +9,24 @@ import game.pkg_Item.Item;
  */
 public class LookCommand extends Command {
 
-    @Override
-    public boolean execute(Player player, String secondWord) {
-        if (secondWord != null) {
-            Item actualItem = player.getCurrentRoom().getItemList().getItemByName(secondWord);
-            if (actualItem != null) {
-                player.getUserInterface().println(actualItem.getLongDescription());
-                return true;
-            }
+    public LookCommand() {
+        super("look", "Afficher les infos de la room ou de l'item passé en paramètre");
+    }
 
-            player.getUserInterface().println("I don't know how to look at something in particular yet.");
+    @Override
+    public boolean execute(Player player, String[] args) {
+        if (args.length == 0) {
+            player.getUserInterface().println(player.getCurrentRoom().getLongDescription());
             return true;
         }
 
-        player.getUserInterface().println(player.getCurrentRoom().getLongDescription());
+        Item actualItem = player.getCurrentRoom().getItemList().getItemByName(args[0]);
+        if (actualItem != null) {
+            player.getUserInterface().println(actualItem.getLongDescription());
+            return true;
+        }
+
+        player.getUserInterface().println("I don't know how to look at something in particular yet.");
         return true;
     }
 }

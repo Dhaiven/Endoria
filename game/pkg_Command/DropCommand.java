@@ -8,14 +8,18 @@ import game.pkg_Entity.pkg_Player.Player;
  */
 public class DropCommand extends Command {
 
+    public DropCommand() {
+        super("drop", "Permet de dropper un item de son inventaire");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
-        if (secondWord == null) {
+    public boolean execute(Player player, String[] args) {
+        if (args.length == 0) {
             player.getUserInterface().println("Drop what?");
             return false;
         }
 
-        if (player.drop(secondWord)) {
+        if (player.drop(args[0])) {
             //player.getGameEngine().printLocationInfo();
             return true;
         }

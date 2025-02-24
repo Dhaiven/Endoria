@@ -7,15 +7,19 @@ import game.pkg_Entity.pkg_Player.Player;
  * @version 2.0 (Février 2025)
  */
 public class TakeCommand extends Command {
-    
+
+    public TakeCommand() {
+        super("take", "Prend un objet présent dans la salle");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
-        if (secondWord == null) {
+    public boolean execute(Player player, String[] args) {
+        if (args.length == 0) {
             player.getUserInterface().println("Take what?");
             return false;
         }
         
-        if (player.take(secondWord)) {
+        if (player.take(args[0])) {
             //player.getGameEngine().printLocationInfo();
             return true;
         }

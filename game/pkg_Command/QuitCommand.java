@@ -8,15 +8,19 @@ import game.pkg_Entity.pkg_Player.Player;
  */
 public class QuitCommand extends Command {
 
+    public QuitCommand() {
+        super("quit", "Stop le jeu");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
-        if (secondWord != null) {
+    public boolean execute(Player player, String[] args) {
+        if (args.length != 0) {
             player.getUserInterface().println("Thank you for playing.  Good bye.");
             player.getUserInterface().enable(false );
             return true;
         }
         
-        player.getUserInterface().println( "Quit what?" );
+        player.getUserInterface().println("Quit what?");
         return false;
     }
 }

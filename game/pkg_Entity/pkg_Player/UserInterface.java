@@ -1,15 +1,13 @@
 package game.pkg_Entity.pkg_Player;
 
+import game.pkg_Command.CommandManager;
 import game.pkg_Entity.Entity;
-import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -19,33 +17,44 @@ import java.util.Map;
  * @author Michael Kolling
  * @version 1.0 (Jan 2003) DB edited (2023)
  */
-public class UserInterface extends JPanel implements ActionListener
+public class UserInterface extends JPanel
 {
     private final Player player;
 
-    private JFrame     aMyFrame;
-    private JTextField aEntryField;
-    private JTextArea  aLog;
-    private JLabel     aImage;
+    private final JFrame aMyFrame;
+
+    private final PlayerInput playerInput;
+    private final TerminalInput terminalInput;
+
 
     /**
      * Construct a UserInterface. As a parameter, a Game Engine
      * (an object processing and executing the game commands) is
      * needed.
      */
-    public UserInterface(Player player)
+    public UserInterface(Player player, CommandManager commandManager)
     {
         this.player = player;
-        this.createGUI();
+        this.playerInput = new PlayerInput(player);
+
+        this.aMyFrame = new JFrame("Jeux test");
+        this.aMyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.aMyFrame.setSize(700, 700);
+        this.aMyFrame.add(this);
+        this.aMyFrame.addKeyListener(this.playerInput);
+        this.aMyFrame.setVisible(true);
+
+        this.terminalInput = new TerminalInput(this.aMyFrame, player, commandManager);
+
+        this.aMyFrame.requestFocus();
     } // UserInterface(.)
 
     /**
      * Print out some text into the text area.
      */
-    public void print( final String pText )
+    public void print(final String pText)
     {
-        this.aLog.append( pText );
-        this.aLog.setCaretPosition( this.aLog.getDocument().getLength() );
+        this.terminalInput.print(pText);
     } // print(.)
 
     /**
@@ -57,109 +66,12 @@ public class UserInterface extends JPanel implements ActionListener
     } // println(.)
 
     /**
-     * Show an image file in the interface.
-     */
-    public void showImage( final String pImageName )
-    {
-        String vImagePath = "" + pImageName; // to change the directory
-        URL vImageURL = this.getClass().getClassLoader().getResource( vImagePath );
-        if ( vImageURL == null )
-            System.out.println( "Image not found : " + vImagePath );
-        else {
-            ImageIcon vIcon = new ImageIcon( vImageURL );
-            this.aImage.setIcon( vIcon );
-            this.aMyFrame.pack();
-        }
-    } // showImage(.)
-
-    /**
      * Enable or disable input in the entry field.
      */
     public void enable( final boolean pOnOff )
     {
-        this.aEntryField.setEditable( pOnOff ); // enable/disable
-        if ( pOnOff ) { // enable
-            this.aEntryField.getCaret().setBlinkRate( 500 ); // cursor blink
-            this.aEntryField.addActionListener( this ); // reacts to entry
-        }
-        else { // disable
-            this.aEntryField.getCaret().setBlinkRate( 0 ); // cursor won't blink
-            this.aEntryField.removeActionListener( this ); // won't react to entry
-        }
+        this.terminalInput.setEnable( pOnOff );
     } // enable(.)
-
-    /**
-     * Set up graphical user interface.
-     */
-    public void createGUI()
-    {
-        this.aMyFrame = new JFrame("Jeux test");
-        this.aMyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.aMyFrame.setSize(700, 700);
-
-        this.aMyFrame.setBackground(Color.BLACK);
-        this.aMyFrame.add(this);
-        this.aMyFrame.addKeyListener(player);
-        this.aMyFrame.setVisible(true);
-
-        /**this.aEntryField = new JTextField( 34 );
-
-        /**this.aMyFrame = new JFrame( "My GAME" ); // change the title !
-        this.aEntryField = new JTextField( 34 );
-
-        this.aLog = new JTextArea();
-        this.aLog.setEditable( false );
-        JScrollPane vListScroller = new JScrollPane( this.aLog );
-        vListScroller.setPreferredSize( new Dimension(200, 200) );
-        vListScroller.setMinimumSize( new Dimension(100,100) );
-
-        JPanel vPanel = new JPanel();
-        vPanel.setLayout(new BorderLayout()); // ==> only five places
-        //vPanel.add(this.aMyFrame, BorderLayout.NORTH);
-        vPanel.add(this.aEntryField, BorderLayout.SOUTH);
-
-        // add some event listeners to some components
-        this.aEntryField.addActionListener( this );
-
-        // to end program when window is closed
-        this.aMyFrame.addWindowListener(
-                new WindowAdapter() { // anonymous class
-                    @Override public void windowClosing(final WindowEvent pE)
-                    {
-                        System.exit(0);
-                    }
-                } );
-
-        this.aMyFrame.pack();
-        this.aMyFrame.setVisible( true );
-        this.aEntryField.requestFocus();*/
-    } // createGUI()
-
-    /**
-     * Actionlistener interface for entry textfield.
-     */
-    @Override public void actionPerformed( final ActionEvent pE )
-    {
-        if (pE.getSource() instanceof JButton) {
-            //this.aEngine.interpretCommand("help");
-            return;
-        }
-        // no need to check the type of action at the moment
-        // because there is only one possible action (text input) :
-        this.processCommand(); // never suppress this line
-    } // actionPerformed(.)
-
-    /**
-     * A command has been entered in the entry field.
-     * Read the command and do whatever is necessary to process it.
-     */
-    private void processCommand()
-    {
-        String vInput = this.aEntryField.getText();
-        this.aEntryField.setText( "" );
-
-        //this.aEngine.interpretCommand( vInput );
-    } // processCommand()
 
     @Override
     protected void paintComponent(Graphics g) {

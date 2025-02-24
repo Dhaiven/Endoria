@@ -10,8 +10,12 @@ import game.pkg_Item.Item;
  */
 public class ChargeCommand extends Command {
 
+    public ChargeCommand() {
+        super("charge", "Permet de charger le beamer");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
+    public boolean execute(Player player, String[] args) {
         Item item = player.getItemList().getItemByName("beamer");
         if (item instanceof Beamer beamer) {
             if (!beamer.isFired()) {

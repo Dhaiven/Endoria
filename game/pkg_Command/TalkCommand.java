@@ -9,20 +9,24 @@ import game.pkg_Entity.pkg_Player.Player;
  */
 public class TalkCommand extends Command {
 
+    public TalkCommand() {
+        super("talk", "Permet de parler à un PNJ");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
-        if (secondWord == null) {
+    public boolean execute(Player player, String[] args) {
+        if (args.length == 0) {
             player.getUserInterface().println("Parler à qui ?");
             return false;
         }
 
-        Character vCharacter = player.getCurrentRoom().getaCharacterByName(secondWord);
+        Character vCharacter = player.getCurrentRoom().getaCharacterByName(args[0]);
         if (vCharacter == null) {
             player.getUserInterface().println("Ce personnage n'existe pas");
             return false;
         }
 
         vCharacter.onInteract(player);
-        return  true;
+        return true;
     }
 }

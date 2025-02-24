@@ -8,9 +8,13 @@ import game.pkg_Entity.pkg_Player.Player;
  */
 public class BackCommand extends Command {
 
+    public BackCommand() {
+        super("back", "Permet de revenir dans la salle précédente");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
-        if (secondWord != null) {
+    public boolean execute(Player player, String[] args) {
+        if (args.length != 0) {
             player.getUserInterface().println("Cette commande n'accept pas de second paramètre");
             return false;
         }

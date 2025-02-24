@@ -15,4 +15,15 @@ public enum FacingDirection {
     public String getName() {
         return name;
     }
+
+    public static FacingDirection from(String name) {
+        name = name.toLowerCase();
+        for (FacingDirection facingDirection : FacingDirection.values()) {
+            if (facingDirection.getName().equals(name)) {
+                return facingDirection;
+            }
+        }
+
+        return null;
+    }
 }

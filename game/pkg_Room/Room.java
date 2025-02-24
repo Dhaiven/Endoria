@@ -133,7 +133,7 @@ public class Room
      * et les sorties disponibles
      */
     public String getLongDescription() {
-        return "You are " + "aDescription" +
+        return "You are " + name +
                 "\n" +
                 "Exits: " + this.getExitString() +
                 "\n" +
@@ -261,6 +261,18 @@ public class Room
      */
     public ItemList getItemList() {
         return this.aItemList;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Room room)) return false;
+        return Objects.equals(shape, room.shape) &&
+                Objects.equals(getName(), room.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(shape, getName(), getLayers(), Arrays.hashCode(tiles), getExits(), aCharacters, aImageName, aItemList, isLoaded, getEntities());
     }
 
     @Override

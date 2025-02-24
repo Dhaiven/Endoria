@@ -9,9 +9,13 @@ import game.pkg_Item.Item;
  * @version 2.0 (Février 2025)
  */
 public class FireCommand extends Command {
-    
+
+    public FireCommand() {
+        super("fire", "Permet de tirer avec son beamer");
+    }
+
     @Override
-    public boolean execute(Player player, String secondWord) {
+    public boolean execute(Player player, String[] args) {
         Item item = player.getItemList().getItemByName("beamer");
         if (item instanceof Beamer beamer) {
             if (beamer.isFired()) {

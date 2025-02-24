@@ -1,3 +1,4 @@
+import game.pkg_Command.CommandManager;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Entity.pkg_Player.UserInterface;
@@ -15,10 +16,12 @@ import java.io.IOException;
 public class Game extends JPanel {
 
     public Game() {
+        CommandManager commandManager = new CommandManager();
+
         try {
             var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player.png"));
             var worldManager = new WorldManager();
-            Player player = new Player(UserInterface::new, new Sprite(playerSprite.getSubimage(0, 0, 64, 64)), new Position(100, 100, worldManager.getWorld("museum").getSpawnRoom()));
+            Player player = new Player(player1 -> new UserInterface(player1, commandManager), new Sprite(playerSprite.getSubimage(0, 0, 64, 64)), new Position(100, 100, worldManager.getWorld("museum").getSpawnRoom()));
             player.spawn();
         } catch (IOException e) {
             e.printStackTrace();

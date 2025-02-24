@@ -78,25 +78,21 @@ public class Entity extends PlaceableGameObject {
 
         Door exit = position.room().getExit(newPosition, facing);
         if (exit != null) {
-            this.onChangeRoom(exit, facing);
+            this.onChangeRoom(exit);
         } else {
             if (!position.room().contains(newPosition)) return;
             this.position = new Position(newPosition, this.position.room());
+            this.paintedOn.repaint();
         }
-
-        this.paintedOn.repaint();
     }
 
-    public void onChangeRoom(Door byDoor, FacingDirection direction) {
+    public void onChangeRoom(Door byDoor) {
         this.position.room().getEntities().remove(this);
 
         this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
 
         this.position.room().getEntities().add(this);
-    }
 
-    protected void changeRoom(Room room) {
-        this.position = new Position(position.x(), position.y(), room);
-        // TODO: change position
+        this.paintedOn.repaint();
     }
 }

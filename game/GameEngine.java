@@ -1,15 +1,10 @@
 package game;
 
 import game.pkg_Command.Command;
-import game.pkg_Command.Parser;
 import game.pkg_Entity.Character;
-import game.pkg_Entity.EgypteCharacter;
 import game.pkg_Entity.MovingCharacter;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Entity.pkg_Player.UserInterface;
-import game.pkg_Item.Beamer;
-import game.pkg_Item.Item;
-import game.pkg_Item.MagicCookie;
 import game.pkg_Room.Room;
 
 import java.util.ArrayList;
@@ -28,7 +23,6 @@ import java.util.List;
  */
 public class GameEngine
 {
-    private Parser aParser;
     private UserInterface aGui;
 
     public Player aCurrentPlayer;
@@ -41,7 +35,6 @@ public class GameEngine
      */
     public GameEngine()
     {
-        this.aParser = new Parser();
         //this.createRooms();
     }
 
@@ -65,7 +58,7 @@ public class GameEngine
     public void printLocationInfo() {
         this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
         if (this.aCurrentPlayer.getCurrentRoom().getImageName() != null) {
-            this.aGui.showImage(this.aCurrentPlayer.getCurrentRoom().getImageName());
+            //this.aGui.showImage(this.aCurrentPlayer.getCurrentRoom().getImageName());
         }
     }
 
@@ -143,43 +136,5 @@ public class GameEngine
      */
     public List<Room> getRooms() {
         return this.aRooms;
-    }
-
-    /**
-     * @return un String si il y a un alea else null
-     */
-    public String getAlea() {
-        return alea;
-    }
-
-    /**
-     * Given a command, process (that is: execute) the command.
-     * If this command ends the game, true is returned, otherwise false is
-     * returned.
-     */
-    public void interpretCommand(final String pCommandLine) {
-        this.interpretCommand(pCommandLine, false);
-    }
-
-    /**
-     * Given a command, process (that is: execute) the command.
-     * If this command ends the game, true is returned, otherwise false is
-     * returned.
-     * @param inTest true si la commande est exécuté par la commande test else false
-     */
-    public void interpretCommand(final String pCommandLine, boolean inTest) {
-        this.aGui.println( "> " + pCommandLine);
-        Command vCommand = this.aParser.getCommand(pCommandLine);
-        if (vCommand == null) {
-            this.aGui.println("I don't know what you mean...");
-        } else {
-            for (Character character : this.aCurrentPlayer.getCurrentRoom().getCharacters().values()) {
-                if (character instanceof MovingCharacter) {
-                    character.onInteract(this.aCurrentPlayer);
-                }
-            }
-
-            vCommand.execute(this.aCurrentPlayer, vCommand.getSecondWord());
-        }
     }
 }

@@ -26,7 +26,7 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,51,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <group id="6" name="zone">
+ <group id="6" name="zone" visible="0">
   <objectgroup id="7" name="doors">
    <object id="51" name="to52" x="135" y="181.545" width="81.5" height="25"/>
    <object id="52" name="to51" x="24" y="228.5" width="88" height="18.5"/>
@@ -35,7 +35,7 @@
    <object id="56" name="to57" x="378.5" y="70.5" width="21.5" height="85.5"/>
    <object id="57" name="to56" x="324" y="69" width="28" height="86.5"/>
   </objectgroup>
-  <objectgroup id="5" name="rooms" visible="0" tintcolor="#000000">
+  <objectgroup id="5" name="rooms" tintcolor="#000000">
    <object id="40" name="zone1" x="0.363636" y="0.0909091" width="346" height="197.333"/>
    <object id="41" name="zone2" x="5.18902" y="218.879" width="706.667" height="403"/>
    <object id="44" name="zone3" x="373" y="7">
