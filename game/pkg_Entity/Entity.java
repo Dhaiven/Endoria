@@ -76,13 +76,12 @@ public class Entity extends PlaceableGameObject {
             case WEST -> new Vector2(position.x() - movementFactor, position.y());
         };
 
-        if (position.room().contains(newPosition)) {
-            this.position = new Position(newPosition, this.position.room());
-        } else {
-            Door exit = position.room().getExit(newPosition, facing);
-            if (exit == null) return;
-
+        Door exit = position.room().getExit(newPosition, facing);
+        if (exit != null) {
             this.onChangeRoom(exit, facing);
+        } else {
+            if (!position.room().contains(newPosition)) return;
+            this.position = new Position(newPosition, this.position.room());
         }
 
         this.paintedOn.repaint();
@@ -91,7 +90,7 @@ public class Entity extends PlaceableGameObject {
     public void onChangeRoom(Door byDoor, FacingDirection direction) {
         this.position.room().getEntities().remove(this);
 
-        this.position = new Position(Utils.getCenterPosition(byDoor.getShape(), direction), byDoor.getTo());
+        this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
 
         this.position.room().getEntities().add(this);
     }

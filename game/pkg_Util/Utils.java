@@ -29,14 +29,23 @@ public class Utils {
         return (dy > 0) ? FacingDirection.SOUTH : FacingDirection.NORTH;
     }
 
-    public static Vector2 getCenterPosition(Shape shape, FacingDirection direction) {
-        Rectangle bounds = shape.getBounds();
+    public static Vector2 getCenterPosition(Vector2 actualPos, Shape toShape, FacingDirection direction) {
+        Rectangle bounds = toShape.getBounds();
 
         return switch (direction) {
-            case NORTH -> new Vector2(bounds.x + bounds.width / 2, bounds.y);
-            case SOUTH -> new Vector2(bounds.x + bounds.width / 2, bounds.y + bounds.height);
-            case EAST -> new Vector2(bounds.x + bounds.width, bounds.y + bounds.height / 2);
-            case WEST -> new Vector2(bounds.x, bounds.y + bounds.height / 2);
+            case NORTH -> new Vector2(actualPos.x(), bounds.y + bounds.height);
+            case SOUTH -> new Vector2(actualPos.x(), bounds.y);
+            case EAST -> new Vector2(bounds.x, actualPos.y());
+            case WEST -> new Vector2(bounds.x + bounds.width, actualPos.y());
         };
+    }
+
+    public static Vector2 getCenterPosition(Shape shape) {
+        Rectangle bounds = shape.getBounds();
+
+        return new Vector2(
+                bounds.x + bounds.width / 2,
+                bounds.y + bounds.height / 2
+        );
     }
 }

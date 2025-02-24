@@ -4,14 +4,11 @@ import game.pkg_Entity.Character;
 import game.pkg_Entity.Entity;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Entity.pkg_Player.Player;
-import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
-import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Tile.Tile;
 import game.pkg_Tile.behavior.TileBehavior;
 import game.pkg_World.Layers;
-import game.pkg_World.World;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -182,8 +179,11 @@ public class Room
      */
     public Door getExit(Vector2 position, FacingDirection direction) {
         List<Door> possibleDoors = this.exits.get(direction);
+        System.out.println("Possition: " + position);
+        System.out.println("Possible Doors: " + possibleDoors);
         for (Door door : possibleDoors) {
             if (door.getShape().contains(position.x(), position.y())) {
+                System.out.println("contains pos");
                 return door;
             }
         }

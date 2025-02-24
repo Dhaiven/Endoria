@@ -2,6 +2,7 @@ package game.pkg_Room;
 
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.Item;
+import game.pkg_Object.Vector2;
 
 import java.awt.*;
 
@@ -16,8 +17,8 @@ public class LockDoor extends Door {
 
     private final Item key;
 
-    public LockDoor(Shape shape, Room to, Item key) {
-        super(shape, to);
+    public LockDoor(Shape shape, Vector2 spawn, Room to, Item key) {
+        super(shape, spawn, to);
         this.key = key;
     }
 

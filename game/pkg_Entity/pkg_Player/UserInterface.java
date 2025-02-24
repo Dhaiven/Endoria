@@ -167,6 +167,10 @@ public class UserInterface extends JPanel implements ActionListener
 
         Graphics2D g2d = (Graphics2D) g;
 
+        //Met le background en noir
+        g2d.setBackground(Color.BLACK);
+        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+
         Room room = player.getPosition().room();
         for (int layer = 1; layer < 5; layer++) {
             for (Map.Entry<Vector2, Tile> entry : room.getWorldsTilesCacheAtLayer(layer).entrySet()) {

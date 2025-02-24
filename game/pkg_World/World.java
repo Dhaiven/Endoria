@@ -20,7 +20,7 @@ public class World {
         this.rooms.addAll(pRooms);
         this.layers = layers;
 
-        this.spawnRoom = this.rooms.get(0);
+        this.spawnRoom = this.rooms.get(2);
     }
 
     public String getName() {

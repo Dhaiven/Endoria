@@ -19,10 +19,8 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class TmxWorldLoader {
 
@@ -48,8 +46,9 @@ public class TmxWorldLoader {
     }
 
     private final List<Sprite> allTextures = new ArrayList<>();
-    private final List<Room> worldRooms = new ArrayList<>();
+    private final HashMap<String, Room> worldRooms = new HashMap<>();
     private final Map<Integer, List<TilePos>> mapLayers = new HashMap<>();
+    private final Map<String, Shape> baseRoomsOffset = new HashMap<>();
 
     public TmxWorldLoader() {
 
@@ -169,21 +168,24 @@ public class TmxWorldLoader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new World(name, worldRooms, Layers.builder().build());
+
+        return new World(name, List.copyOf(worldRooms.values()), Layers.builder().build());
     }
 
     private void loadRooms(Element rooms) {
         for (Element object : getAllElementNode(rooms.getElementsByTagName("object"))) {
+            String roomName = object.getAttribute("name");
+            Shape basicShape = loadBaseShape(object);
+
+            baseRoomsOffset.put(roomName, basicShape);
+
             int x = (int) Float.parseFloat(object.getAttribute("x"));
             int y = (int) Float.parseFloat(object.getAttribute("y"));
 
-            Shape shape = loadShape(object);
-
-            Room room = new Room(shape, object.getAttribute("name"), Layers.builder().build());
-            System.out.println(room.getName());
+            Room room = new Room(loadShape(object, 0, 0), roomName, Layers.builder().build());
             for (Map.Entry<Integer, List<TilePos>> entry : mapLayers.entrySet()) {
                 for (TilePos tilePos : entry.getValue()) {
-                    if (shape.contains(tilePos.x(), tilePos.y())) {
+                    if (basicShape.contains(tilePos.x(), tilePos.y())) {
                         room.setTile(
                                 tilePos.tile(),
                                 new Vector2(
@@ -196,46 +198,80 @@ public class TmxWorldLoader {
                 }
             }
 
-            worldRooms.add(room);
+            worldRooms.put(roomName, room);
         }
     }
 
     private void loadDoors(Element doors) {
-        for (Element object : getAllElementNode(doors.getElementsByTagName("object"))) {
-            Shape doorShape = loadShape(object);
-            Area doorArea = new Area(doorShape);
+        List<Element> objects = getAllElementNode(doors.getElementsByTagName("object"));
 
-            List<Room> roomsMatchWithDoor = new ArrayList<>();
-            for (Room room : this.worldRooms) {
-                Area roomArea = room.getArea();
-                roomArea.intersect(doorArea);
-                if (!roomArea.isEmpty()) {
-                    roomsMatchWithDoor.add(room);
+        Map<String, Room> doorByRooms = new HashMap<>();
+        Map<String, Shape> doorByShapes = new HashMap<>();
+        for (Element object : objects) {
+           String id = object.getAttribute("id");
+           Area doorArea = new Area(loadBaseShape(object));
+
+            for (Map.Entry<String, Shape> entry : baseRoomsOffset.entrySet()) {
+                Area area = new Area(entry.getValue());
+                area.intersect(doorArea);
+                if (!area.isEmpty()) {
+                    Room room = worldRooms.get(entry.getKey());
+                    doorByRooms.put(id, room);
+                    doorByShapes.put(id, loadOffsetShape(object, entry.getValue()));
+                    break;
                 }
             }
+        }
 
-            for (Room room : roomsMatchWithDoor) {
-                for (Room otherRoom : roomsMatchWithDoor) {
-                    if (room == otherRoom) continue;
+        for (Element object : objects) {
+            String fromRoomId = object.getAttribute("id");
+            Room fromRoom = doorByRooms.get(fromRoomId);
+            if (fromRoom == null) {
+                throw new IllegalArgumentException("Room " + object.getAttribute("name") + " is not supported");
+            }
 
-                    room.addExit(
-                            Utils.getDirection(room.getArea(), otherRoom.getArea()),
-                            new Door(doorShape, otherRoom)
+            String doorName = object.getAttribute("name");
+            String[] nameParts = doorName.split(";");
+            for (String namePart : nameParts) {
+                if (namePart.startsWith("to")) {
+                    String toRoomId = namePart.substring(2).toLowerCase();
+                    Room toRoom = doorByRooms.get(toRoomId);
+
+                    fromRoom.addExit(
+                            Utils.getDirection(baseRoomsOffset.get(fromRoom.getName()), baseRoomsOffset.get(toRoom.getName())),
+                            new Door(
+                                    doorByShapes.get(fromRoomId),
+                                    Utils.getCenterPosition(doorByShapes.get(toRoomId)),
+                                    toRoom
+                            )
                     );
                 }
             }
         }
     }
 
-    private Shape loadShape(Element object) {
+    private Shape loadOffsetShape(Element object, Shape offset) {
+        Rectangle bounds = offset.getBounds();
+
+        int x = (int) Float.parseFloat(object.getAttribute("x")) - bounds.x;
+        int y = (int) Float.parseFloat(object.getAttribute("y")) - bounds.y;
+
+        return loadShape(object, x, y);
+    }
+
+    private Shape loadBaseShape(Element object) {
         int x = (int) Float.parseFloat(object.getAttribute("x"));
         int y = (int) Float.parseFloat(object.getAttribute("y"));
 
+        return loadShape(object, x, y);
+    }
+
+    private Shape loadShape(Element object, int startAtX, int startAtY) {
         List<Element> polygons = getAllElementNode(object.getElementsByTagName("polygon"));
         if (polygons.isEmpty()) {
             return new Rectangle(
-                    x,
-                    y,
+                    startAtX,
+                    startAtY,
                     (int) Float.parseFloat(object.getAttribute("width")),
                     (int) Float.parseFloat(object.getAttribute("height"))
             );
@@ -254,8 +290,8 @@ public class TmxWorldLoader {
             int localY = Integer.parseInt(point[1]);
 
             // Convertit les coordonnées relatives en absolues
-            xPoints[i] = x + localX;
-            yPoints[i] = y + localY;
+            xPoints[i] = startAtX + localX;
+            yPoints[i] = startAtY + localY;
         }
 
         return new Polygon(xPoints, yPoints, pointsArray.length);
@@ -285,15 +321,13 @@ public class TmxWorldLoader {
                 tiles.add(new TilePos(
                         new Tile(sprite),
                         column * Utils.TEXTURE_WIDTH,
-                        row * Utils.TEXTURE_HEIGHT,
-                        sprite.getWidth(),
-                        sprite.getHeight()
+                        row * Utils.TEXTURE_HEIGHT
                 ));
             }
         }
         return tiles;
     }
 
-    private record TilePos(Tile tile, int x, int y, int width, int height) {
+    private record TilePos(Tile tile, int x, int y) {
     }
 }
