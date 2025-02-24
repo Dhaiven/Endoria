@@ -17,6 +17,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
@@ -46,6 +49,7 @@ public class TmxWorldLoader {
     }
 
     private final List<Sprite> allTextures = new ArrayList<>();
+    private final HashMap<String, Element> spawnRooms = new HashMap<>();
     private final HashMap<String, Room> worldRooms = new HashMap<>();
     private final Map<Integer, List<TilePos>> mapLayers = new HashMap<>();
     private final Map<String, Shape> baseRoomsOffset = new HashMap<>();
@@ -157,6 +161,7 @@ public class TmxWorldLoader {
 
                     for (Element object : correspondObjects) {
                         switch (objectGroupOrder) {
+                            case SPAWNS -> loadSpawns(object);
                             case ROOMS -> loadRooms(object);
                             case DOORS -> loadDoors(object);
                         }
@@ -182,7 +187,10 @@ public class TmxWorldLoader {
             int x = (int) Float.parseFloat(object.getAttribute("x"));
             int y = (int) Float.parseFloat(object.getAttribute("y"));
 
-            Room room = new Room(loadShape(object, 0, 0), roomName, Layers.builder().build());
+            Shape spawnShape = loadOffsetShape(spawnRooms.get(roomName), basicShape);
+            Rectangle2D spawnBounds = spawnShape.getBounds();
+
+            Room room = new Room(loadShape(object, 0, 0), roomName, Layers.builder().build(), new Vector2((int) spawnBounds.getX(), (int) spawnBounds.getY()));
             for (Map.Entry<Integer, List<TilePos>> entry : mapLayers.entrySet()) {
                 for (TilePos tilePos : entry.getValue()) {
                     if (basicShape.contains(tilePos.x(), tilePos.y())) {
@@ -250,6 +258,18 @@ public class TmxWorldLoader {
         }
     }
 
+    private void loadSpawns(Element spawns) {
+        for (Element object : getAllElementNode(spawns.getElementsByTagName("object"))) {
+            String objectName = object.getAttribute("name");
+            if (objectName.startsWith("spawn")) {
+                String rommName = objectName.substring(5);
+                rommName = rommName.substring(0, 1).toLowerCase() + rommName.substring(1);
+
+                spawnRooms.put(rommName, object);
+            }
+        }
+    }
+
     private Shape loadOffsetShape(Element object, Shape offset) {
         Rectangle bounds = offset.getBounds();
 
@@ -269,6 +289,21 @@ public class TmxWorldLoader {
     private Shape loadShape(Element object, int startAtX, int startAtY) {
         List<Element> polygons = getAllElementNode(object.getElementsByTagName("polygon"));
         if (polygons.isEmpty()) {
+            List<Element> points = getAllElementNode(object.getElementsByTagName("point"));
+            if (!points.isEmpty()) {
+                return new Ellipse2D.Double(startAtX, startAtY, 0, 0);
+            }
+
+            List<Element> ellipses = getAllElementNode(object.getElementsByTagName("ellipse"));
+            if (!ellipses.isEmpty()) {
+                return new Ellipse2D.Float(
+                        startAtX,
+                        startAtY,
+                        (int) Float.parseFloat(object.getAttribute("width")),
+                        (int) Float.parseFloat(object.getAttribute("height"))
+                );
+            }
+
             return new Rectangle(
                     startAtX,
                     startAtY,

@@ -5,6 +5,7 @@ import game.pkg_Entity.Entity;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.ItemList;
+import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Tile.Tile;
 import game.pkg_Tile.behavior.TileBehavior;
@@ -27,6 +28,7 @@ public class Room
     private final Shape shape;
     private final String name;
     private final Layers layers;
+    private final Vector2 spawn;
     private final Map<Vector2, Tile>[] tiles;
 
     private HashMap<FacingDirection, List<Door>> exits = new HashMap<>();
@@ -40,10 +42,11 @@ public class Room
 
     private final List<Entity> entities = new ArrayList<>();
 
-    public Room(Shape shape, String name, Layers layers) {
+    public Room(Shape shape, String name, Layers layers, Vector2 spawn) {
         this.shape = shape;
         this.name = name;
         this.layers = layers;
+        this.spawn = spawn;
 
         this.tiles = new Map[layers.size()];
         for (int i = 0; i < layers.size(); i++) {
@@ -57,6 +60,10 @@ public class Room
 
     public Area getArea() {
         return new Area(shape);
+    }
+
+    public Vector2 getSpawnPoint() {
+        return spawn;
     }
 
     public String getName() {
@@ -117,7 +124,7 @@ public class Room
         tiles[layer - 1].put(position, tile);
 
         for (TileBehavior behavior : tile.getBehaviors()) {
-            behavior.onPlace(tile, position, player);
+            behavior.onPlace(tile, new Position(position, this), player);
         }
     }
 

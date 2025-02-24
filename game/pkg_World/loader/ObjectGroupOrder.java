@@ -1,8 +1,9 @@
 package game.pkg_World.loader;
 
 public enum ObjectGroupOrder {
-    ROOMS(0, "rooms"),
-    DOORS(1, "doors");
+    SPAWNS(0, "spawns"),
+    ROOMS(1, "rooms"),
+    DOORS(2, "doors");
 
     private final int order;
     private final String id;

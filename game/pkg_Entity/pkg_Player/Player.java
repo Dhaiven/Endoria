@@ -9,7 +9,6 @@ import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
-import game.pkg_Util.Pair;
 
 import java.util.List;
 import java.util.Random;
@@ -33,8 +32,8 @@ public class Player extends Entity {
 
     // TODO: faut pas devoir reset paintedOn après le super
     // TODO: custom layer
-    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Position position) {
-        super(null, sprite, position, 2);
+    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Room room) {
+        super(null, sprite, new Position(room.getSpawnPoint(), room), 2);
         this.aUserInterface = userInterface.apply(this);
         this.paintedOn = this.aUserInterface;
     }
