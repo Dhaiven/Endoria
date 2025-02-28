@@ -6,6 +6,7 @@ import game.pkg_Entity.FacingDirection;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
+import game.pkg_Object.TileStateWithPos;
 import game.pkg_Object.Vector2;
 import game.pkg_Tile.Tile;
 import game.pkg_Tile.behavior.TileBehavior;
@@ -124,7 +125,7 @@ public class Room
         tiles[layer - 1].put(position, tile);
 
         for (TileBehavior behavior : tile.getBehaviors()) {
-            behavior.onPlace(tile, new Position(position, this), player);
+            behavior.onPlace(new TileStateWithPos(tile, new Position(position, this), layer), player);
         }
     }
 

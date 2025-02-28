@@ -1,24 +1,25 @@
 package game.pkg_Tile.behavior;
 
+import game.pkg_Entity.Entity;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Item.Item;
-import game.pkg_Object.Position;
-import game.pkg_Tile.Tile;
+import game.pkg_Object.TileStateWithPos;
 
 public class TileBehavior {
 
-    // TODO: layer ?
-    public void onPlace(Tile tile, Position position, Player player) {
+    public void onPlace(TileStateWithPos state, Player player) {
 
     }
 
-    // TODO: layer ?
-    public void onDestroy(Tile tile, Position position, Player player) {
+    public void onDestroy(TileStateWithPos state, Player player) {
 
     }
 
-    // TODO: layer ?
-    public void onInteract(Tile tile, Position position, Player player, Item usedItem) {
+    public void onInteract(TileStateWithPos state, Player player, Item usedItem) {
+
+    }
+
+    public void onEntityCollide(TileStateWithPos state, Entity entity) {
 
     }
 }
