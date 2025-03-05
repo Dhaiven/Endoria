@@ -7,7 +7,6 @@ import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.FileUtils;
 import game.pkg_Util.Utils;
-import game.pkg_World.Layers;
 import game.pkg_World.World;
 import org.w3c.dom.*;
 
@@ -18,7 +17,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -26,11 +24,6 @@ import java.util.*;
 import java.util.List;
 
 public class TmxWorldLoader {
-
-    private static final String GROUND_LAYER = "ground";
-    private static final String DECORATION_LAYER = "decoration";
-    private static final String ENTITY_LAYER = "entity";
-    private static final String DECORATION_BEHIND_ENTITY_LAYER = "decorationBehindEntity";
 
     private static Document createDocument(File file) {
         try {
@@ -108,8 +101,6 @@ public class TmxWorldLoader {
     }
 
     public World loadWorld(String name) {
-        Layers.LayersBuilder layersBuilder = Layers.builder();
-
         try {
             File file = new File(FileUtils.WORLD_RESOURCES + name + "/" + name + ".tmx");
             Document doc = createDocument(file);
@@ -125,22 +116,13 @@ public class TmxWorldLoader {
             }
 
             for (Element layerElement : getAllElementNode(doc.getElementsByTagName("layer"))) {
-
-                String layerName = layerElement.getAttribute("name");
                 int layerId = Integer.parseInt(layerElement.getAttribute("id"));
-                switch (layerName) {
-                    case GROUND_LAYER -> layersBuilder.setGroundLayer(layerId);
-                    case DECORATION_LAYER -> layersBuilder.setDecorationLayer(layerId);
-                    case ENTITY_LAYER -> layersBuilder.setEntityLayer(layerId);
-                    case DECORATION_BEHIND_ENTITY_LAYER -> layersBuilder.setDecorationBehindEntityLayer(layerId);
-                    default -> throw new IllegalArgumentException("Layer " + layerName + " is not supported");
-                }
 
                 // Extraire les données du CSV
                 Node dataNode = layerElement.getElementsByTagName("data").item(0);
                 List<TilePos> tiles = getTilePosList(dataNode, layerElement);
 
-                mapLayers.put(layerId, tiles);
+                mapLayers.put(layerId - 1, tiles);
             }
 
             for (Element group : getAllElementNode(doc.getElementsByTagName("group"))) {
@@ -174,7 +156,7 @@ public class TmxWorldLoader {
             e.printStackTrace();
         }
 
-        return new World(name, List.copyOf(worldRooms.values()), Layers.builder().build());
+        return new World(name, List.copyOf(worldRooms.values()));
     }
 
     private void loadRooms(Element rooms) {
@@ -190,7 +172,7 @@ public class TmxWorldLoader {
             Shape spawnShape = loadOffsetShape(spawnRooms.get(roomName), basicShape);
             Rectangle2D spawnBounds = spawnShape.getBounds();
 
-            Room room = new Room(loadShape(object, 0, 0), roomName, Layers.builder().build(), new Vector2((int) spawnBounds.getX(), (int) spawnBounds.getY()));
+            Room room = new Room(loadShape(object, 0, 0), roomName, new Vector2((int) spawnBounds.getX(), (int) spawnBounds.getY()));
             for (Map.Entry<Integer, List<TilePos>> entry : mapLayers.entrySet()) {
                 for (TilePos tilePos : entry.getValue()) {
                     if (basicShape.contains(tilePos.x(), tilePos.y())) {

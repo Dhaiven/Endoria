@@ -28,4 +28,12 @@ public class Tile extends GameObject {
 
         g2d.drawImage(sprite.get(), position.x(), position.y(), null);
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "sprite=" + sprite +
+                "behaviors=" + behaviors +
+                '}';
+    }
 }

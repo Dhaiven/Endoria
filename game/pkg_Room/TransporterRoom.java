@@ -1,15 +1,5 @@
 package game.pkg_Room;
 
-import game.GameEngine;
-import game.pkg_Entity.FacingDirection;
-import game.pkg_Object.Vector2;
-import game.pkg_World.Layers;
-import game.pkg_World.World;
-
-import java.awt.*;
-import java.util.List;
-import java.util.Random;
-
 /**
  *  Cette classe représente une pièce
  *  téléportant dans une pièce aléatoire quand on en sort

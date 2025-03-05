@@ -10,7 +10,7 @@ import game.pkg_Object.TileStateWithPos;
 import game.pkg_Object.Vector2;
 import game.pkg_Tile.Tile;
 import game.pkg_Tile.behavior.TileBehavior;
-import game.pkg_World.Layers;
+import game.pkg_World.World;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -28,7 +28,6 @@ public class Room
 
     private final Shape shape;
     private final String name;
-    private final Layers layers;
     private final Vector2 spawn;
     private final Map<Vector2, Tile>[] tiles;
 
@@ -43,15 +42,14 @@ public class Room
 
     private final List<Entity> entities = new ArrayList<>();
 
-    public Room(Shape shape, String name, Layers layers, Vector2 spawn) {
+    public Room(Shape shape, String name, Vector2 spawn) {
         this.shape = shape;
         this.name = name;
-        this.layers = layers;
         this.spawn = spawn;
 
-        this.tiles = new Map[layers.size()];
-        for (int i = 0; i < layers.size(); i++) {
-            tiles[i] = new HashMap<>();
+        this.tiles = new Map[World.LAYERS.length];
+        for (int i = 0; i < World.LAYERS.length; i++) {
+            this.tiles[i] = new HashMap<>();
         }
 
         for (FacingDirection direction : FacingDirection.values()) {
@@ -94,15 +92,11 @@ public class Room
         return this.shape.contains(vector.x(), vector.y());
     }
 
-    public Layers getLayers() {
-        return layers;
-    }
-
     /**
      * @return UnmodifiableMap
      */
     public Map<Vector2, Tile> getWorldsTilesCacheAtLayer(int layer) {
-        return Collections.unmodifiableMap(tiles[layer - 1]);
+        return Collections.unmodifiableMap(tiles[layer]);
     }
 
     public List<Entity> getEntities() {
@@ -122,7 +116,7 @@ public class Room
     }
 
     public void setTile(Tile tile, Vector2 position, int layer, Player player) {
-        tiles[layer - 1].put(position, tile);
+        tiles[layer].put(position, tile);
 
         for (TileBehavior behavior : tile.getBehaviors()) {
             behavior.onPlace(new TileStateWithPos(tile, new Position(position, this), layer), player);
@@ -280,7 +274,7 @@ public class Room
 
     @Override
     public int hashCode() {
-        return Objects.hash(shape, getName(), getLayers(), Arrays.hashCode(tiles), getExits(), aCharacters, aImageName, aItemList, isLoaded, getEntities());
+        return Objects.hash(shape, getName(), Arrays.hashCode(tiles), getExits(), aCharacters, aImageName, aItemList, isLoaded, getEntities());
     }
 
     @Override

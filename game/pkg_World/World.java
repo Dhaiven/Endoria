@@ -7,18 +7,18 @@ import java.util.List;
 
 public class World {
 
+    public static final int[] LAYERS = new int[] {0, 1, 2, 3};
+
     private final String name;
-    private final Layers layers;
     private final List<Room> rooms = new ArrayList<>();
 
     private Room spawnRoom;
 
-    public World(String name, List<Room> pRooms, Layers layers) {
+    public World(String name, List<Room> pRooms) {
         this.name = name;
         this.rooms.addAll(pRooms);
-        this.layers = layers;
 
-        this.spawnRoom = this.rooms.get(1);
+        this.spawnRoom = this.rooms.get(0);
     }
 
     public String getName() {
@@ -27,9 +27,5 @@ public class World {
 
     public Room getSpawnRoom() {
         return spawnRoom;
-    }
-
-    public Layers getLayers() {
-        return layers;
     }
 }

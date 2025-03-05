@@ -5,6 +5,7 @@ import game.pkg_Entity.Entity;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
+import game.pkg_World.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +85,9 @@ public class UserInterface extends JPanel
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         Room room = player.getPosition().room();
-        for (int layer = 1; layer < 5; layer++) {
+        for (int layer : World.LAYERS) {
+            System.out.println(layer);
+            System.out.println(room.getWorldsTilesCacheAtLayer(layer).size());
             for (Map.Entry<Vector2, Tile> entry : room.getWorldsTilesCacheAtLayer(layer).entrySet()) {
                 entry.getValue().paint(g2d, entry.getKey());
             }

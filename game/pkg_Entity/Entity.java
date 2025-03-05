@@ -4,8 +4,6 @@ import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
-import game.pkg_Room.Room;
-import game.pkg_Util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
