@@ -1,6 +1,7 @@
 package game.pkg_Command;
 
 import game.pkg_Entity.Character;
+import game.pkg_Entity.Entity;
 import game.pkg_Entity.pkg_Player.Player;
 
 /**
@@ -20,13 +21,15 @@ public class TalkCommand extends Command {
             return false;
         }
 
-        Character vCharacter = player.getCurrentRoom().getaCharacterByName(args[0]);
-        if (vCharacter == null) {
-            player.getUserInterface().println("Ce personnage n'existe pas");
-            return false;
+        for (Entity entity : player.getCurrentRoom().getEntities()) {
+            if (entity instanceof Character character) {
+                if (character.getName().equals(args[0])) {
+                    character.onInteract(player);
+                    return true;
+                }
+            }
         }
-
-        vCharacter.onInteract(player);
-        return true;
+        player.getUserInterface().println("Ce personnage n'existe pas");
+        return false;
     }
 }

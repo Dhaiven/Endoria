@@ -1,4 +1,4 @@
-package game.pkg_Entity;
+package game.pkg_Image;
 
 import game.pkg_Util.Utils;
 

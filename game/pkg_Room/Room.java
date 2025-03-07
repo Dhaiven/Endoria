@@ -1,6 +1,5 @@
 package game.pkg_Room;
 
-import game.pkg_Entity.Character;
 import game.pkg_Entity.Entity;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Entity.pkg_Player.Player;
@@ -31,29 +30,33 @@ public class Room
     private final Vector2 spawn;
     private final Map<Vector2, Tile>[] tiles;
 
-    private HashMap<FacingDirection, List<Door>> exits = new HashMap<>();
-    private HashMap<String, Character> aCharacters = new HashMap<>();
+    private final HashMap<FacingDirection, List<Door>> exits = new HashMap<>();
+    private final List<Entity> entities = new ArrayList<>();
 
-    private String aImageName;
-
-    private ItemList aItemList = new ItemList();
+    private final ItemList aItemList = new ItemList();
 
     protected boolean isLoaded = false;
 
-    private final List<Entity> entities = new ArrayList<>();
-
     public Room(Shape shape, String name, Vector2 spawn) {
+        this(shape, name, spawn, new HashMap<>());
+    }
+
+    public Room(Shape shape, String name, Vector2 spawn, Map<Integer, Map<Vector2, Tile>> tiles) {
         this.shape = shape;
         this.name = name;
         this.spawn = spawn;
 
         this.tiles = new Map[World.LAYERS.length];
-        for (int i = 0; i < World.LAYERS.length; i++) {
-            this.tiles[i] = new HashMap<>();
+        for (int i = 0; i < this.tiles.length; i++) {
+            if (tiles.containsKey(i)) {
+                this.tiles[i] = tiles.get(i);
+            } else {
+                this.tiles[i] = new HashMap<>();
+            }
         }
 
         for (FacingDirection direction : FacingDirection.values()) {
-            exits.put(direction, new ArrayList<>());
+            this.exits.put(direction, new ArrayList<>());
         }
     }
 
@@ -90,6 +93,21 @@ public class Room
 
     public boolean contains(Vector2 vector) {
         return this.shape.contains(vector.x(), vector.y());
+    }
+
+    public Map<Vector2, Tile>[] getTiles() {
+        return tiles;
+    }
+
+    public Tile getHigherTileAt(Vector2 vector) {
+        for (int layer = this.tiles.length - 1; layer >= 0; layer--) {
+            Map<Vector2, Tile> tiles = this.tiles[layer];
+            if (tiles.containsKey(vector)) {
+                return tiles.get(vector);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -139,9 +157,7 @@ public class Room
                 "\n" +
                 "Exits: " + this.getExitString() +
                 "\n" +
-                this.aItemList.getItemString() +
-                "\n" +
-                "Characters :" + this.getCharacterString();
+                this.aItemList.getItemString();
     }
 
     /**
@@ -175,10 +191,6 @@ public class Room
         return this.exits.get(direction);
     }
 
-    /**
-     * @param pDirection direction souhaitée
-     * @return la porte disposable dans la direction donnée
-     */
     public Door getExit(Vector2 position, FacingDirection direction) {
         List<Door> possibleDoors = this.exits.get(direction);
         System.out.println("Possition: " + position);
@@ -211,52 +223,45 @@ public class Room
 
     /**
      * @return tous les personnages de la classe
-     */
+     *
     public HashMap<String, Character> getCharacters() {
-        return this.aCharacters;
+        return this.entities;
     }
 
     /**
      * Get un personnage en fonction de son nom
      * @param pName le nom du personnage
      * @return Character si le personage exist else null
-     */
+     *
     public Character getaCharacterByName(String pName) {
-        return this.aCharacters.get(pName);
+        return this.entities.get(pName);
     }
 
     /**
      * Ajoute un personnage dans cette pièce
-     */
+     *
     public void addCharacter(Character pCharacter) {
-        this.aCharacters.put(pCharacter.getName(), pCharacter);
+        this.entities.put(pCharacter.getName(), pCharacter);
     }
 
     /**
      * Supprime un personnage présent dans cette pièce
-     */
+     *
     public void removeCharacter(Character pCharacter) {
-        this.aCharacters.remove(pCharacter.getName());
+        this.entities.remove(pCharacter.getName());
     }
 
     /**
      * @return un String de tous les personnages disposables
-     */
+     *
     public String getCharacterString() {
         StringBuilder result = new StringBuilder();
-        for (String name : this.aCharacters.keySet()) {
+        for (String name : this.entities.keySet()) {
             result.append(name).append(" ");
         }
 
         return result.toString();
-    }
-
-    /**
-     * Return a string describing the room's image name
-     */
-    public String getImageName() {
-        return this.aImageName;
-    }
+    }*/
 
     /**
      * @return tous les items disponibles dans cette pièce
@@ -274,7 +279,7 @@ public class Room
 
     @Override
     public int hashCode() {
-        return Objects.hash(shape, getName(), Arrays.hashCode(tiles), getExits(), aCharacters, aImageName, aItemList, isLoaded, getEntities());
+        return Objects.hash(shape, getName(), Arrays.hashCode(tiles), getExits(), entities, aItemList, isLoaded, getEntities());
     }
 
     @Override

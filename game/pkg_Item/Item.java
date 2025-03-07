@@ -2,7 +2,7 @@ package game.pkg_Item;
 
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Object.GameObject;
-import game.pkg_Entity.Sprite;
+import game.pkg_Image.Sprite;
 
 /**
  *  Cette classe représente un Item de base

@@ -1,9 +1,12 @@
 package game.pkg_Entity;
 
+import game.pkg_Image.Sprite;
 import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
+import game.pkg_Tile.Tile;
+import game.pkg_Util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,8 +67,6 @@ public class Entity extends PlaceableGameObject {
     }
 
     public void move(FacingDirection facing) {
-        this.lastPosition = position;
-
         int movementFactor = getMovementFactor(facing);
         Vector2 newPosition = switch (facing) {
             case NORTH -> new Vector2(position.x(), position.y() - movementFactor);
@@ -74,14 +75,32 @@ public class Entity extends PlaceableGameObject {
             case WEST -> new Vector2(position.x() - movementFactor, position.y());
         };
 
+
+
         Door exit = position.room().getExit(newPosition, facing);
         if (exit != null) {
+            this.lastPosition = position;
             this.onChangeRoom(exit);
         } else {
             if (!position.room().contains(newPosition)) return;
+
+            System.out.println(Utils.getTiledPoint(newPosition));
+            Tile tile = position.room().getHigherTileAt(Utils.getTiledPoint(newPosition));
+            System.out.println("tileId: " + tile.getId());
+            if (tile.getCollision() != null) {
+                System.out.println("colissionnnnnnnnnnnnnnnnnnnnn");
+                Vector2 inTiledPoint = Utils.getRealPointWithoutTile(newPosition);
+                if (tile.getCollision().contains(inTiledPoint.x(), inTiledPoint.y())) {
+                    return;
+                }
+            }
+
+            this.lastPosition = position;
             this.position = new Position(newPosition, this.position.room());
             this.paintedOn.repaint();
         }
+
+        System.out.println("pos: " + this.position);
     }
 
     public void onChangeRoom(Door byDoor) {
@@ -92,5 +111,11 @@ public class Entity extends PlaceableGameObject {
         this.position.room().getEntities().add(this);
 
         this.paintedOn.repaint();
+    }
+
+    @Override
+    public void paint(Graphics2D g2d) {
+        super.paint(g2d);
+        g2d.drawString("ttttttt", position.x(), position.y());
     }
 }

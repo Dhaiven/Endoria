@@ -20,6 +20,5 @@ public class TileBehavior {
     }
 
     public void onEntityCollide(TileStateWithPos state, Entity entity) {
-
     }
 }

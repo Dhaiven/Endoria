@@ -28,7 +28,7 @@
  </layer>
  <group id="6" name="zone" offsetx="2" offsety="8">
   <objectgroup id="8" name="spawns">
-   <object id="58" name="spawnZone1" x="94" y="80">
+   <object id="58" name="spawnpoint" x="94" y="80">
     <point/>
    </object>
    <object id="60" name="spawnZone3" x="922" y="188">

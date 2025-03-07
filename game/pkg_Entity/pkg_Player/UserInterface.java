@@ -43,7 +43,14 @@ public class UserInterface extends JPanel
         this.aMyFrame.setSize(700, 700);
         this.aMyFrame.add(this);
         this.aMyFrame.addKeyListener(this.playerInput);
+
+        this.setPreferredSize(new Dimension(700, 700));
+        this.setSize(700, 700);
+        this.setBounds(0, 0, 700, 700);
+
         this.aMyFrame.setVisible(true);
+        this.aMyFrame.pack();
+        System.out.println("Panel position: " + aMyFrame.getX() + ", " + aMyFrame.getY());
 
         this.terminalInput = new TerminalInput(this.aMyFrame, player, commandManager);
 
@@ -98,5 +105,8 @@ public class UserInterface extends JPanel
                 }
             }
         }
+
+        g2d.setBackground(Color.BLUE);
+        g2d.fillRect(0, 0, this.getWidth(), 1);
     }
 } // UserInterface

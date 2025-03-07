@@ -3,6 +3,7 @@ package game.pkg_Entity.pkg_Player;
 import game.pkg_Command.Command;
 import game.pkg_Entity.*;
 import game.pkg_Entity.Character;
+import game.pkg_Image.Sprite;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
@@ -34,6 +35,7 @@ public class Player extends Entity {
     // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Room room) {
         super(null, sprite, new Position(room.getSpawnPoint(), room), 2);
+        this.position = new Position(new Vector2(0, 0), room);
         this.aUserInterface = userInterface.apply(this);
         this.paintedOn = this.aUserInterface;
     }
@@ -184,8 +186,8 @@ public class Player extends Entity {
     }
 
     public void onExecuteCommand(Command command, String[] params) {
-        for (Character character : this.position.room().getCharacters().values()) {
-            if (character instanceof MovingCharacter) {
+        for (Entity entity : this.position.room().getEntities()) {
+            if (entity instanceof MovingCharacter character) {
                 character.onInteract(this);
             }
         }

@@ -1,6 +1,7 @@
 package game.pkg_Entity;
 
 import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Image.Sprite;
 import game.pkg_Object.Position;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
@@ -30,8 +31,8 @@ public abstract class MovingCharacter extends Character {
         Random rand = new Random();
         Door door = exits.get(rand.nextInt(exits.size()));
 
-        actualRoom.removeCharacter(this);
-        door.getTo().addCharacter(this);
+        actualRoom.getEntities().remove(this);
+        door.getTo().getEntities().add(this);
 
         player.getUserInterface().println("Ce personnage vient de mystérieusement disparaitre...");
     }

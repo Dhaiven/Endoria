@@ -1,6 +1,6 @@
 package game.pkg_Object;
 
-import game.pkg_Entity.Sprite;
+import game.pkg_Image.Sprite;
 import java.awt.Graphics2D;
 
 public class GameObject {

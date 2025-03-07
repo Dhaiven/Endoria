@@ -1,8 +1,8 @@
 package game.pkg_Entity;
 
 import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Image.Sprite;
 import game.pkg_Object.Position;
-import game.pkg_Object.Vector2;
 
 import javax.swing.*;
 

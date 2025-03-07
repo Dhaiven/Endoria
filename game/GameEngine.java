@@ -57,9 +57,9 @@ public class GameEngine
      */
     public void printLocationInfo() {
         this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
-        if (this.aCurrentPlayer.getCurrentRoom().getImageName() != null) {
+        //if (this.aCurrentPlayer.getCurrentRoom().getImageName() != null) {
             //this.aGui.showImage(this.aCurrentPlayer.getCurrentRoom().getImageName());
-        }
+        //}
     }
 
     /**

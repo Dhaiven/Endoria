@@ -15,6 +15,7 @@ public class World {
     private Room spawnRoom;
 
     public World(String name, List<Room> pRooms) {
+        System.out.println(name);
         this.name = name;
         this.rooms.addAll(pRooms);
 
