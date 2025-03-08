@@ -47,9 +47,6 @@ public class TmxWorldLoaderV2 {
 
     private final HashMap<Integer, Tile> tiles = new HashMap<>();
 
-    private final HashMap<String, Element> spawnRooms = new HashMap<>();
-    private final Map<String, Shape> baseRoomsOffset = new HashMap<>();
-
     public TmxWorldLoaderV2() {
 
     }
@@ -167,6 +164,16 @@ public class TmxWorldLoaderV2 {
     private Room loadMap(File mapFile) {
         Document map = createDocument(mapFile);
 
+        Element mapElement = (Element) map.getElementsByTagName("map").item(0);
+
+        int tileWidth = Integer.parseInt(mapElement.getAttribute("tilewidth"));
+        int tileHeight = Integer.parseInt(mapElement.getAttribute("tileheight"));
+
+        roomScale = new Vector2(
+                Utils.TEXTURE_WIDTH / tileWidth,
+                Utils.TEXTURE_HEIGHT / tileHeight
+        );
+
         // On récupère tous les tilesets
         for (Element tileSetElement : getAllElementNode(map.getElementsByTagName("tileset"))) {
             // Extraction du chemin du fichier .tsx depuis l'attribut source
@@ -204,20 +211,20 @@ public class TmxWorldLoaderV2 {
             throw new RuntimeException("Spawnpoint not found");
         }
 
-        Element mapElement = (Element) map.getElementsByTagName("map").item(0);
 
-        int width = Integer.parseInt(mapElement.getAttribute("width"));
-        int height = Integer.parseInt(mapElement.getAttribute("height"));
-        int tileWidth = Integer.parseInt(mapElement.getAttribute("tilewidth"));
-        int tileHeight = Integer.parseInt(mapElement.getAttribute("tileheight"));
 
+        int width = Integer.parseInt(mapElement.getAttribute("width")) * roomScale.x();
+        int height = Integer.parseInt(mapElement.getAttribute("height")) * roomScale.y();
         Rectangle2D spawnPointBounds = spawnPoint.getBounds2D();
         Shape shape = new Rectangle(0, 0, width * tileWidth, height * tileHeight);
 
         Room room = new Room(
                 shape,
-                mapFile.getName(),
-                new Vector2((int) spawnPointBounds.getX(), (int) spawnPointBounds.getY()),
+                mapFile.getName().split("\\.")[0],
+                new Vector2(
+                        (int) spawnPointBounds.getX(),
+                        (int) spawnPointBounds.getY()
+                ),
                 mapLayers
         );
 
@@ -328,49 +335,45 @@ public class TmxWorldLoaderV2 {
     }
 
     private Shape loadShape(Element object, int startAtX, int startAtY) {
+        startAtX *= roomScale.x();
+        startAtY *= roomScale.y();
+
         List<Element> polygons = getAllElementNode(object.getElementsByTagName("polygon"));
-        if (polygons.isEmpty()) {
-            List<Element> points = getAllElementNode(object.getElementsByTagName("point"));
-            if (!points.isEmpty()) {
-                return new Ellipse2D.Double(startAtX, startAtY, 0, 0);
+        if (!polygons.isEmpty()) {
+            Element polygonElement = polygons.get(0);
+            String pointsStr = polygonElement.getAttribute("points");
+            String[] pointsArray = pointsStr.split(" ");
+
+            int[] xPoints = new int[pointsArray.length];
+            int[] yPoints = new int[pointsArray.length];
+
+            for (int i = 0; i < pointsArray.length; i++) {
+                String[] point = pointsArray[i].split(",");
+                int localX = (int) Float.parseFloat(point[0]);
+                int localY = (int) Float.parseFloat(point[1]);
+
+                // Convertit les coordonnées relatives en absolues
+                xPoints[i] = startAtX + (localX * roomScale.x());
+                yPoints[i] = startAtY + (localY * roomScale.y());
             }
 
-            List<Element> ellipses = getAllElementNode(object.getElementsByTagName("ellipse"));
-            if (!ellipses.isEmpty()) {
-                return new Ellipse2D.Float(
-                        startAtX,
-                        startAtY,
-                        (int) Float.parseFloat(object.getAttribute("width")),
-                        (int) Float.parseFloat(object.getAttribute("height"))
-                );
-            }
-
-            return new Rectangle(
-                    startAtX,
-                    startAtY,
-                    (int) Float.parseFloat(object.getAttribute("width")),
-                    (int) Float.parseFloat(object.getAttribute("height"))
-            );
+            return new Polygon(xPoints, yPoints, pointsArray.length);
         }
 
-        Element polygonElement = polygons.get(0);
-        String pointsStr = polygonElement.getAttribute("points");
-        String[] pointsArray = pointsStr.split(" ");
-
-        int[] xPoints = new int[pointsArray.length];
-        int[] yPoints = new int[pointsArray.length];
-
-        for (int i = 0; i < pointsArray.length; i++) {
-            String[] point = pointsArray[i].split(",");
-            int localX = (int) Float.parseFloat(point[0]);
-            int localY = (int) Float.parseFloat(point[1]);
-
-            // Convertit les coordonnées relatives en absolues
-            xPoints[i] = startAtX + localX;
-            yPoints[i] = startAtY + localY;
+        List<Element> points = getAllElementNode(object.getElementsByTagName("point"));
+        if (!points.isEmpty()) {
+            return new Ellipse2D.Double(startAtX, startAtY, 0, 0);
         }
 
-        return new Polygon(xPoints, yPoints, pointsArray.length);
+        int width = (int) Float.parseFloat(object.getAttribute("width")) * roomScale.x();
+        int height = (int) Float.parseFloat(object.getAttribute("height")) * roomScale.y();
+
+        List<Element> ellipses = getAllElementNode(object.getElementsByTagName("ellipse"));
+        if (!ellipses.isEmpty()) {
+            return new Ellipse2D.Float(startAtX, startAtY, width, height);
+        }
+
+        return new Rectangle(startAtX, startAtY, width, height);
     }
 
     private Map<Vector2, Tile> loadTilesFromCSV(Element csvElement) {
@@ -390,7 +393,8 @@ public class TmxWorldLoaderV2 {
                 int tileId = Integer.parseInt(ids[row * width + column].trim());
                 if (!this.tiles.containsKey(tileId)) continue;
 
-                tiles.put(new Vector2(
+                tiles.put(
+                        new Vector2(
                             column * Utils.TEXTURE_WIDTH,
                             row * Utils.TEXTURE_HEIGHT
                         ),

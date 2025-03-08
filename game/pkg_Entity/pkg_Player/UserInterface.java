@@ -40,17 +40,13 @@ public class UserInterface extends JPanel
 
         this.aMyFrame = new JFrame("Jeux test");
         this.aMyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.aMyFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.aMyFrame.setUndecorated(true);
         this.aMyFrame.setSize(700, 700);
         this.aMyFrame.add(this);
         this.aMyFrame.addKeyListener(this.playerInput);
 
-        this.setPreferredSize(new Dimension(700, 700));
-        this.setSize(700, 700);
-        this.setBounds(0, 0, 700, 700);
-
         this.aMyFrame.setVisible(true);
-        this.aMyFrame.pack();
-        System.out.println("Panel position: " + aMyFrame.getX() + ", " + aMyFrame.getY());
 
         this.terminalInput = new TerminalInput(this.aMyFrame, player, commandManager);
 
@@ -93,8 +89,6 @@ public class UserInterface extends JPanel
 
         Room room = player.getPosition().room();
         for (int layer : World.LAYERS) {
-            System.out.println(layer);
-            System.out.println(room.getWorldsTilesCacheAtLayer(layer).size());
             for (Map.Entry<Vector2, Tile> entry : room.getWorldsTilesCacheAtLayer(layer).entrySet()) {
                 entry.getValue().paint(g2d, entry.getKey());
             }
@@ -105,8 +99,5 @@ public class UserInterface extends JPanel
                 }
             }
         }
-
-        g2d.setBackground(Color.BLUE);
-        g2d.fillRect(0, 0, this.getWidth(), 1);
     }
 } // UserInterface

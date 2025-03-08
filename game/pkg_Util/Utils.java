@@ -2,14 +2,13 @@ package game.pkg_Util;
 
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Object.Vector2;
-import jdk.jshell.execution.Util;
 
 import java.awt.*;
 
 public class Utils {
 
-    public static final int TEXTURE_WIDTH = 32;
-    public static final int TEXTURE_HEIGHT = 32;
+    public static final int TEXTURE_WIDTH = 64;
+    public static final int TEXTURE_HEIGHT = 64;
 
     public static FacingDirection getDirection(Shape shapeFrom, Shape shapeTo) {
         Rectangle boundsFrom = shapeFrom.getBounds();

@@ -35,7 +35,6 @@ public class Player extends Entity {
     // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Room room) {
         super(null, sprite, new Position(room.getSpawnPoint(), room), 2);
-        this.position = new Position(new Vector2(0, 0), room);
         this.aUserInterface = userInterface.apply(this);
         this.paintedOn = this.aUserInterface;
     }
