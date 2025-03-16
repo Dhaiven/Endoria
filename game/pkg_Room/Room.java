@@ -91,6 +91,17 @@ public class Room
         entities.clear();
     }
 
+    public boolean onUpdate() {
+        boolean hasUpdate = false;
+        for (Entity entity : entities) {
+           if (entity.onUpdate()) {
+               hasUpdate = true;
+           }
+        }
+
+        return hasUpdate;
+    }
+
     public boolean contains(Vector2 vector) {
         return this.shape.contains(vector.x(), vector.y());
     }
@@ -99,11 +110,11 @@ public class Room
         return tiles;
     }
 
-    public Tile getHigherTileAt(Vector2 vector) {
+    public TileStateWithPos getHigherTileAt(Vector2 vector) {
         for (int layer = this.tiles.length - 1; layer >= 0; layer--) {
             Map<Vector2, Tile> tiles = this.tiles[layer];
             if (tiles.containsKey(vector)) {
-                return tiles.get(vector);
+                return new TileStateWithPos(tiles.get(vector), new Position(vector, this), layer);
             }
         }
 
@@ -193,11 +204,8 @@ public class Room
 
     public Door getExit(Vector2 position, FacingDirection direction) {
         List<Door> possibleDoors = this.exits.get(direction);
-        System.out.println("Possition: " + position);
-        System.out.println("Possible Doors: " + possibleDoors);
         for (Door door : possibleDoors) {
             if (door.getShape().contains(position.x(), position.y())) {
-                System.out.println("contains pos");
                 return door;
             }
         }

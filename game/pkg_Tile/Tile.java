@@ -42,7 +42,7 @@ public class Tile extends GameObject {
         if (position.x() < 0 || position.y() < 0) {
             throw new IndexOutOfBoundsException("Position out of bounds!");
         }
-        g2d.drawImage(sprite.get(), position.x(), position.y(), null);
+        g2d.drawImage(sprite.get(), (int) position.x(), (int) position.y(), null);
     }
 
     @Override

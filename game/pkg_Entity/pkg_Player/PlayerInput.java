@@ -4,10 +4,18 @@ import game.pkg_Entity.FacingDirection;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerInput implements KeyListener {
     private final Player player;
     private boolean enable = true;
+
+    /**
+     * Thread safe
+     */
+    private final Set<FacingDirection> movements = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public PlayerInput(final Player player) {
         this.player = player;
@@ -30,17 +38,31 @@ public class PlayerInput implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (!enable) return;
 
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_Z -> this.player.move(FacingDirection.NORTH);
-            case KeyEvent.VK_S -> this.player.move(FacingDirection.SOUTH);
-            case KeyEvent.VK_D -> this.player.move(FacingDirection.EAST);
-            case KeyEvent.VK_Q -> this.player.move(FacingDirection.WEST);
-            case KeyEvent.VK_F2 -> this.player.getUserInterface().enable(false);
+        FacingDirection movement = findMoveDirection(e);
+        if (movement != null) {
+            movements.add(movement);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        FacingDirection movement = findMoveDirection(e);
+        if (movement != null) {
+            movements.remove(movement);
+        }
+    }
 
+    private FacingDirection findMoveDirection(KeyEvent e) {
+        return switch (e.getKeyCode()) {
+            case KeyEvent.VK_Z -> FacingDirection.NORTH;
+            case KeyEvent.VK_S -> FacingDirection.SOUTH;
+            case KeyEvent.VK_D -> FacingDirection.EAST;
+            case KeyEvent.VK_Q -> FacingDirection.WEST;
+            default -> null;
+        };
+    }
+
+    public Set<FacingDirection> getMovements() {
+        return movements;
     }
 }

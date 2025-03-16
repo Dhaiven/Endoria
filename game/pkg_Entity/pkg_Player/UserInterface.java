@@ -27,7 +27,6 @@ public class UserInterface extends JPanel
     private final PlayerInput playerInput;
     private final TerminalInput terminalInput;
 
-
     /**
      * Construct a UserInterface. As a parameter, a Game Engine
      * (an object processing and executing the game commands) is
@@ -52,6 +51,10 @@ public class UserInterface extends JPanel
 
         this.aMyFrame.requestFocus();
     } // UserInterface(.)
+
+    public PlayerInput getPlayerInput() {
+        return playerInput;
+    }
 
     /**
      * Print out some text into the text area.

@@ -213,8 +213,8 @@ public class TmxWorldLoaderV2 {
 
 
 
-        int width = Integer.parseInt(mapElement.getAttribute("width")) * roomScale.x();
-        int height = Integer.parseInt(mapElement.getAttribute("height")) * roomScale.y();
+        int width = (int) (Integer.parseInt(mapElement.getAttribute("width")) * roomScale.x());
+        int height = (int) (Integer.parseInt(mapElement.getAttribute("height")) * roomScale.y());
         Rectangle2D spawnPointBounds = spawnPoint.getBounds2D();
         Shape shape = new Rectangle(0, 0, width * tileWidth, height * tileHeight);
 
@@ -353,8 +353,8 @@ public class TmxWorldLoaderV2 {
                 int localY = (int) Float.parseFloat(point[1]);
 
                 // Convertit les coordonnées relatives en absolues
-                xPoints[i] = startAtX + (localX * roomScale.x());
-                yPoints[i] = startAtY + (localY * roomScale.y());
+                xPoints[i] = (int) (startAtX + (localX * roomScale.x()));
+                yPoints[i] = (int) (startAtY + (localY * roomScale.y()));
             }
 
             return new Polygon(xPoints, yPoints, pointsArray.length);
@@ -365,8 +365,8 @@ public class TmxWorldLoaderV2 {
             return new Ellipse2D.Double(startAtX, startAtY, 0, 0);
         }
 
-        int width = (int) Float.parseFloat(object.getAttribute("width")) * roomScale.x();
-        int height = (int) Float.parseFloat(object.getAttribute("height")) * roomScale.y();
+        int width = (int) ((int) Float.parseFloat(object.getAttribute("width")) * roomScale.x());
+        int height = (int) ((int) Float.parseFloat(object.getAttribute("height")) * roomScale.y());
 
         List<Element> ellipses = getAllElementNode(object.getElementsByTagName("ellipse"));
         if (!ellipses.isEmpty()) {

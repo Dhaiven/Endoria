@@ -11,8 +11,10 @@ import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 import java.util.function.Function;
 
@@ -57,6 +59,30 @@ public class Player extends Entity {
      */
     public ItemList getItemList() {
         return this.aItemList;
+    }
+
+    @Override
+    public boolean onUpdate() {
+        boolean hasUpdate = super.onUpdate();
+        return checkMovement() || hasUpdate;
+    }
+
+    private boolean checkMovement() {
+        boolean hasUpdate = false;
+
+        Set<FacingDirection> directions = this.aUserInterface.getPlayerInput().getMovements();
+        for (FacingDirection direction : directions) {
+            // Si on a 2 mouvements de sens opposé alors il vont s'annuler donc on évite de les calculer
+            // Attention, si un deux 2 mouvements est cancel par une collision, le 2eme est censé prendre le dessus
+            // Ici, on enlève ce comportement. A voir pour le remettre si quand on a un fps bas, ceci pose un probleme
+            if (directions.contains(direction.getOpposite())) {
+                continue;
+            }
+            this.move(direction);
+            hasUpdate = true;
+        }
+
+        return hasUpdate;
     }
 
     /**
@@ -129,8 +155,6 @@ public class Player extends Entity {
         if (!this.position.room().isExit(vLastRoom)) {
             return false;
         }
-
-        System.out.println("onChnageRoomByRoomExist");
 
         // Met super et pas this car on veut pas que ça ajoute
         // la salle actuelle comme la dernière

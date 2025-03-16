@@ -1,0 +1,68 @@
+package game;
+
+import game.pkg_Command.CommandManager;
+import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Entity.pkg_Player.UserInterface;
+import game.pkg_Image.Sprite;
+import game.pkg_Util.FileUtils;
+import game.pkg_World.WorldManager;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+
+public class GameEngineV2 implements Runnable {
+
+    private static GameEngineV2 instance;
+
+    private final Player player;
+
+    private double lastTime;
+    private double deltaTime;
+
+    public GameEngineV2() {
+        instance = this;
+
+        CommandManager commandManager = new CommandManager();
+
+        try {
+            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player.png"));
+            var worldManager = new WorldManager();
+
+            player = new Player(player1 -> new UserInterface(player1, commandManager), new Sprite(playerSprite.getSubimage(0, 0, 64, 64)), worldManager.getWorld("museum").getSpawnRoom());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        lastTime = System.nanoTime();
+    }
+
+    public static GameEngineV2 getInstance() {
+        return instance;
+    }
+
+    public double getDelatTime() {
+        return deltaTime;
+    }
+
+    @Override
+    public void run() {
+        player.spawn();
+
+        while (true) {
+            long currentTime = System.nanoTime();
+            deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
+            lastTime = currentTime;
+
+            if (player.getPosition().room().onUpdate()) {
+                player.getUserInterface().repaint();
+            }
+
+            try {
+                Thread.sleep(1); // Pause de 1 milliseconde pour éviter d'exploser le CPU
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+}

@@ -29,6 +29,6 @@ public class PlaceableGameObject extends GameObject {
     public void paint(Graphics2D g2d) {
         if (!canPaint(g2d)) return;
 
-        g2d.drawImage(sprite.get(), position.x(), position.y(), null);
+        g2d.drawImage(sprite.get(), (int) position.x(), (int) position.y(), null);
     }
 }
