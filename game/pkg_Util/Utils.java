@@ -11,6 +11,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class Utils {
 
@@ -129,5 +130,10 @@ public class Utils {
                 (int) shape.getWidth(),
                 (int) shape.getHeight()
         );
+    }
+
+    public static Vector2 getCenterPosition(Shape shape) {
+        Rectangle2D bounds = shape.getBounds2D();
+        return new Vector2(bounds.getCenterX(), bounds.getCenterY());
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="12">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="15">
  <tileset firstgid="1" source="../../TX Tileset Grass.tsx"/>
  <layer id="1" name="Tile Layer 1" width="30" height="20">
   <data encoding="csv">
@@ -30,4 +30,15 @@
    <point/>
   </object>
  </objectgroup>
+ <group id="3" name="zone">
+  <objectgroup id="4" name="doors">
+   <object id="12" x="224.667" y="12" width="101.333" height="52.6667">
+    <properties>
+     <property name="facing" propertytype="FacingDirection" value="NORTH"/>
+     <property name="toDoorId" type="int" value="67"/>
+     <property name="toRoomName" value="museum"/>
+    </properties>
+   </object>
+  </objectgroup>
+ </group>
 </map>

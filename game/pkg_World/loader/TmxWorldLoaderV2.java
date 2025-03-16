@@ -1,7 +1,9 @@
 package game.pkg_World.loader;
 
+import game.pkg_Entity.FacingDirection;
 import game.pkg_Image.Sprite;
 import game.pkg_Object.Vector2;
+import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.Utils;
@@ -20,10 +22,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class TmxWorldLoaderV2 {
 
@@ -46,6 +46,8 @@ public class TmxWorldLoaderV2 {
     private Vector2 roomScale = new Vector2(1, 1);
 
     private final HashMap<Integer, Tile> tiles = new HashMap<>();
+    private final HashMap<String, Room> rooms = new HashMap<>();
+    private final HashMap<String, File> filesByRoom = new HashMap<>();
 
     public TmxWorldLoaderV2() {
 
@@ -157,6 +159,11 @@ public class TmxWorldLoaderV2 {
             e.printStackTrace();
         }
 
+        for (Room room : rooms) {
+            loadDoors(room, filesByRoom.get(room.getName()));
+            System.out.println(room.getExits());
+        }
+
         return new World(world.getName().split("\\.")[0], rooms);
     }
 
@@ -170,8 +177,8 @@ public class TmxWorldLoaderV2 {
         int tileHeight = Integer.parseInt(mapElement.getAttribute("tileheight"));
 
         roomScale = new Vector2(
-                Utils.TEXTURE_WIDTH / tileWidth,
-                Utils.TEXTURE_HEIGHT / tileHeight
+                (double) Utils.TEXTURE_WIDTH / tileWidth,
+                (double) Utils.TEXTURE_HEIGHT / tileHeight
         );
 
         // On récupère tous les tilesets
@@ -211,8 +218,6 @@ public class TmxWorldLoaderV2 {
             throw new RuntimeException("Spawnpoint not found");
         }
 
-
-
         int width = (int) (Integer.parseInt(mapElement.getAttribute("width")) * roomScale.x());
         int height = (int) (Integer.parseInt(mapElement.getAttribute("height")) * roomScale.y());
         Rectangle2D spawnPointBounds = spawnPoint.getBounds2D();
@@ -227,6 +232,9 @@ public class TmxWorldLoaderV2 {
                 ),
                 mapLayers
         );
+
+        rooms.put(room.getName(), room);
+        filesByRoom.put(room.getName(), mapFile);
 
         /**for (Element group : getAllElementNode(map.getElementsByTagName("group"))) {
             String zoneGroupName = group.getAttribute("name");
@@ -258,6 +266,115 @@ public class TmxWorldLoaderV2 {
 
         return room;
     }
+
+    private void loadDoors(Room room, File mapFile) {
+        Document map = createDocument(mapFile);
+
+        for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
+            if (!groupElement.getAttribute("name").equals("zone")) continue;
+
+            for (Element objectGroupElement : getAllElementNode(groupElement.getElementsByTagName("objectgroup"))) {
+                if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
+
+                System.out.println("objectGroupElement: " + objectGroupElement.getAttribute("name"));
+                for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
+                    System.out.println("object: " + object.getAttribute("name"));
+                    Shape doorShape = loadBaseShape(object);
+                    Room toRoom = null;
+                    Integer toDoorId = null;
+                    FacingDirection facing = null;
+                    for (Element properties : getAllElementNode(object.getElementsByTagName("properties"))) {
+                        for (Element property : getAllElementNode(properties.getChildNodes())) {
+                            Object value = loadProperty(property);
+                            if (value == null) continue;
+
+                            switch (property.getAttribute("name")) {
+                                case "toRoomName":
+                                    toRoom = rooms.get(value.toString());
+                                    break;
+                                case "toDoorId":
+                                    toDoorId = (int) value;
+                                    break;
+                                case "facing":
+                                    facing = loadFacingProperty(property);
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (toRoom == null) {
+                        throw new RuntimeException("toRoom is not initialized");
+                    }
+                    if (toDoorId == null) {
+                        throw new RuntimeException("DoorId is not initialized");
+                    }
+
+                    room.addExit(
+                            facing,
+                            new Door(
+                                    doorShape,
+                                    Utils.getCenterPosition(Objects.requireNonNull(loadDoorShape(filesByRoom.get(toRoom.getName()), toDoorId))),
+                                    toRoom
+                            )
+                    );
+                    System.out.println("room add exit");
+                }
+            }
+        }
+    }
+
+    private Shape loadDoorShape(File mapFile, int doorId) {
+        Document map = createDocument(mapFile);
+
+        for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
+            if (!groupElement.getAttribute("name").equals("zone")) continue;
+
+            for (Element objectGroupElement : getAllElementNode(groupElement.getElementsByTagName("objectgroup"))) {
+                if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
+
+                for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
+                    System.out.println("objectID: " + object.getAttribute("id"));
+                    System.out.println("id: " + doorId);
+                    if (object.getAttribute("id").equals(String.valueOf(doorId))) {
+                        return loadBaseShape(object);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private Object loadProperty(Element property) {
+        String value = property.getAttribute("value");
+        if (!property.hasAttribute("type")) {
+            return value;
+        }
+
+        return switch (property.getAttribute("type")) {
+            case "int" -> Integer.parseInt(value);
+            case "float" -> Float.parseFloat(value);
+            case "color" -> Color.decode(value);
+            default -> null; //TODO: custom object
+        };
+    }
+
+    /**
+     * TODO: faire une class permetant de load plein d'objet custom si on en a plusieurs
+     * Pour l'instant, si on a que Facing on laisse ça
+     * @param property
+     * @return
+     */
+    private FacingDirection loadFacingProperty(Element property) {
+        return switch (property.getAttribute("value")) {
+            case "NORTH" -> FacingDirection.NORTH;
+            case "SOUTH" -> FacingDirection.SOUTH;
+            case "EAST" -> FacingDirection.EAST;
+            case "WEST" -> FacingDirection.WEST;
+            default -> throw new IllegalStateException("Unexpected value: " + property.getAttribute("value"));
+        };
+    }
+    
 
     /**private void loadDoors(Element doors) {
         List<Element> objects = getAllElementNode(doors.getElementsByTagName("object"));

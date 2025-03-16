@@ -33,8 +33,6 @@ public class GameEngineV2 implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        lastTime = System.nanoTime();
     }
 
     public static GameEngineV2 getInstance() {
@@ -47,7 +45,10 @@ public class GameEngineV2 implements Runnable {
 
     @Override
     public void run() {
+        lastTime = System.nanoTime();
+
         player.spawn();
+        player.getUserInterface().repaint();
 
         while (true) {
             long currentTime = System.nanoTime();

@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *  Cette classe représente une pièce
@@ -31,7 +32,12 @@ public class Room
     private final Map<Vector2, Tile>[] tiles;
 
     private final HashMap<FacingDirection, List<Door>> exits = new HashMap<>();
-    private final List<Entity> entities = new ArrayList<>();
+
+    /**
+     * ATTENTION: cet objet est éfficace si bcp plus de lecture que d'écriture
+     * si on doit trop changer le nombre d'entités, choisir une autre méthode
+     */
+    private final List<Entity> entities = new CopyOnWriteArrayList<>();
 
     private final ItemList aItemList = new ItemList();
 

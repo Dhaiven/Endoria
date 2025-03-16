@@ -1,0 +1,15 @@
+[
+    {
+        "id": 2,
+        "name": "FacingDirection",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "NORTH",
+            "SOUTH",
+            "EAST",
+            "WEST"
+        ],
+        "valuesAsFlags": false
+    }
+]

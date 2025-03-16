@@ -114,7 +114,6 @@ public class Entity extends PlaceableGameObject {
     private Vector2 checkCollision(Vector2 deltaPosition, FacingDirection direction) {
         Line2D rayCasting = getRayCastFromRectangleSide(getRigidBody2D(), direction, deltaPosition);
 
-        // Marche parfaitement pour tous les fps
         if (!position.room().contains(new Vector2(rayCasting.getX2(), rayCasting.getY2()))) {
             Double distance = MathUtils.distance(rayCasting, getRectangleSide(position.room().getArea().getBounds(), direction));
 
@@ -143,7 +142,7 @@ public class Entity extends PlaceableGameObject {
                         rigidBody2D.getHeight()
                 );
 
-                Double distance = MathUtilsV2.distance(playerCollision, collisionShape.getBounds(), direction);
+                Double distance = MathUtilsV2.distance(playerCollision, collisionShape, direction);
                 if (distance != null && switch (direction) {
                     case NORTH, SOUTH -> distance < Math.abs(deltaPosition.y());
                     case EAST, WEST -> distance < Math.abs(deltaPosition.x());
