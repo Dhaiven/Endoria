@@ -78,6 +78,7 @@ public class Player extends Entity {
             if (directions.contains(direction.getOpposite())) {
                 continue;
             }
+
             this.move(direction);
             hasUpdate = true;
         }

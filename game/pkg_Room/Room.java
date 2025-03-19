@@ -66,6 +66,10 @@ public class Room
         }
     }
 
+    public Shape getShape() {
+        return shape;
+    }
+
     public Area getArea() {
         return new Area(shape);
     }

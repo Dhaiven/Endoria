@@ -43,7 +43,9 @@ public class UserInterface extends JPanel
         this.aMyFrame.setUndecorated(true);
         this.aMyFrame.setSize(700, 700);
         this.aMyFrame.add(this);
+
         this.aMyFrame.addKeyListener(this.playerInput);
+        this.aMyFrame.addWindowFocusListener(this.playerInput);
 
         this.aMyFrame.setVisible(true);
 

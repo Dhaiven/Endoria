@@ -2,13 +2,12 @@ package game.pkg_Entity.pkg_Player;
 
 import game.pkg_Entity.FacingDirection;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PlayerInput implements KeyListener {
+public class PlayerInput implements KeyListener, WindowFocusListener {
     private final Player player;
     private boolean enable = true;
 
@@ -64,5 +63,16 @@ public class PlayerInput implements KeyListener {
 
     public Set<FacingDirection> getMovements() {
         return movements;
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent e) {
+        // Quand on quitte la fenetre, on supprime tous les mouvements en cours
+        movements.clear();
     }
 }

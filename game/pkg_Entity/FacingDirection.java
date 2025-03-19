@@ -2,8 +2,6 @@ package game.pkg_Entity;
 
 import game.pkg_Object.Vector2;
 
-import java.util.Vector;
-
 public enum FacingDirection {
     NORTH("north", new Vector2(0, -1)),
     SOUTH("south", new Vector2(0, 1)),
@@ -11,19 +9,34 @@ public enum FacingDirection {
     WEST("west", new Vector2(-1, 0));
 
     private final String name;
-    private final Vector2 vector;
+    private final Vector2 offset;
 
-    FacingDirection(String name, Vector2 vector) {
+    FacingDirection(String name, Vector2 offset) {
         this.name = name;
-        this.vector = vector;
+        this.offset = offset;
     }
 
     public String getName() {
         return name;
     }
 
-    public Vector2 getVector() {
-        return vector;
+    public Vector2 getOffset() {
+        return offset;
+    }
+
+    public Vector2 getOffset(double factor) {
+        return new Vector2(offset.x() * factor, offset.y() * factor);
+    }
+
+    /**
+     * Return vector.x() if pos is EAST or WEST else vector.y()
+     */
+    public double getVectorComponent(Vector2 vector) {
+        if (this.offset.x() != 0) {
+            return vector.x();
+        }
+
+        return vector.y();
     }
 
     public FacingDirection getOpposite() {

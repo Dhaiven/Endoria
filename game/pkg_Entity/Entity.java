@@ -4,25 +4,20 @@ import game.GameEngineV2;
 import game.pkg_Image.Sprite;
 import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
-import game.pkg_Object.TileStateWithPos;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.MathUtils;
-import game.pkg_Util.MathUtilsV2;
 import game.pkg_Util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class Entity extends PlaceableGameObject {
 
-    private List<TileStateWithPos> test = new ArrayList<>();
     protected FacingDirection facing;
 
     protected Position lastPosition = null;
@@ -49,15 +44,11 @@ public class Entity extends PlaceableGameObject {
     public void spawn() {
         isSpawned = true;
         position.room().getEntities().add(this);
-
-        getPaintedOn().repaint((int) position.x(), (int) position.y(), sprite.getWidth(), sprite.getHeight());
     }
 
     public void despawn() {
         position.room().getEntities().remove(this);
         isSpawned = false;
-
-        getPaintedOn().repaint((int) position.x(), (int) position.y(), sprite.getWidth(), sprite.getHeight());
     }
 
     public Rectangle2D getRigidBody2D() {
@@ -72,7 +63,7 @@ public class Entity extends PlaceableGameObject {
     public int getMovementFactor(FacingDirection facing) {
         /**
          * TODO: changer en fonction de si on veut un mouvement plus rapide ou non
-         * Actuellement c'est une valeur prise aléatoirement
+         * Actuellement c'est une valeur prise arbitrairement
          */
         return 200;
     }
@@ -81,17 +72,8 @@ public class Entity extends PlaceableGameObject {
         move(facing, getMovementFactor(facing) * GameEngineV2.getInstance().getDelatTime());
     }
 
-    private Vector2 generateDeltaPosition(FacingDirection facing, double movementFactor) {
-        return switch (facing) {
-            case NORTH -> new Vector2(0, -movementFactor);
-            case SOUTH -> new Vector2(0, movementFactor);
-            case EAST -> new Vector2(movementFactor, 0);
-            case WEST -> new Vector2(-movementFactor, 0);
-        };
-    }
-
     public void move(FacingDirection facing, double movementFactor) {
-        Vector2 deltaPosition = checkCollision(generateDeltaPosition(facing, movementFactor), facing);
+        Vector2 deltaPosition = checkCollision(facing.getOffset(movementFactor), facing);
         if (deltaPosition == null) {
             return;
         }
@@ -113,23 +95,23 @@ public class Entity extends PlaceableGameObject {
 
     private Vector2 checkCollision(Vector2 deltaPosition, FacingDirection direction) {
         Line2D rayCasting = getRayCastFromRectangleSide(getRigidBody2D(), direction, deltaPosition);
+        Rectangle2D rigidBody2D = getRigidBody2D();
 
+        /**
+         * TODO: custom shape from room
+         */
         if (!position.room().contains(new Vector2(rayCasting.getX2(), rayCasting.getY2()))) {
-            Double distance = MathUtils.distance(rayCasting, getRectangleSide(position.room().getArea().getBounds(), direction));
+           Double distance = MathUtils.distance(getRigidBody2D(), getRectangleSide(position.room().getArea().getBounds(), direction), direction);
 
-            if (distance != null && switch (direction) {
-                case NORTH, SOUTH -> distance < Math.abs(deltaPosition.y());
-                case EAST, WEST  -> distance < Math.abs(deltaPosition.x());
-            }) {
+            if (distance != null && distance < Math.abs(direction.getVectorComponent(deltaPosition))) {
                 if (distance > Utils.COLLISION_RADIUS) {
-                    return generateDeltaPosition(direction, distance);
+                    return direction.getOffset(distance);
                 }
 
                 return null;
             }
         }
 
-        Rectangle2D rigidBody2D = getRigidBody2D();
         for (Map<Vector2, Tile> tileState : position.room().getTiles()) {
             for (Map.Entry<Vector2, Tile> entry : tileState.entrySet()) {
                 Shape collisionShape = entry.getValue().getCollision();
@@ -142,13 +124,10 @@ public class Entity extends PlaceableGameObject {
                         rigidBody2D.getHeight()
                 );
 
-                Double distance = MathUtilsV2.distance(playerCollision, collisionShape, direction);
-                if (distance != null && switch (direction) {
-                    case NORTH, SOUTH -> distance < Math.abs(deltaPosition.y());
-                    case EAST, WEST -> distance < Math.abs(deltaPosition.x());
-                }) {
+                Double distance = MathUtils.distance(playerCollision, collisionShape, direction);
+                if (distance != null && distance < Math.abs(direction.getVectorComponent(deltaPosition))) {
                     if (distance > Utils.COLLISION_RADIUS) {
-                        return generateDeltaPosition(direction, distance);
+                        return direction.getOffset(distance);
                     }
 
                     return null;
@@ -160,14 +139,12 @@ public class Entity extends PlaceableGameObject {
     }
 
     private Vector2 getSidedPosition(Rectangle2D rectangle, FacingDirection direction) {
-        Vector2 start = switch (direction) {
+        return switch (direction) {
             case NORTH -> new Vector2(rectangle.getCenterX(), rectangle.getMinY());
             case SOUTH -> new Vector2(rectangle.getCenterX(), rectangle.getMaxY());
             case EAST  -> new Vector2(rectangle.getMaxX(), rectangle.getCenterY());
             case WEST  -> new Vector2(rectangle.getMinX(), rectangle.getCenterY());
         };
-
-        return new Vector2(start.x(), start.y());
     }
 
     private Line2D getRectangleSide(Rectangle2D rectangle, FacingDirection direction) {
@@ -201,33 +178,5 @@ public class Entity extends PlaceableGameObject {
 
     public boolean onUpdate() {
         return false;
-    }
-
-    @Override
-    public void paint(Graphics2D g2d) {
-        super.paint(g2d);
-
-        g2d.setColor(Color.GREEN);
-        for (var t : test) {
-            var sprite = t.tile().getSprite();
-            g2d.fillRect((int) t.position().x(), (int) t.position().y(), sprite.getWidth(), sprite.getHeight());
-        }
-
-        g2d.setColor(Color.WHITE);
-        g2d.fill(getRigidBody2D());
-
-        g2d.setColor(Color.RED);
-        for (var t : position.room().getTiles()) {
-            for (var entry : t.entrySet()) {
-                var tile = entry.getValue();
-                if (tile.getCollision() == null) continue;
-                Rectangle e = tile.getCollision().getBounds();
-                e.translate((int) entry.getKey().x(), (int) entry.getKey().y());
-                g2d.fill(e);
-            }
-        }
-
-        g2d.setColor(Color.BLUE);
-        g2d.fillRect((int) position.x(), (int) position.y(), 1, 1);
     }
 }
