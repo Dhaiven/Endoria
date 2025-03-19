@@ -1,6 +1,6 @@
 package game.pkg_Object;
 
-import game.pkg_Image.Sprite;
+import game.pkg_Image.StaticSprite;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ public class PlaceableGameObject extends GameObject {
     protected Position position;
     protected final int layer;
 
-    public PlaceableGameObject(JComponent paintedOn, Sprite sprite, Position position, int layer) {
+    public PlaceableGameObject(JComponent paintedOn, StaticSprite sprite, Position position, int layer) {
         super(sprite);
         this.paintedOn = paintedOn;
         this.position = position;

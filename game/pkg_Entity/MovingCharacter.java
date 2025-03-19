@@ -1,7 +1,7 @@
 package game.pkg_Entity;
 
 import game.pkg_Entity.pkg_Player.Player;
-import game.pkg_Image.Sprite;
+import game.pkg_Image.StaticSprite;
 import game.pkg_Object.Position;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
@@ -19,7 +19,7 @@ import java.util.Random;
  */
 public abstract class MovingCharacter extends Character {
 
-    public MovingCharacter(JComponent paintedOn, Sprite sprite, Position position) {
+    public MovingCharacter(JComponent paintedOn, StaticSprite sprite, Position position) {
         super(paintedOn, sprite, position, 2);
     }
 

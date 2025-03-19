@@ -1,7 +1,7 @@
 package game.pkg_Entity;
 
 import game.GameEngineV2;
-import game.pkg_Image.Sprite;
+import game.pkg_Image.StaticSprite;
 import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
@@ -24,11 +24,11 @@ public class Entity extends PlaceableGameObject {
 
     protected boolean isSpawned = false;
 
-    public Entity(JComponent paintedOn, Sprite sprite, Position position, int layer) {
+    public Entity(JComponent paintedOn, StaticSprite sprite, Position position, int layer) {
         this(paintedOn, sprite, position, layer, FacingDirection.NORTH);
     }
 
-    public Entity(JComponent paintedOn, Sprite sprite, Position position, int layer, FacingDirection facing) {
+    public Entity(JComponent paintedOn, StaticSprite sprite, Position position, int layer, FacingDirection facing) {
         super(paintedOn, sprite, position, layer);
         this.facing = facing;
     }

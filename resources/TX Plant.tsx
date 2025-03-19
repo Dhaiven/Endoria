@@ -16,4 +16,11 @@
    <object id="6" x="11.2174" y="0.0434783" width="8.69565" height="22.7826"/>
   </objectgroup>
  </tile>
+ <tile id="172">
+  <animation>
+   <frame tileid="66" duration="1000"/>
+   <frame tileid="70" duration="1000"/>
+   <frame tileid="74" duration="1000"/>
+  </animation>
+ </tile>
 </tileset>

@@ -1,10 +1,10 @@
 package game.pkg_Tile;
 
-import game.pkg_Object.GameObject;
 import game.pkg_Image.Sprite;
+import game.pkg_Object.GameObject;
+import game.pkg_Image.StaticSprite;
 import game.pkg_Object.Vector2;
 import game.pkg_Tile.behavior.TileBehavior;
-import game.pkg_Util.Utils;
 
 import java.awt.*;
 import java.util.ArrayList;

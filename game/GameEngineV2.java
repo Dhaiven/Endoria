@@ -3,7 +3,8 @@ package game;
 import game.pkg_Command.CommandManager;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Entity.pkg_Player.UserInterface;
-import game.pkg_Image.Sprite;
+import game.pkg_Image.StaticSprite;
+import game.pkg_Scheduler.Scheduler;
 import game.pkg_Util.FileUtils;
 import game.pkg_World.WorldManager;
 
@@ -15,6 +16,7 @@ public class GameEngineV2 implements Runnable {
 
     private static GameEngineV2 instance;
 
+    private final Scheduler scheduler = new Scheduler();
     private final Player player;
 
     private double lastTime;
@@ -29,7 +31,7 @@ public class GameEngineV2 implements Runnable {
             var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player.png"));
             var worldManager = new WorldManager();
 
-            player = new Player(player1 -> new UserInterface(player1, commandManager), new Sprite(playerSprite.getSubimage(0, 0, 64, 64)), worldManager.getWorld("museum").getSpawnRoom());
+            player = new Player(player1 -> new UserInterface(player1, commandManager), new StaticSprite(playerSprite.getSubimage(0, 0, 64, 64)), worldManager.getWorld("museum").getSpawnRoom());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,6 +39,10 @@ public class GameEngineV2 implements Runnable {
 
     public static GameEngineV2 getInstance() {
         return instance;
+    }
+
+    public Scheduler getSchedulerService() {
+        return scheduler;
     }
 
     public double getDelatTime() {
@@ -55,7 +61,9 @@ public class GameEngineV2 implements Runnable {
             deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
             lastTime = currentTime;
 
-            if (player.getPosition().room().onUpdate()) {
+            boolean hasUpdate = scheduler.onUpdate();
+
+            if (player.getPosition().room().onUpdate() || hasUpdate) {
                 player.getUserInterface().repaint();
             }
 

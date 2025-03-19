@@ -1,6 +1,6 @@
 package game.pkg_Object;
 
-import game.pkg_Image.Sprite;
+import game.pkg_Image.StaticSprite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,10 @@ public class ObjectCreator {
     }
 
     private final int id;
-    private final Sprite sprite;
+    private final StaticSprite sprite;
     private final List<ObjectBehavior> objectBehaviors;
 
-    private ObjectCreator(int id, Sprite sprite, List<ObjectBehavior> objectBehaviors) {
+    private ObjectCreator(int id, StaticSprite sprite, List<ObjectBehavior> objectBehaviors) {
         this.id = id;
         this.sprite = sprite;
         this.objectBehaviors = objectBehaviors;
@@ -23,7 +23,7 @@ public class ObjectCreator {
 
     public static class Builder {
         private int id;
-        private Sprite sprite;
+        private StaticSprite sprite;
 
         private final List<ObjectBehavior> objectBehaviors = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class ObjectCreator {
             return this;
         }
 
-        public Builder sprite(Sprite sprite) {
+        public Builder sprite(StaticSprite sprite) {
             this.sprite = sprite;
             return this;
         }

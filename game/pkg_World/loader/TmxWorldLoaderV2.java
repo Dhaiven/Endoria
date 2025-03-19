@@ -1,7 +1,9 @@
 package game.pkg_World.loader;
 
 import game.pkg_Entity.FacingDirection;
+import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
+import game.pkg_Image.StaticSprite;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
@@ -64,7 +66,7 @@ public class TmxWorldLoaderV2 {
                 int tileWidth = Integer.parseInt(tileElement.getAttribute("tilewidth"));
                 int tileHeight = Integer.parseInt(tileElement.getAttribute("tileheight"));
 
-                List<Element> collisionTiles = getAllElementNode(tileElement.getElementsByTagName("tile"));
+                List<Element> tileInfos = getAllElementNode(tileElement.getElementsByTagName("tile"));
 
                 // Extraction du chemin de l'image à partir de la balise <image>
                 for (Element imageElement : getAllElementNode(tileElement.getElementsByTagName("image"))) {
@@ -82,20 +84,47 @@ public class TmxWorldLoaderV2 {
                     for (int y = 0; y < imageHeight; y += tileHeight) {
                         for (int x = 0; x < imageWidth; x += tileWidth) {
                             Shape collision = null;
-                            for (Element collisionTile : collisionTiles) {
-                                int tileId = Integer.parseInt(collisionTile.getAttribute("id"));
+                            Sprite sprite = null;
+                            for (Element info : tileInfos) {
+                                int tileId = Integer.parseInt(info.getAttribute("id"));
                                 if (tileId != (id - firstId)) continue;
 
-                                Element objectGroup = (Element) collisionTile.getElementsByTagName("objectgroup").item(0);
-                                Element object = (Element) objectGroup.getElementsByTagName("object").item(0);
+                                // Collision
+                                NodeList objectGroup = info.getElementsByTagName("objectgroup");
+                                if (objectGroup.getLength() != 0) {
+                                    Element object = (Element) ((Element) objectGroup.item(0)).getElementsByTagName("object").item(0);
 
-                                collision = loadBaseShape(object);
+                                    collision = loadBaseShape(object);
+                                }
+
+                                // Animations
+                                NodeList animations = info.getElementsByTagName("animation");
+                                if (animations.getLength() != 0) {
+                                    Element animation = (Element) animations.item(0);
+
+                                    List<Map.Entry<Sprite, Double>> sprites = new ArrayList<>();
+                                    for (Element frame : getAllElementNode(animation.getElementsByTagName("frame"))) {
+                                        int spriteTileId = Integer.parseInt(frame.getAttribute("tileid"));
+
+                                        sprites.add(new AbstractMap.SimpleEntry<>(
+                                                textures.get(spriteTileId + firstId).getSprite(),
+                                                Double.parseDouble(frame.getAttribute("duration"))
+                                        ));
+                                    }
+
+                                    sprite = new AnimatedSprite(sprites);
+                                }
+
                                 break;
+                            }
+
+                            if (sprite == null) {
+                                sprite = new StaticSprite(sourceImage.getSubimage(x, y, tileWidth, tileHeight));
                             }
 
                             textures.put(id, new Tile(
                                     id - firstId,
-                                    new Sprite(sourceImage.getSubimage(x, y, tileWidth, tileHeight)),
+                                    sprite,
                                     collision
                             ));
                             id++;
