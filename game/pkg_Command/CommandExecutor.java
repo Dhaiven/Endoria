@@ -39,12 +39,12 @@ public class CommandExecutor {
      * @param inTest true si la commande est exécuté par la commande test else false
      */
     public void interpretCommand(Player player, final String pCommandLine, boolean inTest) {
-        player.getUserInterface().println( "> " + pCommandLine);
-
         StringTokenizer tokenizer = new StringTokenizer(pCommandLine);
         if (!tokenizer.hasMoreTokens()) {
             return;
         }
+
+        player.getUserInterface().println( "> " + pCommandLine);
 
         Command vCommand = this.commandManager.getCommand(tokenizer.nextToken());
         if (vCommand == null) {

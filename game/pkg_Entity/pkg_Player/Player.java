@@ -146,11 +146,9 @@ public class Player extends Entity {
         if (this.aLastRooms.isEmpty()) {
             return false;
         }
-        System.out.println("back");
 
         Door vLastDoor = this.aLastRooms.pop();
         Room vLastRoom = vLastDoor.getTo();
-        System.out.println("vLastRoom = " + vLastRoom);
         if (!this.position.room().isExit(vLastRoom)) {
             return false;
         }

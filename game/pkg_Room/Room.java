@@ -120,17 +120,6 @@ public class Room
         return tiles;
     }
 
-    public TileStateWithPos getHigherTileAt(Vector2 vector) {
-        for (int layer = this.tiles.length - 1; layer >= 0; layer--) {
-            Map<Vector2, Tile> tiles = this.tiles[layer];
-            if (tiles.containsKey(vector)) {
-                return new TileStateWithPos(tiles.get(vector), new Position(vector, this), layer);
-            }
-        }
-
-        return null;
-    }
-
     /**
      * @return UnmodifiableMap
      */

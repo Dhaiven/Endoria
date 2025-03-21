@@ -1,5 +1,6 @@
 package game.pkg_Command;
 
+import game.GameEngineV2;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Entity.pkg_Player.Player;
 import game.pkg_Room.Door;
@@ -44,6 +45,7 @@ public class GoCommand extends Command {
             for (Door door : vNextDoors) {
                 player.getUserInterface().print(door.getTo().getName() + " ");
             }
+
             return false;
         }
 
@@ -61,6 +63,8 @@ public class GoCommand extends Command {
         player.onChangeRoom(door);
         player.getUserInterface().println("Vous venez d'être téléporté !");
         //player.getGameEngine().printLocationInfo();
+
+        GameEngineV2.getInstance().setNeedToUpdate(true);
         return true;
     }
 }

@@ -190,7 +190,6 @@ public class TmxWorldLoaderV2 {
 
         for (Room room : rooms) {
             loadDoors(room, filesByRoom.get(room.getName()));
-            System.out.println(room.getExits());
         }
 
         return new World(world.getName().split("\\.")[0], rooms);
@@ -305,9 +304,7 @@ public class TmxWorldLoaderV2 {
             for (Element objectGroupElement : getAllElementNode(groupElement.getElementsByTagName("objectgroup"))) {
                 if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
 
-                System.out.println("objectGroupElement: " + objectGroupElement.getAttribute("name"));
                 for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
-                    System.out.println("object: " + object.getAttribute("name"));
                     Shape doorShape = loadBaseShape(object);
                     Room toRoom = null;
                     Integer toDoorId = null;
@@ -346,7 +343,6 @@ public class TmxWorldLoaderV2 {
                                     toRoom
                             )
                     );
-                    System.out.println("room add exit");
                 }
             }
         }
@@ -362,8 +358,6 @@ public class TmxWorldLoaderV2 {
                 if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
 
                 for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
-                    System.out.println("objectID: " + object.getAttribute("id"));
-                    System.out.println("id: " + doorId);
                     if (object.getAttribute("id").equals(String.valueOf(doorId))) {
                         return loadBaseShape(object);
                     }

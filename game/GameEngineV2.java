@@ -22,6 +22,10 @@ public class GameEngineV2 implements Runnable {
     private double lastTime;
     private double deltaTime;
 
+    private boolean isPaused = false;
+
+    private boolean needToUpdate = false;
+
     public GameEngineV2() {
         instance = this;
 
@@ -49,6 +53,28 @@ public class GameEngineV2 implements Runnable {
         return deltaTime;
     }
 
+    public void setNeedToUpdate(boolean needToUpdate) {
+        this.needToUpdate = needToUpdate;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    /**
+     * Met le jeu en pose au prochain frmerate
+     */
+    public void pause() {
+        isPaused = true;
+    }
+
+    /**
+     * Reprend le jeu au prochain frame rate
+     */
+    public void resume() {
+        isPaused = false;
+    }
+
     @Override
     public void run() {
         lastTime = System.nanoTime();
@@ -61,10 +87,12 @@ public class GameEngineV2 implements Runnable {
             deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
             lastTime = currentTime;
 
-            boolean hasUpdate = scheduler.onUpdate();
+            if (!isPaused) {
+                boolean hasUpdate = scheduler.onUpdate() || needToUpdate;
 
-            if (player.getPosition().room().onUpdate() || hasUpdate) {
-                player.getUserInterface().repaint();
+                if (player.getPosition().room().onUpdate() || hasUpdate) {
+                    player.getUserInterface().repaint();
+                }
             }
 
             try {

@@ -1,5 +1,6 @@
 package game.pkg_Entity.pkg_Player;
 
+import game.GameEngineV2;
 import game.pkg_Entity.FacingDirection;
 
 import java.awt.event.*;
@@ -48,6 +49,12 @@ public class PlayerInput implements KeyListener, WindowFocusListener {
         FacingDirection movement = findMoveDirection(e);
         if (movement != null) {
             movements.remove(movement);
+        } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            if (GameEngineV2.getInstance().isPaused()) {
+                player.getUserInterface().resume();
+            } else {
+                player.getUserInterface().pause();
+            }
         }
     }
 

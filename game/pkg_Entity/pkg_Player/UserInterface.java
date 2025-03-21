@@ -1,14 +1,22 @@
 package game.pkg_Entity.pkg_Player;
 
+import game.GameEngineV2;
 import game.pkg_Command.CommandManager;
 import game.pkg_Entity.Entity;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
+import game.pkg_Util.pkg_Message.Message;
+import game.pkg_Util.pkg_Message.options.Background;
+import game.pkg_Util.pkg_Message.options.FontOption;
+import game.pkg_Util.pkg_Message.options.ForegroundColorOption;
+import game.pkg_Util.pkg_Message.options.Padding;
 import game.pkg_World.World;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +34,8 @@ public class UserInterface extends JPanel
 
     private final PlayerInput playerInput;
     private final TerminalInput terminalInput;
+
+    private final List<Message> messages = new ArrayList<Message>();
 
     /**
      * Construct a UserInterface. As a parameter, a Game Engine
@@ -104,5 +114,34 @@ public class UserInterface extends JPanel
                 }
             }
         }
+
+        //Messages
+        for (var message : messages) {
+            message.draw(g2d, getVisibleRect());
+        }
+    }
+
+    public void sendTitle(String text, Message.Pos pos) {
+        send(
+                new Message(text, pos)
+                        .add(new FontOption(new Font(Font.DIALOG, Font.BOLD, 50)))
+                        //.add(Background.color(Color.BLACK).padding(Padding.all(20, 50)))
+                        .add(new ForegroundColorOption(Color.WHITE))
+        );
+    }
+
+    public void send(Message message) {
+        messages.add(message);
+        repaint();
+    }
+
+    public void pause() {
+        GameEngineV2.getInstance().pause();
+        sendTitle("PAUSE", Message.Pos.CENTER);
+    }
+
+    public void resume() {
+        GameEngineV2.getInstance().resume();
+        messages.clear(); // TODO: clear juste les msg du menu pause
     }
 } // UserInterface

@@ -1,5 +1,6 @@
 package game.pkg_Command;
 
+import game.GameEngineV2;
 import game.pkg_Entity.pkg_Player.Player;
 
 /**
@@ -21,6 +22,7 @@ public class BackCommand extends Command {
 
         if (player.back()) {
             //player.getGameEngine().printLocationInfo();
+            GameEngineV2.getInstance().setNeedToUpdate(true);
             return true;
         }
 
