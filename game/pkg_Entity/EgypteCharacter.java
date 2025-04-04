@@ -12,7 +12,7 @@ import game.pkg_Player.Player;
 public class EgypteCharacter extends Character {
 
     public EgypteCharacter() {
-        super(null, null, null, 2);
+        super(null, null, 2);
     }
 
     @Override

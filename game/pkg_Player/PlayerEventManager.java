@@ -2,16 +2,14 @@ package game.pkg_Player;
 
 import game.GameState;
 import game.pkg_Player.pkg_Action.Action;
-import game.pkg_Player.pkg_Action.ActionProcessorManager;
 
 import java.awt.event.*;
-import java.util.*;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class PlayerEventManager implements KeyListener, WindowFocusListener {
 
     private final Player player;
-    private final ActionProcessorManager processorManager =  new ActionProcessorManager();
     private boolean enable = true;
 
     private final Set<Action> keysPressed = new ConcurrentSkipListSet<>();

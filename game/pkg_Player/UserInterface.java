@@ -130,14 +130,14 @@ public class UserInterface extends JPanel
 
     public void pause() {
         if (GameEngineV2.getInstance().isPaused()) return;
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
         GameEngineV2.getInstance().pause();
         sendTitle("PAUSE", Message.Pos.CENTER);
     }
 
     public void resume() {
         if (!GameEngineV2.getInstance().isPaused()) return;
-        System.out.println("8888888888888888888888888888888888888888888888888888888");
+
         GameEngineV2.getInstance().resume();
         messages.clear(); // TODO: clear juste les msg du menu pause
     }

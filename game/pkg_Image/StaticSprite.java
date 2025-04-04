@@ -2,7 +2,7 @@ package game.pkg_Image;
 
 import game.pkg_Util.Utils;
 
-import java.awt.*;
+import java.awt.Image;
 
 public class StaticSprite extends Sprite {
 

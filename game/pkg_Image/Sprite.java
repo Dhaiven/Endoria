@@ -1,6 +1,6 @@
 package game.pkg_Image;
 
-import java.awt.*;
+import java.awt.Image;
 
 public abstract class Sprite {
 

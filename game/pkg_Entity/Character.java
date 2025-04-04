@@ -4,8 +4,6 @@ import game.pkg_Player.Player;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Object.Position;
 
-import javax.swing.*;
-
 /**
  * Classe représentant un PNJ
  *
@@ -14,8 +12,8 @@ import javax.swing.*;
  */
 public abstract class Character extends Entity {
 
-    public Character(JComponent paintedOn, StaticSprite sprite, Position position, int layer) {
-        super(paintedOn, sprite, position, layer);
+    public Character(StaticSprite sprite, Position position, int layer) {
+        super(sprite, position, layer);
     }
 
     /**

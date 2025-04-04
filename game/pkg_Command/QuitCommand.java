@@ -1,5 +1,6 @@
 package game.pkg_Command;
 
+import game.GameEngineV2;
 import game.pkg_Player.Player;
 
 /**
@@ -16,7 +17,7 @@ public class QuitCommand extends Command {
     public boolean execute(Player player, String[] args) {
         if (args.length != 0) {
             player.getUserInterface().println("Thank you for playing.  Good bye.");
-            player.getUserInterface().enable(false );
+            GameEngineV2.getInstance().stop();
             return true;
         }
         

@@ -6,7 +6,6 @@ import game.pkg_Object.Position;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Random;
 
@@ -19,8 +18,8 @@ import java.util.Random;
  */
 public abstract class MovingCharacter extends Character {
 
-    public MovingCharacter(JComponent paintedOn, StaticSprite sprite, Position position) {
-        super(paintedOn, sprite, position, 2);
+    public MovingCharacter(StaticSprite sprite, Position position) {
+        super(sprite, position, 2);
     }
 
     @Override

@@ -10,7 +10,6 @@ import game.pkg_Tile.Tile;
 import game.pkg_Util.MathUtils;
 import game.pkg_Util.Utils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -24,12 +23,12 @@ public class Entity extends PlaceableGameObject {
 
     protected boolean isSpawned = false;
 
-    public Entity(JComponent paintedOn, StaticSprite sprite, Position position, int layer) {
-        this(paintedOn, sprite, position, layer, FacingDirection.NORTH);
+    public Entity(StaticSprite sprite, Position position, int layer) {
+        this(sprite, position, layer, FacingDirection.NORTH);
     }
 
-    public Entity(JComponent paintedOn, StaticSprite sprite, Position position, int layer, FacingDirection facing) {
-        super(paintedOn, sprite, position, layer);
+    public Entity(StaticSprite sprite, Position position, int layer, FacingDirection facing) {
+        super(sprite, position, layer);
         this.facing = facing;
     }
 
@@ -60,7 +59,7 @@ public class Entity extends PlaceableGameObject {
         return isSpawned;
     }
 
-    public int getMovementFactor(FacingDirection facing) {
+    public int getMovementFactorPerSecond(FacingDirection facing) {
         /**
          * TODO: changer en fonction de si on veut un mouvement plus rapide ou non
          * Actuellement c'est une valeur prise arbitrairement
@@ -69,7 +68,7 @@ public class Entity extends PlaceableGameObject {
     }
 
     public void move(FacingDirection facing) {
-        move(facing, getMovementFactor(facing) * GameEngineV2.getInstance().getDeltaTime());
+        move(facing, getMovementFactorPerSecond(facing) * GameEngineV2.getInstance().getDeltaTime());
     }
 
     public void move(FacingDirection facing, double movementFactor) {

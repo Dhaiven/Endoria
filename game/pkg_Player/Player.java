@@ -32,17 +32,17 @@ public class Player extends Entity {
 
     private final PlayerSettings settings;
     private final PlayerEventManager eventManager;
+    private final ActionProcessorManager actionProcessorManager;
 
-    // TODO: faut pas devoir reset paintedOn après le super
     // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, StaticSprite sprite, Room room) {
-        super(null, sprite, new Position(room.getSpawnPoint(), room), 2);
+        super(sprite, new Position(room.getSpawnPoint(), room), 2);
 
         this.eventManager = new PlayerEventManager(this);
         this.settings = new PlayerSettings();
+        this.actionProcessorManager = new ActionProcessorManager();
 
         this.aUserInterface = userInterface.apply(this);
-        this.paintedOn = this.aUserInterface;
     }
     /**
      * @return l'interface utilisateur permettant d'afficher des messages
@@ -74,19 +74,17 @@ public class Player extends Entity {
     }
 
     public void triggerKeys() {
-        ActionProcessorManager processorManager = new ActionProcessorManager();
-
         Iterator<Action> keysPressedIterator = this.getEventManager().getKeysPressed().iterator();
         while (keysPressedIterator.hasNext()) {
             Action action = keysPressedIterator.next();
-            processorManager.getActionProcessor(action).onKeyPressed(this);
+            actionProcessorManager.getActionProcessor(action).onKeyPressed(this);
             if (!action.canSpam()) {
                 keysPressedIterator.remove();
             }
         }
 
         for (Action action : this.getEventManager().getKeysReleased()) {
-            processorManager.getActionProcessor(action).onKeyReleased(this);
+            actionProcessorManager.getActionProcessor(action).onKeyReleased(this);
         }
     }
 

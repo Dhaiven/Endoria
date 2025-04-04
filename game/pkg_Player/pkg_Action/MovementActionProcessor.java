@@ -1,10 +1,7 @@
 package game.pkg_Player.pkg_Action;
 
-import game.GameEngineV2;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Player.Player;
-
-import java.awt.event.KeyEvent;
 
 public class MovementActionProcessor extends ActionProcessor {
 
