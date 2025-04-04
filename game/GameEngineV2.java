@@ -1,7 +1,6 @@
 package game;
 
 import game.pkg_Command.CommandManager;
-import game.pkg_Player.pkg_Action.Action;
 import game.pkg_Player.Player;
 import game.pkg_Player.UserInterface;
 import game.pkg_Image.StaticSprite;
@@ -60,18 +59,6 @@ public class GameEngineV2 implements Runnable {
 
     public double getDeltaTime() {
         return deltaTime;
-    }
-
-    public GameState[] getStates() {
-        GameState[] result = new GameState[2];
-        if (isPaused) {
-            result[0] = GameState.PAUSE;
-        } else {
-            result[0] = GameState.PLAY;
-        }
-
-        result[1] = GameState.ALL;
-        return result;
     }
 
     public void start() {

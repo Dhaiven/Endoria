@@ -1,4 +1,4 @@
-package game.pkg_World.loader;
+package game.pkg_World.pkg_Loader;
 
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Image.AnimatedSprite;
@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class TmxWorldLoaderV2 {
+public class TmxWorldLoader implements WorldLoader {
 
     private static Document createDocument(File file) {
         try {
@@ -51,7 +51,7 @@ public class TmxWorldLoaderV2 {
     private final HashMap<String, Room> rooms = new HashMap<>();
     private final HashMap<String, File> filesByRoom = new HashMap<>();
 
-    public TmxWorldLoaderV2() {
+    public TmxWorldLoader() {
 
     }
 
@@ -151,8 +151,13 @@ public class TmxWorldLoaderV2 {
         return elements;
     }
 
+    @Override
+    public String getExtension() {
+        return "world";
+    }
+
     // Load les fichier en .world
-    public World loadWorld(File world) {
+    public World load(File world) {
         List<Room> rooms = new ArrayList<>();
 
         try {
