@@ -1,6 +1,6 @@
 package game.pkg_Room;
 
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 import game.pkg_Item.Item;
 import game.pkg_Object.Vector2;
 

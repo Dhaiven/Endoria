@@ -1,4 +1,4 @@
-package game.pkg_Entity.pkg_Player;
+package game.pkg_Player;
 
 import game.GameEngineV2;
 import game.pkg_Command.CommandManager;
@@ -7,17 +7,14 @@ import game.pkg_Object.Vector2;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.pkg_Message.Message;
-import game.pkg_Util.pkg_Message.options.Background;
 import game.pkg_Util.pkg_Message.options.FontOption;
 import game.pkg_Util.pkg_Message.options.ForegroundColorOption;
-import game.pkg_Util.pkg_Message.options.Padding;
 import game.pkg_World.World;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class implements a simple graphical user interface with a
@@ -32,10 +29,9 @@ public class UserInterface extends JPanel
 
     private final JFrame aMyFrame;
 
-    private final PlayerInput playerInput;
     private final TerminalInput terminalInput;
 
-    private final List<Message> messages = new ArrayList<Message>();
+    private final List<Message> messages = Collections.synchronizedList(new ArrayList<Message>());
 
     /**
      * Construct a UserInterface. As a parameter, a Game Engine
@@ -45,7 +41,6 @@ public class UserInterface extends JPanel
     public UserInterface(Player player, CommandManager commandManager)
     {
         this.player = player;
-        this.playerInput = new PlayerInput(player);
 
         this.aMyFrame = new JFrame("Jeux test");
         this.aMyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,8 +49,8 @@ public class UserInterface extends JPanel
         this.aMyFrame.setSize(700, 700);
         this.aMyFrame.add(this);
 
-        this.aMyFrame.addKeyListener(this.playerInput);
-        this.aMyFrame.addWindowFocusListener(this.playerInput);
+        this.aMyFrame.addKeyListener(player.getEventManager());
+        this.aMyFrame.addWindowFocusListener(player.getEventManager());
 
         this.aMyFrame.setVisible(true);
 
@@ -63,10 +58,6 @@ public class UserInterface extends JPanel
 
         this.aMyFrame.requestFocus();
     } // UserInterface(.)
-
-    public PlayerInput getPlayerInput() {
-        return playerInput;
-    }
 
     /**
      * Print out some text into the text area.
@@ -116,7 +107,9 @@ public class UserInterface extends JPanel
         }
 
         //Messages
-        for (var message : messages) {
+        Iterator<Message> messageIterator = messages.iterator();
+        while (messageIterator.hasNext()) {
+            Message message = messageIterator.next();
             message.draw(g2d, getVisibleRect());
         }
     }
@@ -136,11 +129,15 @@ public class UserInterface extends JPanel
     }
 
     public void pause() {
+        if (GameEngineV2.getInstance().isPaused()) return;
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         GameEngineV2.getInstance().pause();
         sendTitle("PAUSE", Message.Pos.CENTER);
     }
 
     public void resume() {
+        if (!GameEngineV2.getInstance().isPaused()) return;
+        System.out.println("8888888888888888888888888888888888888888888888888888888");
         GameEngineV2.getInstance().resume();
         messages.clear(); // TODO: clear juste les msg du menu pause
     }

@@ -1,4 +1,4 @@
-package game.pkg_Entity.pkg_Player;
+package game.pkg_Player;
 
 import game.pkg_Command.Command;
 import game.pkg_Entity.*;
@@ -7,13 +7,12 @@ import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
+import game.pkg_Player.pkg_Action.Action;
+import game.pkg_Player.pkg_Action.ActionProcessorManager;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -31,10 +30,17 @@ public class Player extends Entity {
     private ItemList aItemList = new ItemList();
     private int aMaxWeight;
 
+    private final PlayerSettings settings;
+    private final PlayerEventManager eventManager;
+
     // TODO: faut pas devoir reset paintedOn après le super
     // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, StaticSprite sprite, Room room) {
         super(null, sprite, new Position(room.getSpawnPoint(), room), 2);
+
+        this.eventManager = new PlayerEventManager(this);
+        this.settings = new PlayerSettings();
+
         this.aUserInterface = userInterface.apply(this);
         this.paintedOn = this.aUserInterface;
     }
@@ -52,6 +58,14 @@ public class Player extends Entity {
         return this.position.room();
     }
 
+    public PlayerEventManager getEventManager() {
+        return eventManager;
+    }
+
+    public PlayerSettings getSettings() {
+        return settings;
+    }
+
     /**
      * @return tous les items que le joueur possède dans son inventaire
      */
@@ -59,29 +73,21 @@ public class Player extends Entity {
         return this.aItemList;
     }
 
-    @Override
-    public boolean onUpdate() {
-        boolean hasUpdate = super.onUpdate();
-        return checkMovement() || hasUpdate;
-    }
+    public void triggerKeys() {
+        ActionProcessorManager processorManager = new ActionProcessorManager();
 
-    private boolean checkMovement() {
-        boolean hasUpdate = false;
-
-        Set<FacingDirection> directions = this.aUserInterface.getPlayerInput().getMovements();
-        for (FacingDirection direction : directions) {
-            // Si on a 2 mouvements de sens opposé alors il vont s'annuler donc on évite de les calculer
-            // Attention, si un deux 2 mouvements est cancel par une collision, le 2eme est censé prendre le dessus
-            // Ici, on enlève ce comportement. A voir pour le remettre si quand on a un fps bas, ceci pose un probleme
-            if (directions.contains(direction.getOpposite())) {
-                continue;
+        Iterator<Action> keysPressedIterator = this.getEventManager().getKeysPressed().iterator();
+        while (keysPressedIterator.hasNext()) {
+            Action action = keysPressedIterator.next();
+            processorManager.getActionProcessor(action).onKeyPressed(this);
+            if (!action.canSpam()) {
+                keysPressedIterator.remove();
             }
-
-            this.move(direction);
-            hasUpdate = true;
         }
 
-        return hasUpdate;
+        for (Action action : this.getEventManager().getKeysReleased()) {
+            processorManager.getActionProcessor(action).onKeyReleased(this);
+        }
     }
 
     /**

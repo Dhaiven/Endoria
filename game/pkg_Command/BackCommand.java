@@ -1,7 +1,7 @@
 package game.pkg_Command;
 
 import game.GameEngineV2;
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 
 /**
  * @author  DEBELLE Hugp
@@ -22,7 +22,7 @@ public class BackCommand extends Command {
 
         if (player.back()) {
             //player.getGameEngine().printLocationInfo();
-            GameEngineV2.getInstance().setNeedToUpdate(true);
+            GameEngineV2.getInstance().forceUpdate();
             return true;
         }
 

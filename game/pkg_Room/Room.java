@@ -2,7 +2,7 @@ package game.pkg_Room;
 
 import game.pkg_Entity.Entity;
 import game.pkg_Entity.FacingDirection;
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
 import game.pkg_Object.TileStateWithPos;

@@ -35,15 +35,15 @@ public class AnimatedSprite extends Sprite {
 
         public AnimationTask(AnimatedSprite animatedSprite) {
             this.animatedSprite = animatedSprite;
-            this.lastChangement = System.currentTimeMillis();
+            this.lastChangement = GameEngineV2.getInstance().getCurrentTime();
         }
 
         @Override
         public boolean onRun() {
             double duration = animatedSprite.sprites.get(animatedSprite.spriteIndex).getValue();
-            if (System.currentTimeMillis() - this.lastChangement >= duration) {
+            if (GameEngineV2.getInstance().getCurrentTime() - this.lastChangement >= duration) {
                 animatedSprite.spriteIndex = (this.animatedSprite.spriteIndex + 1) % this.animatedSprite.sprites.size();
-                lastChangement = System.currentTimeMillis();
+                lastChangement = GameEngineV2.getInstance().getCurrentTime();
                 return true;
             }
 

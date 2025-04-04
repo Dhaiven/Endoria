@@ -1,6 +1,6 @@
 package game.pkg_Command;
 
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 
 /**
  * Classe pkg_Command. Command - une commande du jeu d'aventure Zuul.

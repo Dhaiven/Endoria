@@ -1,6 +1,6 @@
 package game.pkg_Command;
 
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 import game.pkg_Item.Beamer;
 import game.pkg_Item.Item;
 

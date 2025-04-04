@@ -1,10 +1,7 @@
 package game;
 
-import game.pkg_Command.Command;
-import game.pkg_Entity.Character;
-import game.pkg_Entity.MovingCharacter;
-import game.pkg_Entity.pkg_Player.Player;
-import game.pkg_Entity.pkg_Player.UserInterface;
+import game.pkg_Player.Player;
+import game.pkg_Player.UserInterface;
 import game.pkg_Room.Room;
 
 import java.util.ArrayList;

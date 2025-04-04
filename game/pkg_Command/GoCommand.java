@@ -2,7 +2,7 @@ package game.pkg_Command;
 
 import game.GameEngineV2;
 import game.pkg_Entity.FacingDirection;
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 import game.pkg_Room.Door;
 
 import java.util.List;
@@ -64,7 +64,7 @@ public class GoCommand extends Command {
         player.getUserInterface().println("Vous venez d'être téléporté !");
         //player.getGameEngine().printLocationInfo();
 
-        GameEngineV2.getInstance().setNeedToUpdate(true);
+        GameEngineV2.getInstance().forceUpdate();
         return true;
     }
 }

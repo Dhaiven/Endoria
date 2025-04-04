@@ -2,7 +2,7 @@ package game.pkg_Command;
 
 import game.pkg_Entity.Character;
 import game.pkg_Entity.Entity;
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 
 /**
  * @author  DEBELLE Hugp

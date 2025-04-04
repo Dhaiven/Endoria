@@ -1,8 +1,9 @@
 package game;
 
 import game.pkg_Command.CommandManager;
-import game.pkg_Entity.pkg_Player.Player;
-import game.pkg_Entity.pkg_Player.UserInterface;
+import game.pkg_Player.pkg_Action.Action;
+import game.pkg_Player.Player;
+import game.pkg_Player.UserInterface;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Scheduler.Scheduler;
 import game.pkg_Util.FileUtils;
@@ -11,20 +12,24 @@ import game.pkg_World.WorldManager;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.*;
 
 public class GameEngineV2 implements Runnable {
 
     private static GameEngineV2 instance;
 
+    private ScheduledFuture<?> future;
+
     private final Scheduler scheduler = new Scheduler();
     private final Player player;
 
-    private double lastTime;
+    private long currentTime = 0;
+    private long lastTime = 0;
     private double deltaTime;
 
     private boolean isPaused = false;
 
-    private boolean needToUpdate = false;
+    private boolean forceUpdate = false;
 
     public GameEngineV2() {
         instance = this;
@@ -49,12 +54,69 @@ public class GameEngineV2 implements Runnable {
         return scheduler;
     }
 
-    public double getDelatTime() {
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    public double getDeltaTime() {
         return deltaTime;
     }
 
-    public void setNeedToUpdate(boolean needToUpdate) {
-        this.needToUpdate = needToUpdate;
+    public GameState[] getStates() {
+        GameState[] result = new GameState[2];
+        if (isPaused) {
+            result[0] = GameState.PAUSE;
+        } else {
+            result[0] = GameState.PLAY;
+        }
+
+        result[1] = GameState.ALL;
+        return result;
+    }
+
+    public void start() {
+        lastTime = System.currentTimeMillis();
+
+        player.spawn();
+        player.getUserInterface().repaint();
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        future = scheduler.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MILLISECONDS);
+    }
+
+    // Méthode principale de la boucle de jeu
+    @Override
+    public void run() {
+        player.triggerKeys();
+
+        boolean hasUpdate = forceUpdate;
+        if (!isPaused) {
+            long currentTimeMillis = System.currentTimeMillis();
+            long deltaTime = currentTimeMillis - lastTime;
+
+            this.currentTime += deltaTime;
+            this.deltaTime = deltaTime / 1_000.0; // Conversion en secondes
+
+            lastTime = currentTimeMillis;
+
+            hasUpdate = scheduler.onUpdate() || hasUpdate;
+            hasUpdate = player.getPosition().room().onUpdate() || hasUpdate;
+        }
+
+        if (hasUpdate) {
+            player.getUserInterface().repaint();
+            forceUpdate = false;
+        }
+    }
+
+    // Méthode pour arrêter complètement la boucle de jeu
+    public void stop() {
+        future.cancel(false);
+        System.exit(0);
+    }
+
+    public void forceUpdate() {
+        this.forceUpdate = true;
     }
 
     public boolean isPaused() {
@@ -73,33 +135,7 @@ public class GameEngineV2 implements Runnable {
      */
     public void resume() {
         isPaused = false;
-    }
-
-    @Override
-    public void run() {
-        lastTime = System.nanoTime();
-
-        player.spawn();
-        player.getUserInterface().repaint();
-
-        while (true) {
-            long currentTime = System.nanoTime();
-            deltaTime = (currentTime - lastTime) / 1_000_000_000.0; // Convert to seconds
-            lastTime = currentTime;
-
-            if (!isPaused) {
-                boolean hasUpdate = scheduler.onUpdate() || needToUpdate;
-
-                if (player.getPosition().room().onUpdate() || hasUpdate) {
-                    player.getUserInterface().repaint();
-                }
-            }
-
-            try {
-                Thread.sleep(1); // Pause de 1 milliseconde pour éviter d'exploser le CPU
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
+        lastTime = System.currentTimeMillis();
+        forceUpdate();
     }
 }

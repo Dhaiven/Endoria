@@ -1,4 +1,4 @@
-package game.pkg_Entity.pkg_Player;
+package game.pkg_Player;
 
 import game.pkg_Command.CommandManager;
 

@@ -69,7 +69,7 @@ public class Entity extends PlaceableGameObject {
     }
 
     public void move(FacingDirection facing) {
-        move(facing, getMovementFactor(facing) * GameEngineV2.getInstance().getDelatTime());
+        move(facing, getMovementFactor(facing) * GameEngineV2.getInstance().getDeltaTime());
     }
 
     public void move(FacingDirection facing, double movementFactor) {
@@ -91,6 +91,8 @@ public class Entity extends PlaceableGameObject {
         } else {
             this.position = new Position(newPosition, this.position.room());
         }
+
+        GameEngineV2.getInstance().forceUpdate();
     }
 
     private Vector2 checkCollision(Vector2 deltaPosition, FacingDirection direction) {

@@ -1,6 +1,6 @@
 package game.pkg_Entity;
 
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 
 /**
  * Classe représentant le PNJ dans

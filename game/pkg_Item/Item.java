@@ -1,6 +1,6 @@
 package game.pkg_Item;
 
-import game.pkg_Entity.pkg_Player.Player;
+import game.pkg_Player.Player;
 import game.pkg_Object.GameObject;
 import game.pkg_Image.StaticSprite;
 
