@@ -16,9 +16,9 @@ public class GameStateChangeActionProcessor extends ActionProcessor {
         keyHasBeenReleased = false;
 
         if (GameEngineV2.getInstance().isPaused()) {
-            player.getUserInterface().resume();
+            GameEngineV2.getInstance().resume();
         } else {
-            player.getUserInterface().pause();
+            GameEngineV2.getInstance().pause();
         }
     }
 

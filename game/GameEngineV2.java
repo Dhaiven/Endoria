@@ -2,7 +2,7 @@ package game;
 
 import game.pkg_Command.CommandManager;
 import game.pkg_Player.Player;
-import game.pkg_Player.UserInterface;
+import game.pkg_Player.pkg_Interface.UserInterface;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Scheduler.Scheduler;
 import game.pkg_Util.FileUtils;
@@ -11,6 +11,8 @@ import game.pkg_World.WorldManager;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class GameEngineV2 implements Runnable {
@@ -59,6 +61,18 @@ public class GameEngineV2 implements Runnable {
 
     public double getDeltaTime() {
         return deltaTime;
+    }
+
+    public List<GameState> getGameStates() {
+        List<GameState> gameStates = new ArrayList<>();
+        if (isPaused) {
+            gameStates.add(GameState.PAUSE);
+        } else {
+            gameStates.add(GameState.PLAY);
+        }
+
+        gameStates.add(GameState.ALL);
+        return gameStates;
     }
 
     public void start() {
@@ -115,6 +129,7 @@ public class GameEngineV2 implements Runnable {
      */
     public void pause() {
         isPaused = true;
+        player.getUserInterface().setPausePanelVisible(true);
     }
 
     /**
@@ -122,6 +137,7 @@ public class GameEngineV2 implements Runnable {
      */
     public void resume() {
         isPaused = false;
+        player.getUserInterface().setPausePanelVisible(false);
         lastTime = System.currentTimeMillis();
         forceUpdate();
     }

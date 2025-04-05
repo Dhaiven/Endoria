@@ -1,13 +1,14 @@
-package game.pkg_Player;
+package game.pkg_Player.pkg_Interface;
 
 import game.pkg_Command.CommandManager;
+import game.pkg_Player.Player;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TerminalInput implements ActionListener {
+public class TerminalInterface implements ActionListener {
 
     private final Player player;
     private final CommandManager commandManager;
@@ -18,7 +19,7 @@ public class TerminalInput implements ActionListener {
 
     private boolean enable = true;
 
-    public TerminalInput(JFrame ownerFrame, Player player, CommandManager commandManager) {
+    public TerminalInterface(JFrame ownerFrame, Player player, CommandManager commandManager) {
         this.player = player;
         this.commandManager = commandManager;
 
@@ -47,7 +48,7 @@ public class TerminalInput implements ActionListener {
 
         // Ajout des composants au JFrame
         this.aDialog.add(vPanel);
-        this.aDialog.setVisible(true);
+        //this.aDialog.setVisible(true);
     }
 
     public boolean isEnable() {
