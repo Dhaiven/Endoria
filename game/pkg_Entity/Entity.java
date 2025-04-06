@@ -4,6 +4,7 @@ import game.GameEngineV2;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
+import game.pkg_Object.TileStateWithPos;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Tile.Tile;
@@ -113,26 +114,26 @@ public class Entity extends PlaceableGameObject {
             }
         }
 
-        for (Map<Vector2, Tile> tileState : position.room().getTiles()) {
-            for (Map.Entry<Vector2, Tile> entry : tileState.entrySet()) {
-                Shape collisionShape = entry.getValue().getCollision();
-                if (collisionShape == null) continue;
+        for (Map.Entry<TileStateWithPos, Tile> entry : position.room().getTiles().entrySet()) {
+            Shape collisionShape = entry.getValue().getCollision();
+            if (collisionShape == null) continue;
 
-                Rectangle2D playerCollision = new Rectangle2D.Double(
-                        rigidBody2D.getX() - entry.getKey().x(),
-                        rigidBody2D.getY() - entry.getKey().y(),
-                        rigidBody2D.getWidth(),
-                        rigidBody2D.getHeight()
-                );
+            Rectangle2D playerCollision = new Rectangle2D.Double(
+                    rigidBody2D.getX() - entry.getKey().position().x(),
+                    rigidBody2D.getY() - entry.getKey().position().y(),
+                    rigidBody2D.getWidth(),
+                    rigidBody2D.getHeight()
+            );
 
-                Double distance = MathUtils.distance(playerCollision, collisionShape, direction);
-                if (distance != null && distance < Math.abs(direction.getVectorComponent(deltaPosition))) {
-                    if (distance > Utils.COLLISION_RADIUS) {
-                        return direction.getOffset(distance);
-                    }
+            Double distance = MathUtils.distance(playerCollision, collisionShape, direction);
+            if (distance != null && distance < Math.abs(direction.getVectorComponent(deltaPosition))) {
+                entry.getValue().getBehaviors().forEach(behavior -> behavior.onEntityCollide(entry.getKey(), this));
 
-                    return null;
+                if (distance > Utils.COLLISION_RADIUS) {
+                    return direction.getOffset(distance);
                 }
+
+                return null;
             }
         }
 

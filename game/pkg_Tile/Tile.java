@@ -6,20 +6,19 @@ import game.pkg_Object.Vector2;
 import game.pkg_Tile.behavior.TileBehavior;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Tile extends GameObject {
 
-    // TODO: add behavior
     private final int id;
     private final Shape collision;
-    private final List<TileBehavior> behaviors = new ArrayList<>();
+    private final List<TileBehavior> behaviors;
 
     public Tile(int id, Sprite sprite, Shape collision) {
         super(sprite);
         this.id = id;
         this.collision = collision;
+        this.behaviors = (new TileManager()).getTileBehaviors(id);
     }
 
     public int getId() {

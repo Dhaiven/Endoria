@@ -116,8 +116,18 @@ public class Room
         return this.shape.contains(vector.x(), vector.y());
     }
 
-    public Map<Vector2, Tile>[] getTiles() {
-        return tiles;
+    public Map<TileStateWithPos, Tile> getTiles() {
+        Map<TileStateWithPos, Tile> result = new HashMap<>();
+        for (int layer = 0; layer < this.tiles.length; layer++) {
+            for (Map.Entry<Vector2, Tile> entry : this.tiles[layer].entrySet()) {
+                result.put(
+                        new TileStateWithPos(entry.getValue(), new Position(entry.getKey(), this), layer),
+                        entry.getValue()
+                );
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -144,11 +154,19 @@ public class Room
     }
 
     public void setTile(Tile tile, Vector2 position, int layer, Player player) {
-        tiles[layer].put(position, tile);
-
-        for (TileBehavior behavior : tile.getBehaviors()) {
-            behavior.onPlace(new TileStateWithPos(tile, new Position(position, this), layer), player);
+        Tile lastTile = tiles[layer].put(position, tile);
+        if (lastTile != null) {
+            lastTile.getBehaviors().forEach(behavior -> {
+                behavior.onDestroy(
+                        new TileStateWithPos(lastTile, new Position(position, this), layer),
+                        player
+                );
+            });
         }
+
+        tile.getBehaviors().forEach(behavior -> {
+            behavior.onPlace(new TileStateWithPos(tile, new Position(position, this), layer), player);
+        });
     }
 
     /**
