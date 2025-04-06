@@ -8,7 +8,8 @@ public enum Action {
     MOVE_LEFT(GameState.PLAY),
     MOVE_RIGHT(GameState.PLAY),
 
-    GAME_STATE_CHANGE(GameState.ALL, false);
+    GAME_STATE_CHANGE(GameState.ALL, false),
+    TERMINAL_STATE_CHANGE(GameState.ALL, false);
 
     private final GameState state;
     private final boolean canSpam;

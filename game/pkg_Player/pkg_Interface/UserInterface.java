@@ -74,6 +74,10 @@ public class UserInterface extends JFrame
         return pausePanel;
     }
 
+    public TerminalInterface getTerminalInterface() {
+        return terminalInput;
+    }
+
     // TODO: supp cette fonction est faire getPausePanel().setVisible(visible);
     public void setPausePanelVisible(boolean visible) {
         pausePanel.setVisible(visible);

@@ -23,6 +23,7 @@ public class PlayerSettings {
         register(Action.MOVE_LEFT, KeyEvent.VK_Q, KeyEvent.VK_LEFT);
         register(Action.MOVE_RIGHT, KeyEvent.VK_D, KeyEvent.VK_RIGHT);
         register(Action.GAME_STATE_CHANGE, KeyEvent.VK_ESCAPE);
+        register(Action.TERMINAL_STATE_CHANGE, KeyEvent.VK_F2);
     }
 
     /**

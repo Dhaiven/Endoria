@@ -27,6 +27,7 @@ public class TerminalInterface implements ActionListener {
         this.aDialog = new JDialog(ownerFrame, "Terminal", false);
         this.aDialog.setSize(300, 200);
         this.aDialog.setLocationRelativeTo(ownerFrame); // Centre sur le premier JFrame
+        this.aDialog.addKeyListener(player.getEventManager());
 
         // Zone de texte et champ d'entrée
         this.aEntryField = new JTextField(34);

@@ -16,6 +16,7 @@ final public class ActionProcessorManager {
         registerAction(new MovementActionProcessor(Action.MOVE_RIGHT, FacingDirection.EAST));
 
         registerAction(new GameStateChangeActionProcessor());
+        registerAction(new TerminalStateChangeActionProcessor());
     }
 
     public ActionProcessor getActionProcessor(final Action action) {
