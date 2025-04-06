@@ -1,5 +1,7 @@
 package game.pkg_Player.pkg_Interface;
 
+import game.GameEngine;
+import game.GameEngineV2;
 import game.pkg_Util.InterfaceUtils;
 
 import javax.swing.*;
@@ -12,15 +14,22 @@ public class PausePanel extends JPanel {
         setOpaque(false);
         setLayout(new GridBagLayout()); // Pour centrer les composants dans le panel
 
-        JButton bouton1 = InterfaceUtils.createButton(focusPanel);
-        bouton1.setText("Bouton 1");
 
-        JButton bouton2 = InterfaceUtils.createButton(focusPanel);
-        bouton2.setText("Bouton 2");
 
         JLabel label = InterfaceUtils.createLabel();
         label.setText("PAUSE");
         label.setHorizontalAlignment(JTextField.CENTER);
+
+        JButton resumeButton = InterfaceUtils.createButton(focusPanel);
+        resumeButton.setText("Reprendre");
+        resumeButton.addActionListener(e -> GameEngineV2.getInstance().resume());
+
+        JButton settingsButton = InterfaceUtils.createButton(focusPanel);
+        settingsButton.setText("Paramètres");
+
+        JButton quitButton = InterfaceUtils.createButton(focusPanel);
+        quitButton.setText("QUITTER");
+        quitButton.addActionListener(e -> GameEngineV2.getInstance().stop());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -32,9 +41,12 @@ public class PausePanel extends JPanel {
         add(label, gbc);
 
         gbc.gridy = 1;
-        add(bouton1, gbc);
+        add(resumeButton, gbc);
 
         gbc.gridy = 2;
-        add(bouton2, gbc);
+        add(settingsButton, gbc);
+
+        gbc.gridy = 3;
+        add(quitButton, gbc);
     }
 }
