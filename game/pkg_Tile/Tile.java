@@ -18,6 +18,8 @@ public class Tile extends GameObject {
         super(sprite);
         this.id = id;
         this.collision = collision;
+
+        // TODO: pas redéfinir le tilemaneger, surement le mattre dans le GameEngine
         this.behaviors = (new TileManager()).getTileBehaviors(id);
     }
 
