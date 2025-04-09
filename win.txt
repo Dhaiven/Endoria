@@ -1,6 +1,13 @@
-go east
-look
 go south
-look
+take key
+back
 go west
+back
+go north
+go east
+go south
+go south
+go west
+alea China
+go east
 look

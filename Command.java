@@ -6,8 +6,8 @@
  */
 public class Command
 { 
-    private CommandWord aCommandWord;
-    private String aSecondWord;
+    private final CommandWord aCommandWord;
+    private final String aSecondWord;
     
     public Command(final CommandWord pCommandWord, final String pSecondWord) {
         this.aCommandWord = pCommandWord;

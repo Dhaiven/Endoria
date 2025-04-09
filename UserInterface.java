@@ -85,7 +85,7 @@ public class UserInterface implements ActionListener
      */
     private void createGUI()
     {
-        this.aMyFrame = new JFrame( "My GAME" ); // change the title !
+        this.aMyFrame = new JFrame("L'affaire du musée"); // change the title !
         this.aEntryField = new JTextField( 34 );
 
         this.aLog = new JTextArea();

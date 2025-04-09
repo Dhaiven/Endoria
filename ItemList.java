@@ -8,13 +8,13 @@ import java.util.HashMap;
  */
 public class ItemList {
 
-    private HashMap<String, Item> aItems;
+    private final HashMap<String, Item> aItems;
 
     public ItemList() {
         this.aItems = new HashMap<>();
     }
 
-    public Item getItemByName(String pName) {
+    public Item getItemByName(final String pName) {
         return this.aItems.get(pName);
     }
 
@@ -22,11 +22,11 @@ public class ItemList {
      * @return la somme du poids de chaque item
      */
     public int getWeight() {
-        int sum = 0;
-        for (Item item : this.aItems.values()) {
-            sum += item.getWeight();
+        int vResult = 0;
+        for (Item vItem : this.aItems.values()) {
+            vResult += vItem.getWeight();
         }
-        return sum;
+        return vResult;
     }
 
     /**
@@ -51,11 +51,11 @@ public class ItemList {
             return "No item.";
         }
 
-        StringBuilder result = new StringBuilder();
+        StringBuilder vResult = new StringBuilder();
         for (Item item : this.aItems.values()) {
-            result.append(item.getLongDescription()).append("\n");
+            vResult.append(item.getLongDescription()).append("\n");
         }
 
-        return result.toString();
+        return vResult.toString();
     }
 }

@@ -10,13 +10,13 @@ import java.util.HashMap;
  * @author  Michael Kolling and David J. Barnes + D.Bureau
  * @version 2008.03.30 + 2019.09.25
  */
-public class CommandWords
-{
-    private final HashMap<String, CommandWord> aValidCommands = new HashMap();
+public class CommandWords {
+
+    private final HashMap<String, CommandWord> aValidCommands = new HashMap<>();
 
     public CommandWords() {
         for (CommandWord command : CommandWord.values()) {
-            aValidCommands.put(command.name().toLowerCase(), command);
+            this.aValidCommands.put(command.name().toLowerCase(), command);
         }
     }
 
@@ -27,9 +27,9 @@ public class CommandWords
      *         if it is not a valid command word.
      */
     public CommandWord getCommandWord(String commandWord) {
-        CommandWord command = this.aValidCommands.get(commandWord);
-        if (command != null) {
-            return command;
+        CommandWord vCommand = this.aValidCommands.get(commandWord);
+        if (vCommand != null) {
+            return vCommand;
         }
 
         return CommandWord.UNKNOWN;
@@ -39,10 +39,11 @@ public class CommandWords
      * Print la liste des commandes disponibles
      */
     public String getCommandList() {
-        StringBuilder result = new StringBuilder();
+        StringBuilder vResult = new StringBuilder();
         for (String command : this.aValidCommands.keySet()) {
-            result.append(command).append(" ");
+            vResult.append(command).append(" ");
         }
-        return result.toString();
+
+        return vResult.toString();
     }
 } // CommandWords

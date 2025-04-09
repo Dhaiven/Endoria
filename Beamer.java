@@ -24,10 +24,10 @@ public class Beamer extends Item {
 
     /**
      * Cette méthode doit être appellé en même temps que {@link #setFiredRoom(Room)}
-     * @param fired true charge le beamer, false le décharge
+     * @param pFired true charge le beamer, false le décharge
      */
-    public void setFired(boolean fired) {
-        this.isFired = fired;
+    public void setFired(final boolean pFired) {
+        this.isFired = pFired;
     }
 
     /**
@@ -40,9 +40,9 @@ public class Beamer extends Item {
 
     /**
      * Cette méthode doit être appellé en même temps que {@link #setFired(boolean)}
-     * @param aFiredRoom Room met le room, null reset la room
+     * @param pFiredRoom Room met le room, null reset la room
      */
-    public void setFiredRoom(Room aFiredRoom) {
-        this.aFiredRoom = aFiredRoom;
+    public void setFiredRoom(final Room pFiredRoom) {
+        this.aFiredRoom = pFiredRoom;
     }
 }

@@ -12,8 +12,12 @@ public class MagicCookie extends Item {
         super("cookie", "Un cookie magique qui augmente la poids max", 5);
     }
 
+    /**
+     * Procédure appellé quand le joueur utilise cet item
+     * @param player le joueur ayant utilisé cet item
+     */
     @Override
-    public void onUse(Player player) {
+    public void onUse(final Player player) {
         super.onUse(player);
         player.setMaxWeight(100);
     }

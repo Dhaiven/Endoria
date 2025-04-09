@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
 public class Parser 
 {
 
-    private CommandWords aCommandWords;  // holds all valid command words
+    private final CommandWords aCommandWords;  // holds all valid command words
 
     /**
      * Create a new Parser.

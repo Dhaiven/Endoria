@@ -12,12 +12,12 @@ public class Player {
     private String aName;
 
     private Room aCurrentRoom;
-    private Stack<Room> aLastRooms;
+    private final Stack<Room> aLastRooms;
 
-    private ItemList aItemList = new ItemList();
+    private final ItemList aItemList = new ItemList();
     private int aMaxWeight;
 
-    public Player(String pName, Room pCurrentRoom, int pMaxWeight) {
+    public Player(final String pName, final Room pCurrentRoom, final int pMaxWeight) {
         this.aName = pName;
         this.aCurrentRoom = pCurrentRoom;
         this.aMaxWeight = pMaxWeight;
@@ -64,19 +64,19 @@ public class Player {
     /**
      * Procédure permettant de changer le poids max que le
      * joueur peut porter
-     * @param aMaxWeight le nouveau poids max
+     * @param pMaxWeight le nouveau poids max
      */
-    public void setMaxWeight(int aMaxWeight) {
-        this.aMaxWeight = aMaxWeight;
+    public void setMaxWeight(final int pMaxWeight) {
+        this.aMaxWeight = pMaxWeight;
     }
 
     /**
      * Fonction permettant d'aller dans la salle souhaiter
-     * @param direction la direction souhaitée
+     * @param pDirection la direction souhaitée
      * @return boolean true s'il est dans la nouvelle piece else false
      */
-    public boolean goRoom(final String direction) {
-        Door vNextDoor = this.aCurrentRoom.getExit(direction);
+    public boolean goRoom(final String pDirection) {
+        Door vNextDoor = this.aCurrentRoom.getExit(pDirection);
         if (vNextDoor == null || !vNextDoor.canPass(this)) {
             return false;
         }
@@ -89,7 +89,7 @@ public class Player {
      * @param pRoom n'importe quelle pièce du jeu
      * @return boolean true s'il est dans la nouvelle piece else false
      */
-    public boolean goRoom(Room pRoom) {
+    public boolean goRoom(final Room pRoom) {
         this.aLastRooms.push(this.aCurrentRoom);
         this.aCurrentRoom = pRoom;
         return true;
@@ -119,15 +119,15 @@ public class Player {
      * @return true si le joueur a pris l'item else false
      */
     public boolean take(final String pItemName) {
-        Item item = this.aCurrentRoom.getItemList().getItemByName(pItemName);
-        if (item == null) {
+        Item vItem = this.aCurrentRoom.getItemList().getItemByName(pItemName);
+        if (vItem == null) {
             return false;
-        } else if (this.aItemList.getWeight() + item.getWeight() > this.aMaxWeight) {
+        } else if (this.aItemList.getWeight() + vItem.getWeight() > this.aMaxWeight) {
             return false;
         }
 
-        this.aCurrentRoom.getItemList().removeItem(item);
-        this.aItemList.addItem(item);
+        this.aCurrentRoom.getItemList().removeItem(vItem);
+        this.aItemList.addItem(vItem);
 
         return true;
     }
@@ -138,13 +138,13 @@ public class Player {
      * @return true si l'item a été lâché else false
      */
     public boolean drop(final String pItemName) {
-        Item item = this.aItemList.getItemByName(pItemName);
-        if (item == null) {
+        Item vItem = this.aItemList.getItemByName(pItemName);
+        if (vItem == null) {
             return false;
         }
 
-        this.aItemList.removeItem(item);
-        this.aCurrentRoom.getItemList().addItem(item);
+        this.aItemList.removeItem(vItem);
+        this.aCurrentRoom.getItemList().addItem(vItem);
 
         return true;
     }
@@ -154,7 +154,7 @@ public class Player {
      * Le supprime de l'inventaire
      * @param pItem l'item a utilisé
      */
-    public void use(Item pItem) {
+    public void use(final Item pItem) {
         this.aItemList.removeItem(pItem);
         pItem.onUse(this);
     }

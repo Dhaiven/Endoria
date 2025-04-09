@@ -9,12 +9,12 @@ import java.util.HashMap;
 public class Room
 {
     
-    private String aDescription;
+    private final String aDescription;
 
-    private HashMap<String, Door> exits;
-    private String aImageName;
+    private final HashMap<String, Door> exits;
+    private final String aImageName;
 
-    private ItemList aItemList = new ItemList();
+    private final ItemList aItemList = new ItemList();
 
     /**
      * Construct de Room
@@ -49,9 +49,9 @@ public class Room
      * @param pRoom la pièce dans laquelle on veut se rendre
      * @return true s'il existe une sortie amenant à cette pièce else false
      */
-    public boolean isExit(Room pRoom) {
-        for (Door door : this.exits.values()) {
-            if (door.getTo().getDescription().equals(pRoom.getDescription())) {
+    public boolean isExit(final Room pRoom) {
+        for (Door vDoor : this.exits.values()) {
+            if (vDoor.getTo().getDescription().equals(pRoom.getDescription())) {
                 return true;
             }
         }
@@ -63,7 +63,7 @@ public class Room
      * @param pDirection direction souhaitée
      * @return la porte disposable dans la direction donnée
      */
-    public Door getExit(String pDirection) {
+    public Door getExit(final String pDirection) {
         return this.exits.get(pDirection);
     }
 
@@ -71,27 +71,27 @@ public class Room
      * @return un String de toutes les sorties disposables
      */
     public String getExitString() {
-        StringBuilder result = new StringBuilder();
-        for (String direction : exits.keySet()) {
-            result.append(direction).append(" ");
+        StringBuilder vResult = new StringBuilder();
+        for (String vDirection : this.exits.keySet()) {
+            vResult.append(vDirection).append(" ");
         }
         
-        return result.toString();
+        return vResult.toString();
     }
 
     /**
      * Set une room de sortie à la direction donnée
      */
-    public void setExit(String direction, Room exit) {
-        exits.put(direction, new Door(exit));
+    public void setExit(final String pDirection, final Room pExit) {
+        this.exits.put(pDirection, new Door(pExit));
     }
 
     /**
      * Set une room de sortie à la direction donnée
      * Cette sortie nécessite une clé pour être emprunté
      */
-    public void setLockedExit(String direction, Room exit, Item key) {
-        exits.put(direction, new LockDoor(exit, key));
+    public void setLockedExit(final String pDirection, final Room pExit, final Item pKey) {
+        this.exits.put(pDirection, new LockDoor(pExit, pKey));
     }
 
     /**

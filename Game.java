@@ -11,19 +11,18 @@
  * @author  Michael Kolling and David J. Barnes
  * @version 2.0 (Jan 2003) DB edited (2019)
  */
-public class Game
-{
-    private UserInterface aGui;
-    private GameEngine aEngine;
+public class Game {
+
+    private final UserInterface aGui;
+    private final GameEngine aEngine;
 
     /**
      * Create the game and initialise its internal map. Create the inerface and link to it.
      */
-    public Game()
-    {
+    public Game() {
         this.aEngine = new GameEngine();
-        this.aGui = new UserInterface( this.aEngine );
-        this.aEngine.setGUI( this.aGui );
+        this.aGui = new UserInterface(this.aEngine);
+        this.aEngine.setGUI(this.aGui);
     }
 
     public static void main(String[] args) {

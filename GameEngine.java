@@ -13,14 +13,14 @@ import java.util.List;
  * @author  Michael Kolling and David J. Barnes
  * @version 1.0 (Jan 2003) DB edited (2019)
  */
-public class GameEngine
-{
-    private Parser        aParser;
+public class GameEngine {
+
+    private final Parser aParser;
     private UserInterface aGui;
 
     private Player aCurrentPlayer;
 
-    private List<Room> aRooms = new ArrayList<>();
+    private final List<Room> aRooms = new ArrayList<>();
     private String alea = null;
 
     private int helpLimit = 5;
@@ -28,14 +28,17 @@ public class GameEngine
     /**
      * Constructor for objects of class GameEngine
      */
-    public GameEngine()
-    {
+    public GameEngine() {
         this.aParser = new Parser();
         this.createRooms();
     }
 
-    public void setGUI( final UserInterface pUserInterface )
-    {
+    /**
+     * Permet d'initialiser l'interface du joueur
+     *
+     * @param pUserInterface
+     */
+    public void setGUI(final UserInterface pUserInterface) {
         this.aGui = pUserInterface;
         this.aCurrentPlayer.setUserInterface(pUserInterface);
         this.printWelcome();
@@ -134,7 +137,7 @@ public class GameEngine
      * @return un String si il y a un alea else null
      */
     public String getAlea() {
-        return alea;
+        return this.alea;
     }
 
     /**
@@ -150,9 +153,9 @@ public class GameEngine
      * Given a command, process (that is: execute) the command.
      * If this command ends the game, true is returned, otherwise false is
      * returned.
-     * @param inTest true si la commande est exécuté par la commande test else false
+     * @param pInTest true si la commande est exécuté par la commande test else false
      */
-    public void interpretCommand(final String pCommandLine, boolean inTest) {
+    public void interpretCommand(final String pCommandLine, final boolean pInTest) {
         this.aGui.println( "> " + pCommandLine);
         Command vCommand = this.aParser.getCommand(pCommandLine);
 
@@ -160,8 +163,8 @@ public class GameEngine
             case HELP -> this.printHelp();
             case GO -> this.goRoom(vCommand);
             case QUIT -> {
-                if ( vCommand.hasSecondWord() ) {
-                    this.aGui.println( "Quit what?" );
+                if (vCommand.hasSecondWord()) {
+                    this.aGui.println("Quit what?");
                 } else {
                     this.endGame();
                 }
@@ -194,23 +197,23 @@ public class GameEngine
             }
             case INVENTORY -> this.inventory();
             case CHARGE -> {
-                Item item = this.aCurrentPlayer.getItemList().getItemByName("beamer");
-                if (item instanceof Beamer) {
-                    this.charge((Beamer) item);
+                Item vItem = this.aCurrentPlayer.getItemList().getItemByName("beamer");
+                if (vItem instanceof Beamer) {
+                    this.charge((Beamer) vItem);
                 } else {
                     this.aGui.println("Vous n'avez pas de beamer à chargé");
                 }
             }
             case FIRE -> {
-                Item item = this.aCurrentPlayer.getItemList().getItemByName("beamer");
-                if (item instanceof Beamer) {
-                    this.fire((Beamer) item);
+                Item vItem = this.aCurrentPlayer.getItemList().getItemByName("beamer");
+                if (vItem instanceof Beamer) {
+                    this.fire((Beamer) vItem);
                 } else {
                     this.aGui.println("Vous n'avez pas de beamer à utilisé");
                 }
             }
             case ALEA -> {
-                if (!inTest) {
+                if (!pInTest) {
                     this.aGui.println("Cette commande est disponible que durant une phase de test");
                     return;
                 }
@@ -228,13 +231,14 @@ public class GameEngine
      * Procédure affichant l'aide
      */
     private void printHelp() {
-        helpLimit--;
-        if (helpLimit <= 0) {
+        this.helpLimit--;
+        if (this.helpLimit <= 0) {
             this.aGui.println("Vous avez taper trop de fois la commande help");
             return;
         }
+
         this.aGui.println("\nYou are lost. You are alone.\n\nYour command words are:");
-        this.aGui.println(aParser.getCommandString());
+        this.aGui.println(this.aParser.getCommandString());
     }
 
     /**
@@ -257,11 +261,11 @@ public class GameEngine
     /**
      * Procédure affichant la room actualle ansi que toutes les sorties disponibles
      */
-    private void look(Command pCommand) {
+    private void look(final Command pCommand) {
         if (pCommand.hasSecondWord()) {
-            Item actualItem = this.aCurrentPlayer.getCurrentRoom().getItemList().getItemByName(pCommand.getSecondWord());
-            if (actualItem != null) {
-                this.aGui.println(actualItem.getLongDescription());
+            Item vActualItem = this.aCurrentPlayer.getCurrentRoom().getItemList().getItemByName(pCommand.getSecondWord());
+            if (vActualItem != null) {
+                this.aGui.println(vActualItem.getLongDescription());
                 return;
             }
 
@@ -281,13 +285,13 @@ public class GameEngine
             return;
         }
 
-        Item item = this.aCurrentPlayer.getItemList().getItemByName(pCommand.getSecondWord());
-        if (item == null) {
+        Item vItem = this.aCurrentPlayer.getItemList().getItemByName(pCommand.getSecondWord());
+        if (vItem == null) {
             this.aGui.println("Vous ne possédez pas cet item.");
             return;
         }
 
-        this.aCurrentPlayer.use(item);
+        this.aCurrentPlayer.use(vItem);
         this.aGui.println("Vous venez de manger cette item");
     }
 
@@ -316,14 +320,13 @@ public class GameEngine
             return;
         }
 
-        File file = new File(pCommand.getSecondWord() + ".txt");
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                this.interpretCommand(line, true);
+        File vFile = new File(pCommand.getSecondWord() + ".txt");
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(vFile)))) {
+            String vLine;
+            while ((vLine = br.readLine()) != null) {
+                this.interpretCommand(vLine, true);
             }
-        } catch (FileNotFoundException e) {
-
+        } catch (FileNotFoundException ignored) {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -340,7 +343,7 @@ public class GameEngine
     /**
      * Procédure appellé quand le joueur éxecute la commande charge
      */
-    public void charge(Beamer pBeamer) {
+    public void charge(final Beamer pBeamer) {
         if (!pBeamer.isFired()) {
             pBeamer.setFired(true);
             pBeamer.setFiredRoom(this.aCurrentPlayer.getCurrentRoom());
@@ -353,7 +356,7 @@ public class GameEngine
     /**
      * Procédure appellé quand le joueur éxecute la commande fire
      */
-    public void fire(Beamer pBeamer) {
+    public void fire(final Beamer pBeamer) {
         if (pBeamer.isFired()) {
             this.aGui.println("Téléportation...");
             pBeamer.setFired(false);
@@ -369,10 +372,8 @@ public class GameEngine
     /**
      * Procédure appellé quand le joueur éxecute la commande quit
      */
-    private void endGame()
-    {
-        this.aGui.println( "Thank you for playing.  Good bye." );
-        this.aGui.enable( false );
+    private void endGame() {
+        this.aGui.println("Thank you for playing.  Good bye.");
+        this.aGui.enable(false);
     }
-
 }

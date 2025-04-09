@@ -12,17 +12,21 @@ public class TransporterRoom extends Room {
 
     private final GameEngine aEngine;
 
-    public TransporterRoom(final GameEngine gameEngine, final String pDescription) {
-        this(gameEngine, pDescription, null);
+    public TransporterRoom(final GameEngine pGameEngine, final String pDescription) {
+        this(pGameEngine, pDescription, null);
     }
 
-    public TransporterRoom(final GameEngine gameEngine, final String pDescription, final String pImage)  {
+    public TransporterRoom(final GameEngine pGameEngine, final String pDescription, final String pImage)  {
         super(pDescription, pImage);
-        this.aEngine = gameEngine;
+        this.aEngine = pGameEngine;
     }
 
+    /**
+     * @param pDirection direction souhaitée
+     * @return le porte indiquant la salle suivantes
+     */
     @Override
-    public Door getExit(String pDirection) {
+    public Door getExit(final String pDirection) {
         return new RoomRandomizer(this.aEngine).find();
     }
 
@@ -30,7 +34,7 @@ public class TransporterRoom extends Room {
 
         private final GameEngine aEngine;
 
-        public RoomRandomizer(GameEngine aEngine) {
+        public RoomRandomizer(final GameEngine aEngine) {
             this.aEngine = aEngine;
         }
 
@@ -38,20 +42,20 @@ public class TransporterRoom extends Room {
          * @return la porte aléatoire si alea est null else la porte vers la pièce spécifiée par aléa
          */
         public Door find() {
-            if (aEngine.getAlea() != null) {
-                for (Room room : aEngine.getRooms()) {
-                    if (room.getDescription().equals(aEngine.getAlea())) {
-                        return new Door(room);
+            if (this.aEngine.getAlea() != null) {
+                for (Room vRoom : this.aEngine.getRooms()) {
+                    if (vRoom.getDescription().equals(this.aEngine.getAlea())) {
+                        return new Door(vRoom);
                     }
                 }
 
                 return null;
             }
 
-            Random random = new Random();
+            Random vRandom = new Random();
             List<Room> vRooms = this.aEngine.getRooms();
-            Room randomRoom = vRooms.get(random.nextInt(vRooms.size()));
-            return new Door(randomRoom);
+            Room vRandomRoom = vRooms.get(vRandom.nextInt(vRooms.size()));
+            return new Door(vRandomRoom);
         }
     }
 }

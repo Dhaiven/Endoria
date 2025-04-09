@@ -7,18 +7,24 @@
  */
 public class LockDoor extends Door {
 
-    private final Item key;
+    private final Item aKey;
 
-    public LockDoor(Room from, Item key) {
-        super(from);
-        this.key = key;
+    public LockDoor(final Room pFrom, final Item pKey) {
+        super(pFrom);
+        this.aKey = pKey;
     }
 
+    /**
+     * Fonction permettant de savoir si le joueur peut passer la porte ou non
+     *
+     * @param player Le joueur qui veut passer
+     * @return true si le joueur peut prendre la poerte else false
+     */
     @Override
-    public boolean canPass(Player player) {
-        Item playerKey = player.getItemList().getItemByName(key.getName());
-        if (playerKey != null) {
-            player.use(playerKey);
+    public boolean canPass(final Player player) {
+        Item vPlayerKey = player.getItemList().getItemByName(this.aKey.getName());
+        if (vPlayerKey != null) {
+            player.use(vPlayerKey);
             return true;
         }
 
