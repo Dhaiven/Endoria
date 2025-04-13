@@ -1,13 +1,14 @@
-package game.pkg_Player.pkg_Action;
+package game.pkg_Player.pkg_Action.pkg_Processor;
 
 import game.GameEngineV2;
 import game.pkg_Player.Player;
+import game.pkg_Player.pkg_Action.Action;
 
-public class GameStateChangeActionProcessor extends ActionProcessor {
+public class OpenPauseOverlayActionProcessor extends ActionProcessor {
 
     private boolean keyHasBeenReleased = true;
 
-    public GameStateChangeActionProcessor() {
+    public OpenPauseOverlayActionProcessor() {
         super(Action.OPEN_PAUSE_OVERLAY);
     }
 

@@ -8,14 +8,13 @@ import game.pkg_Util.InterfaceUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class SettingsOverlay extends Overlay {
 
     private final Component focusPanel;
+
+    private boolean hasClickedOnEditButton = false;
 
     public SettingsOverlay(Component focusPanel, UserInterface userInterface) {
         super(userInterface);
@@ -73,39 +72,39 @@ public class SettingsOverlay extends Overlay {
                 var button = InterfaceUtils.createButton(focusPanel);
                 button.setText(action.getName());
                 add(button, gbc);
-
-                Integer keyCode = userInterface.getPlayer().getSettings().getKeyFromAction(action);
-                String keyText = KeysMapper.getKeyText(keyCode);
-
                 gbc.gridx += 1;
-                var editKeyButton = InterfaceUtils.createButton(focusPanel);
-                editKeyButton.setText(keyText);
-                editKeyButton.addActionListener(e -> {
-                    var lastKeyListeners = focusPanel.getKeyListeners();
-                    for (var keyListener : lastKeyListeners) {
-                        focusPanel.removeKeyListener(keyListener);
+
+                Integer[] keysCode = userInterface.getPlayer().getSettings().getKeyFromAction(action);
+                for (int index = 0; index < keysCode.length; index++) {
+                    var editKeyButton = InterfaceUtils.createButton(focusPanel);
+
+                    Integer keyCode = keysCode[index];
+                    if (keyCode != null) {
+                        String keyText = KeysMapper.getKeyText(keyCode);
+                        editKeyButton.setText(keyText);
                     }
 
-                    focusPanel.addKeyListener(new KeyAdapter() {
-                        @Override
-                        public void keyPressed(KeyEvent e) {
-                            System.out.println(e.getKeyCode());
-                            userInterface.getPlayer().getSettings().setKeyFromAction(action, e.getKeyCode());
+                    final int actualIndex = index;
 
-                            var actualKeyListeners = focusPanel.getKeyListeners();
-                            for (var keyListener : actualKeyListeners) {
-                                focusPanel.removeKeyListener(keyListener);
+                    editKeyButton.addActionListener(e -> {
+                        if (hasClickedOnEditButton) return;
+                        hasClickedOnEditButton = true;
+
+                        focusPanel.addKeyListener(new KeyAdapter() {
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                userInterface.getPlayer().getSettings().replaceKeyFromAction(action, actualIndex, e.getKeyCode());
+
+                                editKeyButton.setText(KeysMapper.getKeyText(e.getKeyCode()));
+                                focusPanel.removeKeyListener(this);
+                                hasClickedOnEditButton = false;
                             }
-
-                            for (var keyListener : lastKeyListeners) {
-                                focusPanel.addKeyListener(keyListener);
-                            }
-
-                            editKeyButton.setText(KeysMapper.getKeyText(e.getKeyCode()));
-                        }
+                        });
                     });
-                });
-                add(editKeyButton, gbc);
+
+                    add(editKeyButton, gbc);
+                    gbc.gridx += 1;
+                }
 
                 gbc.gridx = 0;
                 gbc.gridy += 1;

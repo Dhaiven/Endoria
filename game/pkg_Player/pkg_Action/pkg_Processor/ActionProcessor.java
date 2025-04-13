@@ -1,6 +1,7 @@
-package game.pkg_Player.pkg_Action;
+package game.pkg_Player.pkg_Action.pkg_Processor;
 
 import game.pkg_Player.Player;
+import game.pkg_Player.pkg_Action.Action;
 
 public abstract class ActionProcessor {
 

@@ -9,9 +9,8 @@ import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Player.pkg_Action.Action;
-import game.pkg_Player.pkg_Action.ActionProcessorManager;
+import game.pkg_Player.pkg_Action.pkg_Processor.ActionProcessorManager;
 import game.pkg_Player.pkg_Ui.UserInterface;
-import game.pkg_Player.pkg_Ui.pkg_Overlay.SettingsOverlay;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 

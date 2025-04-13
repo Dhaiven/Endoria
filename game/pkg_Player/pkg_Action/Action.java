@@ -8,11 +8,10 @@ public enum Action {
     MOVE_LEFT("LEFT", GameState.PLAY),
     MOVE_RIGHT("RIGHT", GameState.PLAY),
 
-    GAME_STATE_CHANGE("Pause/Reprendre", GameState.ALL, false),
-    TERMINAL_STATE_CHANGE("Afficher/Cacher le terminal", GameState.ALL, false),
-
     OPEN_PAUSE_OVERLAY("Mettre le jeu en pause", GameState.PLAY, false),
-    CLOSE_OVERLAY("Ferme l'interface", GameState.PAUSE, false);
+    CLOSE_OVERLAY("Ferme l'interface", GameState.PAUSE, false),
+
+    TERMINAL_STATE_CHANGE("Afficher/Cacher le terminal", GameState.ALL, false);
 
     private final String name;
     private final GameState state;

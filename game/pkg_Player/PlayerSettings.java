@@ -8,36 +8,36 @@ import java.util.*;
 
 public class PlayerSettings {
 
-    private final Map<Action, List<Integer>> settings = new HashMap<>();
+    private final Map<Action, Integer[]> settings = new HashMap<>();
 
     public PlayerSettings() {
         // TODO: check si la config du joueur existe et si c le cas, load les commandes avec
         // sinon faire le code suivant
 
         for (Action action : Action.values()) {
-            settings.put(action, new ArrayList<>());
+            settings.put(action, new Integer[2]);
         }
 
         register(Action.MOVE_FORWARD, KeyEvent.VK_Z, KeyEvent.VK_UP);
         register(Action.MOVE_BACKWARD, KeyEvent.VK_S, KeyEvent.VK_DOWN);
         register(Action.MOVE_LEFT, KeyEvent.VK_Q, KeyEvent.VK_LEFT);
         register(Action.MOVE_RIGHT, KeyEvent.VK_D, KeyEvent.VK_RIGHT);
-        register(Action.GAME_STATE_CHANGE, KeyEvent.VK_P);
-        register(Action.TERMINAL_STATE_CHANGE, KeyEvent.VK_F2);
 
         register(Action.OPEN_PAUSE_OVERLAY, KeyEvent.VK_ESCAPE);
         register(Action.CLOSE_OVERLAY, KeyEvent.VK_ESCAPE);
+
+        register(Action.TERMINAL_STATE_CHANGE, KeyEvent.VK_F2);
     }
 
     /**
      * @param keyCode {@link KeyEvent} CONSTANTS
      */
     public Action getActionFromKey(int keyCode, GameState state) {
-        for (Map.Entry<Action, List<Integer>> entry : settings.entrySet()) {
+        for (Map.Entry<Action, Integer[]> entry : settings.entrySet()) {
             if (entry.getKey().getState() != state) continue;
 
             for (Integer value : entry.getValue()) {
-                if (value == keyCode) {
+                if (value != null && value == keyCode) {
                     return entry.getKey();
                 }
             }
@@ -48,29 +48,32 @@ public class PlayerSettings {
     }
 
     /**
-     * @return {@link KeyEvent} CONSTANTS
+     * @return a int tab with 3 elements {@link KeyEvent} CONSTANTS
      */
-    public Integer getKeyFromAction(Action action) {
-        for (Integer entry : settings.get(action)) {
-            // Pour l'instant return le premier
-            // TODO: all possibles keys
-            return entry;
-        }
-
-        return null;
+    public Integer[] getKeyFromAction(Action action) {
+       return settings.get(action);
     }
 
-    public void setKeyFromAction(Action action, int keyCode) {
-        register(action, keyCode);
-        System.out.println(settings.get(action));
+    public void replaceKeyFromAction(Action action, int index, Integer newKeyCode) {
+        Integer[] keysCode = getKeyFromAction(action);
+        keysCode[index] = newKeyCode;
     }
 
     /**
-     * @param keysCode {@link KeyEvent} CONSTANTS
+     * @param keyCode {@link KeyEvent} CONSTANTS
      */
-    private void register(Action action, Integer ...keysCode) {
-        settings.put(action, Arrays.asList(keysCode));
+    private void register(Action action, Integer keyCode) {
+        Integer[] keysCode = settings.get(action);
+        keysCode[0] = keyCode;
     }
 
-
+    /**
+     * @param firstKeyCode {@link KeyEvent} CONSTANTS
+     * @param secondKeyCode {@link KeyEvent} CONSTANTS
+     */
+    private void register(Action action, int firstKeyCode, int secondKeyCode) {
+        Integer[] keysCode = settings.get(action);
+        keysCode[0] = firstKeyCode;
+        keysCode[1] = secondKeyCode;
+    }
 }
