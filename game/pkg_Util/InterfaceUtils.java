@@ -33,6 +33,17 @@ public class InterfaceUtils {
         JLabel text = new JLabel();
         text.setFocusable(false);
         text.setOpaque(false);
+        Font font = new Font("Arial", Font.PLAIN, 30);
+        text.setFont(font);
+        text.setForeground(Color.BLACK);
+
+        return text;
+    }
+
+    public static JLabel createTitleLabel() {
+        JLabel text = new JLabel();
+        text.setFocusable(false);
+        text.setOpaque(false);
         Font font = new Font("Arial", Font.BOLD, 50);
         text.setFont(font);
         text.setForeground(Color.BLACK);

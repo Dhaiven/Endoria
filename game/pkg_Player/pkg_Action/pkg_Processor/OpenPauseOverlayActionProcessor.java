@@ -16,13 +16,7 @@ public class OpenPauseOverlayActionProcessor extends ActionProcessor {
         if (!keyHasBeenReleased) return;
         keyHasBeenReleased = false;
 
-        System.out.println("e");
-
-        if (GameEngineV2.getInstance().isPaused()) {
-            player.getUserInterface().getPauseOverlay().setVisible(false);
-        } else {
-            player.getUserInterface().getPauseOverlay().setVisible(true);
-        }
+        player.getUserInterface().getPauseOverlay().setVisible(!GameEngineV2.getInstance().isPaused());
     }
 
     public void onKeyReleased(Player player) {

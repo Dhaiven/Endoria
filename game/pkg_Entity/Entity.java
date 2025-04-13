@@ -100,7 +100,7 @@ public class Entity extends PlaceableGameObject {
         Rectangle2D rigidBody2D = getRigidBody2D();
 
         /**
-         * TODO: custom shape from room
+         * TODO: custom shape for room
          */
         if (!position.room().contains(new Vector2(rayCasting.getX2(), rayCasting.getY2()))) {
            Double distance = MathUtils.distance(getRigidBody2D(), getRectangleSide(position.room().getArea().getBounds(), direction), direction);

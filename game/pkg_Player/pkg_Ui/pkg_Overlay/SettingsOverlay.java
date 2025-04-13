@@ -6,44 +6,26 @@ import game.pkg_Player.pkg_Action.KeysMapper;
 import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Util.InterfaceUtils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class SettingsOverlay extends Overlay {
 
-    private final Component focusPanel;
-
     private boolean hasClickedOnEditButton = false;
 
     public SettingsOverlay(Component focusPanel, UserInterface userInterface) {
         super(userInterface);
-        this.focusPanel = focusPanel;
-    }
 
-    @Override
-    public String getId() {
-        return "settings";
-    }
-
-    @Override
-    public void addNotify() {
-        super.addNotify();
-
-        create();
-    }
-
-    private void create() {
-        setSize(500, 700);
+        setSize(600, 700);
         setOpaque(false);
         setLayout(new GridBagLayout()); // Pour centrer les composants dans le panel
 
-        getParent().addComponentListener(new ComponentAdapter() {
+        focusPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 setLocation(
-                        getParent().getWidth() / 2 - getWidth() / 2,
-                        getParent().getHeight() / 2 - getHeight() / 2
+                        focusPanel.getWidth() / 2 - getWidth() / 2,
+                        focusPanel.getHeight() / 2 - getHeight() / 2
                 );
             }
         });
@@ -57,7 +39,7 @@ public class SettingsOverlay extends Overlay {
         gbc.gridy = 0;
 
         for (GameState state : GameState.values()) {
-            var label = InterfaceUtils.createLabel();
+            var label = InterfaceUtils.createTitleLabel();
             label.setText(switch(state) {
                 case PLAY -> "En jeu";
                 default -> "Interface";
@@ -69,9 +51,9 @@ public class SettingsOverlay extends Overlay {
             for (Action action : Action.values()) {
                 if (!action.getState().equals(state)) continue;
 
-                var button = InterfaceUtils.createButton(focusPanel);
-                button.setText(action.getName());
-                add(button, gbc);
+                var actionLabel = InterfaceUtils.createLabel();
+                actionLabel.setText(action.getName());
+                add(actionLabel, gbc);
                 gbc.gridx += 1;
 
                 Integer[] keysCode = userInterface.getPlayer().getSettings().getKeyFromAction(action);

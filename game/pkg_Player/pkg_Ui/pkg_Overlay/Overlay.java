@@ -19,8 +19,6 @@ public abstract class Overlay extends JPanel {
         this.userInterface = userInterface;
     }
 
-    public abstract String getId();
-
     @Override
     public void setVisible(boolean aFlag) {
         if (aFlag == isVisible()) return;

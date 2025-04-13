@@ -11,29 +11,12 @@ import java.awt.event.ComponentEvent;
 
 public class PauseOverlay extends Overlay {
 
-    private final Component focusPanel;
-
-    public PauseOverlay(Component focusComponent, UserInterface userInterface) {
+    public PauseOverlay(Component focusPanel, UserInterface userInterface) {
         super(userInterface);
-        this.focusPanel = focusComponent;
-    }
 
-    @Override
-    public String getId() {
-        return "pause";
-    }
-
-    @Override
-    public void addNotify() {
-        super.addNotify();
-
-        create();
-    }
-
-    private void create() {
         setSize(200, 300);
         setOpaque(false);
-        setLayout(new GridBagLayout()); // Pour centrer les composants dans le panel
+        setLayout(new GridBagLayout());
 
         focusPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -45,7 +28,7 @@ public class PauseOverlay extends Overlay {
             }
         });
 
-        JLabel label = InterfaceUtils.createLabel();
+        JLabel label = InterfaceUtils.createTitleLabel();
         label.setText("PAUSE");
         label.setHorizontalAlignment(JTextField.CENTER);
 
@@ -55,7 +38,7 @@ public class PauseOverlay extends Overlay {
 
         JButton settingsButton = InterfaceUtils.createButton(focusPanel);
         settingsButton.setText("Paramètres");
-        settingsButton.addActionListener(e -> userInterface.getSettingsPanel().setVisible(true));
+        settingsButton.addActionListener(e -> userInterface.getSettingsOverlay().setVisible(true));
 
         JButton quitButton = InterfaceUtils.createButton(focusPanel);
         quitButton.setText("QUITTER");

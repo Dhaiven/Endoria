@@ -9,7 +9,6 @@ import game.pkg_Player.pkg_Ui.pkg_Overlay.PauseOverlay;
 import game.pkg_Player.pkg_Ui.pkg_Overlay.SettingsOverlay;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Stack;
 
 /**
@@ -24,11 +23,11 @@ public class UserInterface extends JFrame
 
     private final Player player;
 
-    private final TerminalInterface terminalInput;
+    private final TerminalInterface terminalInterface;
 
-    private final GameLayer gamePanel;
-    private final PauseOverlay pausePanel;
-    private final SettingsOverlay settingsPanel;
+    private final GameLayer gameLayer;
+    private final PauseOverlay pauseOverlay;
+    private final SettingsOverlay settingsOverlay;
 
     private final Stack<Overlay> lastOpenedOverlays = new Stack<>();
 
@@ -48,34 +47,34 @@ public class UserInterface extends JFrame
         setUndecorated(true);
 
         // Créer le panel de jeu qui sera toujours visible
-        gamePanel = new GameLayer(player);
-        add(gamePanel);
+        gameLayer = new GameLayer(player);
+        add(gameLayer);
 
         // Créer un JLayeredPane pour les overlays
         JLayeredPane overlayPane = new JLayeredPane();
         overlayPane.setOpaque(false);
         overlayPane.setLayout(null); // Nécessaire pour JLayeredPane
 
-        gamePanel.add(overlayPane);
+        gameLayer.add(overlayPane);
 
         // Créer les overlays
-        pausePanel = new PauseOverlay(this, this);
-        settingsPanel = new SettingsOverlay(this, this);
+        pauseOverlay = new PauseOverlay(this, this);
+        settingsOverlay = new SettingsOverlay(this, this);
 
         // Ajouter les overlays au layeredPane
-        overlayPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
-        overlayPane.add(settingsPanel, JLayeredPane.PALETTE_LAYER);
+        overlayPane.add(pauseOverlay, JLayeredPane.PALETTE_LAYER);
+        overlayPane.add(settingsOverlay, JLayeredPane.PALETTE_LAYER);
 
         // Cacher les overlays au démarrage
-        pausePanel.setVisible(false);
-        settingsPanel.setVisible(false);
+        pauseOverlay.setVisible(false);
+        settingsOverlay.setVisible(false);
 
         addKeyListener(player.getEventManager());
         addWindowFocusListener(player.getEventManager());
 
         setVisible(true);
 
-        this.terminalInput = new TerminalInterface(this, player, commandManager);
+        this.terminalInterface = new TerminalInterface(this, player, commandManager);
 
         requestFocus();
     } // UserInterface(.)
@@ -84,20 +83,20 @@ public class UserInterface extends JFrame
         return player;
     }
 
-    public GameLayer getGameOverlay() {
-        return gamePanel;
+    public GameLayer getGameLayer() {
+        return gameLayer;
     }
 
     public PauseOverlay getPauseOverlay() {
-        return pausePanel;
+        return pauseOverlay;
     }
 
-    public SettingsOverlay getSettingsPanel() {
-        return settingsPanel;
+    public SettingsOverlay getSettingsOverlay() {
+        return settingsOverlay;
     }
 
     public TerminalInterface getTerminalInterface() {
-        return terminalInput;
+        return terminalInterface;
     }
 
     public void addOverlay(Overlay overlay) {
@@ -113,9 +112,6 @@ public class UserInterface extends JFrame
             lastOpenedOverlays.peek().setVisible(false);
             // So we readd the last overlay here
             lastOpenedOverlays.add(lastOverlayIndex, lastOverlay);
-            System.out.println(lastOpenedOverlays);
-        } else {
-            GameEngineV2.getInstance().pause();
         }
 
         GameEngineV2.getInstance().pause();
@@ -141,7 +137,7 @@ public class UserInterface extends JFrame
      */
     public void print(final String pText)
     {
-        this.terminalInput.print(pText);
+        this.terminalInterface.print(pText);
     } // print(.)
 
     /**
@@ -158,6 +154,6 @@ public class UserInterface extends JFrame
      */
     public void enable(final boolean pOnOff)
     {
-        this.terminalInput.setEnable( pOnOff );
+        this.terminalInterface.setEnable( pOnOff );
     } // enable(.)
 } // UserInterface
