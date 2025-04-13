@@ -9,6 +9,7 @@ import game.pkg_Player.pkg_Ui.pkg_Overlay.PauseOverlay;
 import game.pkg_Player.pkg_Ui.pkg_Overlay.SettingsOverlay;
 
 import javax.swing.*;
+import java.util.Iterator;
 import java.util.Stack;
 
 /**
@@ -130,6 +131,15 @@ public class UserInterface extends JFrame
 
     public void closeOpenedOverlay() {
         lastOpenedOverlays.peek().setVisible(false);
+    }
+
+    public void closeAllOpenedOverlays() {
+        Stack<Overlay> toHide = new Stack<>();
+        toHide.addAll(lastOpenedOverlays);
+
+        for (int i = toHide.size() - 1; i >= 0; i--) {
+            toHide.get(i).setVisible(false);
+        }
     }
 
     /**

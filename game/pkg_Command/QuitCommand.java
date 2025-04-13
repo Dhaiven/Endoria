@@ -10,7 +10,7 @@ import game.pkg_Player.Player;
 public class QuitCommand extends Command {
 
     public QuitCommand() {
-        super("quit", "Stop le jeu");
+        super("quit", "Quitter le jeu");
     }
 
     @Override

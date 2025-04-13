@@ -24,6 +24,8 @@ public class CommandManager
         this.register(new TakeCommand());
         this.register(new TestCommand());
         this.register(new LookCommand());
+        this.register(new PauseGameCommand());
+        this.register(new ResumeGameCommand());
         this.register(new EatCommand());
         this.register(new FireCommand());
         this.register(new ChargeCommand());
