@@ -30,15 +30,17 @@ public class PlayerEventManager implements KeyListener, WindowFocusListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        Action action = Action.MOVE_FORWARD;
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("Key pressed: " + e.getKeyChar());
         if (!enable) return;
 
+        System.out.println("e.getKeyChar()");
         for (GameState state : GameEngineV2.getInstance().getGameStates()) {
             Action action = player.getSettings().getActionFromKey(e.getKeyCode(), state);
+            System.out.println(action);
             if (action != null) {
                 keysPressed.add(action);
             }

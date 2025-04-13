@@ -1,6 +1,5 @@
 package game.pkg_Player;
 
-import game.GameEngine;
 import game.GameEngineV2;
 import game.pkg_Command.Command;
 import game.pkg_Entity.*;
@@ -11,7 +10,8 @@ import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Player.pkg_Action.Action;
 import game.pkg_Player.pkg_Action.ActionProcessorManager;
-import game.pkg_Player.pkg_Interface.UserInterface;
+import game.pkg_Player.pkg_Ui.UserInterface;
+import game.pkg_Player.pkg_Ui.pkg_Overlay.SettingsOverlay;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
@@ -47,6 +47,7 @@ public class Player extends Entity {
 
         this.aUserInterface = userInterface.apply(this);
     }
+
     /**
      * @return l'interface utilisateur permettant d'afficher des messages
      */

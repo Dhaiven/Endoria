@@ -8,17 +8,19 @@ public class GameStateChangeActionProcessor extends ActionProcessor {
     private boolean keyHasBeenReleased = true;
 
     public GameStateChangeActionProcessor() {
-        super(Action.GAME_STATE_CHANGE);
+        super(Action.OPEN_PAUSE_OVERLAY);
     }
 
     public void onKeyPressed(Player player) {
         if (!keyHasBeenReleased) return;
         keyHasBeenReleased = false;
 
+        System.out.println("e");
+
         if (GameEngineV2.getInstance().isPaused()) {
-            GameEngineV2.getInstance().resume();
+            player.getUserInterface().getPauseOverlay().setVisible(false);
         } else {
-            GameEngineV2.getInstance().pause();
+            player.getUserInterface().getPauseOverlay().setVisible(true);
         }
     }
 

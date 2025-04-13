@@ -22,8 +22,11 @@ public class PlayerSettings {
         register(Action.MOVE_BACKWARD, KeyEvent.VK_S, KeyEvent.VK_DOWN);
         register(Action.MOVE_LEFT, KeyEvent.VK_Q, KeyEvent.VK_LEFT);
         register(Action.MOVE_RIGHT, KeyEvent.VK_D, KeyEvent.VK_RIGHT);
-        register(Action.GAME_STATE_CHANGE, KeyEvent.VK_ESCAPE);
+        register(Action.GAME_STATE_CHANGE, KeyEvent.VK_P);
         register(Action.TERMINAL_STATE_CHANGE, KeyEvent.VK_F2);
+
+        register(Action.OPEN_PAUSE_OVERLAY, KeyEvent.VK_ESCAPE);
+        register(Action.CLOSE_OVERLAY, KeyEvent.VK_ESCAPE);
     }
 
     /**
@@ -42,6 +45,24 @@ public class PlayerSettings {
 
 
         return null;
+    }
+
+    /**
+     * @return {@link KeyEvent} CONSTANTS
+     */
+    public Integer getKeyFromAction(Action action) {
+        for (Integer entry : settings.get(action)) {
+            // Pour l'instant return le premier
+            // TODO: all possibles keys
+            return entry;
+        }
+
+        return null;
+    }
+
+    public void setKeyFromAction(Action action, int keyCode) {
+        register(action, keyCode);
+        System.out.println(settings.get(action));
     }
 
     /**

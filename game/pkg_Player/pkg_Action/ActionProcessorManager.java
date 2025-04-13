@@ -17,6 +17,8 @@ final public class ActionProcessorManager {
 
         registerAction(new GameStateChangeActionProcessor());
         registerAction(new TerminalStateChangeActionProcessor());
+
+        registerAction(new CloseOverlayActionProcessor());
     }
 
     public ActionProcessor getActionProcessor(final Action action) {

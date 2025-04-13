@@ -44,8 +44,6 @@ public class WorldManager {
                     worlds.add(world);
                     return world;
                 }
-
-                return null;
             }
         }
 

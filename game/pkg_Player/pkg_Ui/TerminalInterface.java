@@ -1,4 +1,4 @@
-package game.pkg_Player.pkg_Interface;
+package game.pkg_Player.pkg_Ui;
 
 import game.pkg_Command.CommandManager;
 import game.pkg_Player.Player;

@@ -2,7 +2,7 @@ package game;
 
 import game.pkg_Command.CommandManager;
 import game.pkg_Player.Player;
-import game.pkg_Player.pkg_Interface.UserInterface;
+import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Scheduler.Scheduler;
 import game.pkg_Util.FileUtils;
@@ -129,7 +129,6 @@ public class GameEngineV2 implements Runnable {
      */
     public void pause() {
         isPaused = true;
-        player.getUserInterface().setPausePanelVisible(true);
     }
 
     /**
@@ -137,8 +136,6 @@ public class GameEngineV2 implements Runnable {
      */
     public void resume() {
         isPaused = false;
-        player.getUserInterface().setPausePanelVisible(false);
         lastTime = System.currentTimeMillis();
-        forceUpdate();
     }
 }

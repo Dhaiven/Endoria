@@ -1,4 +1,4 @@
-package game.pkg_Player.pkg_Interface;
+package game.pkg_Player.pkg_Ui.pkg_Layer;
 
 import game.pkg_Entity.Entity;
 import game.pkg_Object.Vector2;
@@ -11,14 +11,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
-public class GamePanel extends JPanel {
+public class GameLayer extends JPanel {
 
     private final Player player;
 
-    public GamePanel(Player player) {
+    public GameLayer(Player player) {
         this.player = player;
 
-        setLayout(null);
+        setLayout(new BorderLayout());
         setFocusable(true);
     }
 

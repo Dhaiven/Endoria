@@ -1,7 +1,7 @@
 package game;
 
 import game.pkg_Player.Player;
-import game.pkg_Player.pkg_Interface.UserInterface;
+import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Room.Room;
 
 import java.util.ArrayList;
