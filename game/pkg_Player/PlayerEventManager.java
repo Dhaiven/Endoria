@@ -1,7 +1,6 @@
 package game.pkg_Player;
 
 import game.GameEngineV2;
-import game.GameState;
 import game.pkg_Player.pkg_Action.Action;
 
 import java.awt.event.*;
@@ -34,16 +33,11 @@ public class PlayerEventManager implements KeyListener, WindowFocusListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("Key pressed: " + e.getKeyChar());
         if (!enable) return;
 
-        System.out.println("e.getKeyChar()");
-        for (GameState state : GameEngineV2.getInstance().getGameStates()) {
-            Action action = player.getSettings().getActionFromKey(e.getKeyCode(), state);
-            System.out.println(action);
-            if (action != null) {
-                keysPressed.add(action);
-            }
+        Action action = player.getSettings().getActionFromKey(e.getKeyCode(), GameEngineV2.getInstance().getGameState());
+        if (action != null) {
+            keysPressed.add(action);
         }
     }
 
@@ -51,12 +45,10 @@ public class PlayerEventManager implements KeyListener, WindowFocusListener {
     public void keyReleased(KeyEvent e) {
         if (!enable) return;
 
-        for (GameState state : GameEngineV2.getInstance().getGameStates()) {
-            Action action = player.getSettings().getActionFromKey(e.getKeyCode(), state);
-            if (action != null) {
-                keysReleased.add(action);
-                keysPressed.remove(action);
-            }
+        Action action = player.getSettings().getActionFromKey(e.getKeyCode(), GameEngineV2.getInstance().getGameState());
+        if (action != null) {
+            keysReleased.add(action);
+            keysPressed.remove(action);
         }
     }
 

@@ -80,7 +80,7 @@ public class Player extends Entity {
         Iterator<Action> keysPressedIterator = this.getEventManager().getKeysPressed().iterator();
         while (keysPressedIterator.hasNext()) {
             Action action = keysPressedIterator.next();
-            if (!GameEngineV2.getInstance().getGameStates().contains(action.getState())) {
+            if (GameEngineV2.getInstance().getGameState() != action.getState()) {
                 keysPressedIterator.remove();
                 continue;
             }

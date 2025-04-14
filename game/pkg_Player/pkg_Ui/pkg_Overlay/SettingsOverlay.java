@@ -6,19 +6,31 @@ import game.pkg_Player.pkg_Action.KeysMapper;
 import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Util.InterfaceUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 public class SettingsOverlay extends Overlay {
 
+    private final JPanel content;
     private boolean hasClickedOnEditButton = false;
 
     public SettingsOverlay(Component focusPanel, UserInterface userInterface) {
         super(userInterface);
 
         setSize(600, 700);
-        setOpaque(false);
-        setLayout(new GridBagLayout()); // Pour centrer les composants dans le panel
+        setMaximumSize(new Dimension(600, 700));
+        setLayout(new BorderLayout());
+
+        content = new JPanel(new GridBagLayout());
+
+        JScrollPane scrollPane = new JScrollPane(content);
+        scrollPane.setBorder(null);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        add(scrollPane, BorderLayout.CENTER);
 
         focusPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -38,59 +50,71 @@ public class SettingsOverlay extends Overlay {
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        for (GameState state : GameState.values()) {
-            var label = InterfaceUtils.createTitleLabel();
-            label.setText(switch(state) {
-                case PLAY -> "En jeu";
-                default -> "Interface";
-            });
+        JLabel inGameLabel = InterfaceUtils.createTitleLabel();
+        inGameLabel.setText("En jeu");
+        content.add(inGameLabel, gbc);
+        gbc.gridy += 1;
 
-            add(label, gbc);
-            gbc.gridy += 1;
+        generateContentForState(GameState.PLAY, focusPanel, gbc);
 
-            for (Action action : Action.values()) {
-                if (!action.getState().equals(state)) continue;
+        JLabel interfaceLabel = InterfaceUtils.createTitleLabel();
+        interfaceLabel.setText("Menu");
+        content.add(interfaceLabel, gbc);
+        gbc.gridy += 1;
 
-                var actionLabel = InterfaceUtils.createLabel();
-                actionLabel.setText(action.getName());
-                add(actionLabel, gbc);
-                gbc.gridx += 1;
+        generateContentForState(GameState.PAUSE, focusPanel, gbc);
 
-                Integer[] keysCode = userInterface.getPlayer().getSettings().getKeyFromAction(action);
-                for (int index = 0; index < keysCode.length; index++) {
-                    var editKeyButton = InterfaceUtils.createButton(focusPanel);
+        JLabel otherLabel = InterfaceUtils.createTitleLabel();
+        otherLabel.setText("Autre");
+        content.add(otherLabel, gbc);
+        gbc.gridy += 1;
 
-                    Integer keyCode = keysCode[index];
-                    if (keyCode != null) {
-                        String keyText = KeysMapper.getKeyText(keyCode);
-                        editKeyButton.setText(keyText);
-                    }
+        generateContentForState(null, focusPanel, gbc);
+    }
 
-                    final int actualIndex = index;
+    private void generateContentForState(GameState state, Component focusPanel, GridBagConstraints gbc) {
+        for (Action action : Action.values()) {
+            if (state != action.getState()) continue;
 
-                    editKeyButton.addActionListener(e -> {
-                        if (hasClickedOnEditButton) return;
-                        hasClickedOnEditButton = true;
+            var actionLabel = InterfaceUtils.createLabel();
+            actionLabel.setText(action.getName());
+            content.add(actionLabel, gbc);
+            gbc.gridx += 1;
 
-                        focusPanel.addKeyListener(new KeyAdapter() {
-                            @Override
-                            public void keyPressed(KeyEvent e) {
-                                userInterface.getPlayer().getSettings().replaceKeyFromAction(action, actualIndex, e.getKeyCode());
+            Integer[] keysCode = userInterface.getPlayer().getSettings().getKeyFromAction(action);
+            for (int index = 0; index < keysCode.length; index++) {
+                var editKeyButton = InterfaceUtils.createButton(focusPanel);
 
-                                editKeyButton.setText(KeysMapper.getKeyText(e.getKeyCode()));
-                                focusPanel.removeKeyListener(this);
-                                hasClickedOnEditButton = false;
-                            }
-                        });
-                    });
-
-                    add(editKeyButton, gbc);
-                    gbc.gridx += 1;
+                Integer keyCode = keysCode[index];
+                if (keyCode != null) {
+                    String keyText = KeysMapper.getKeyText(keyCode);
+                    editKeyButton.setText(keyText);
                 }
 
-                gbc.gridx = 0;
-                gbc.gridy += 1;
+                final int actualIndex = index;
+
+                editKeyButton.addActionListener(e -> {
+                    if (hasClickedOnEditButton) return;
+                    hasClickedOnEditButton = true;
+
+                    focusPanel.addKeyListener(new KeyAdapter() {
+                        @Override
+                        public void keyPressed(KeyEvent e) {
+                            userInterface.getPlayer().getSettings().replaceKeyFromAction(action, actualIndex, e.getKeyCode());
+
+                            editKeyButton.setText(KeysMapper.getKeyText(e.getKeyCode()));
+                            focusPanel.removeKeyListener(this);
+                            hasClickedOnEditButton = false;
+                        }
+                    });
+                });
+
+                content.add(editKeyButton, gbc);
+                gbc.gridx += 1;
             }
+
+            gbc.gridx = 0;
+            gbc.gridy += 1;
         }
     }
 }

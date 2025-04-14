@@ -12,7 +12,7 @@ public class World {
     private final String name;
     private final List<Room> rooms = new ArrayList<>();
 
-    private Room spawnRoom;
+    private final Room spawnRoom;
 
     public World(String name, List<Room> pRooms) {
         this.name = name;

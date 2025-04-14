@@ -11,8 +11,6 @@ import game.pkg_World.WorldManager;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.*;
 
 public class GameEngineV2 implements Runnable {
@@ -63,16 +61,12 @@ public class GameEngineV2 implements Runnable {
         return deltaTime;
     }
 
-    public List<GameState> getGameStates() {
-        List<GameState> gameStates = new ArrayList<>();
+    public GameState getGameState() {
         if (isPaused) {
-            gameStates.add(GameState.PAUSE);
-        } else {
-            gameStates.add(GameState.PLAY);
+            return GameState.PAUSE;
         }
 
-        gameStates.add(GameState.ALL);
-        return gameStates;
+        return GameState.PLAY;
     }
 
     public void start() {
