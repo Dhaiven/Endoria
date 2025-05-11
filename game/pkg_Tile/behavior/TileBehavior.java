@@ -36,34 +36,6 @@ public class TileBehavior {
     }
 
     /**
-     * Cette méthode est appellé quand l'entité essaye de change de tuile
-     * c'est à dire quand il arrive ou part de cette tuile
-     *
-     * @param oldTile l'ancienne tuile, jamais null
-     * @param newTile la nouvelle tuile, jamais null
-     * @param entity l'entité qui bouge
-     *
-     * @return true if entity can change tile else false
-     */
-    public boolean canChangeTile(TileStateWithPos oldTile, TileStateWithPos newTile, Entity entity, FacingDirection direction) {
-        /**System.out.println("old tile: " + oldTile);
-        System.out.println("new tile: " + newTile);
-        System.out.println("myDirection: " + direction);
-        System.out.println("absDirection: " + FacingDirection.fromVectors(oldTile.position().vector2(), newTile.position().vector2()));
-        if (direction == FacingDirection.fromVectors(oldTile.position().vector2(), newTile.position().vector2())) {
-            if (oldTile.tile().hasProperty(TileProperty.CHANGE_LAYER)) {
-                return true;
-            } else if (newTile.tile().hasProperty(TileProperty.CHANGE_LAYER)) {
-                return true;
-            }
-
-            return oldTile.layer() == newTile.layer();
-        }*/
-
-        return true;
-    }
-
-    /**
      * Cette méthode est appellé quand l'entité change de tuile
      * c'est à dire quand il arrive ou part de cette tuile
      * Elle est appellé après le mouvement
@@ -71,20 +43,9 @@ public class TileBehavior {
      * @param oldTile l'ancienne tuile, jamais null
      * @param newTile la nouvelle tuile, jamais null
      * @param entity l'entité qui bouge
+     * @param isOldTile true si cet tile est l'ancienne tile false si c'est la nouvelle
      */
-    public void onChangeTile(TileStateWithPos oldTile, TileStateWithPos newTile, Entity entity) {
-    }
-
-    /**
-     * Cette méthode est appellé quand l'entité essaye de bouger sur cette tile.
-     *
-     * @param state  le state de la tile
-     * @param entity l'entité qui collide
-     *
-     * @return true if entity can move on this tile else false
-     */
-    public boolean canMove(TileStateWithPos state, Entity entity) {
-        return true;
+    public void onChangeTile(TileStateWithPos oldTile, TileStateWithPos newTile, Entity entity, boolean isOldTile) {
     }
 
     /**

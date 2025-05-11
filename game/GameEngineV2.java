@@ -99,7 +99,7 @@ public class GameEngineV2 implements Runnable {
         if (!isPaused) {
             long currentTimeMillis = System.currentTimeMillis();
             if (currentTimeMillis - lastFps > 1000) {
-                System.out.println("FPS: " + fps);
+                //System.out.println("FPS: " + fps);
                 lastFps = currentTimeMillis;
                 fps = 0;
             }

@@ -47,12 +47,14 @@ public class Entity extends PlaceableGameObject {
     public void previousLayer() {
         if (position.room().getLayers().contains(layer - 1)) {
             this.layer -= 1;
+            System.out.println("previousLayer " + layer);
         }
     }
 
     public void nextLayer() {
         if (position.room().getLayers().contains(layer + 1)) {
             this.layer += 1;
+            System.out.println("nextLayer " + layer);
         }
     }
 
@@ -150,11 +152,11 @@ public class Entity extends PlaceableGameObject {
             });
         } else {
             oldTile.tile().getBehaviors().forEach(behavior -> {
-                behavior.onChangeTile(oldTile, newTile, this);
+                behavior.onChangeTile(oldTile, newTile, this, true);
             });
 
             newTile.tile().getBehaviors().forEach(behavior -> {
-                behavior.onChangeTile(oldTile, newTile, this);
+                behavior.onChangeTile(oldTile, newTile, this, false);
             });
         }
 

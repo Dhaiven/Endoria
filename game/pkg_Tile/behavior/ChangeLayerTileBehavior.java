@@ -8,24 +8,21 @@ import game.pkg_Tile.TileProperty;
 public class ChangeLayerTileBehavior extends TileBehavior {
 
     @Override
-    public boolean canChangeTile(TileStateWithPos oldTile, TileStateWithPos newTile, Entity entity, FacingDirection direction) {
-        return true;
-    }
-
-    @Override
-    public void onChangeTile(TileStateWithPos oldTile, TileStateWithPos newTile, Entity entity) {
+    public void onChangeTile(TileStateWithPos oldTile, TileStateWithPos newTile, Entity entity, boolean isOldTile) {
         System.out.println("Change layer tile");
-        if (oldTile.tile().getProperties().contains(TileProperty.CHANGE_LAYER)) {
+        if (isOldTile && oldTile.tile().getProperties().contains(TileProperty.CHANGE_LAYER)) {
             if (newTile.tile().getProperties().contains(TileProperty.CHANGE_LAYER)) {
-                //TODO
+                entity.nextLayer();
                 return;
             }
 
-            //entity.previousLayer();
-        } else if (newTile.tile().getProperties().contains(TileProperty.CHANGE_LAYER)) {
+            if (newTile.layer() < entity.getLayer()) {
+                entity.previousLayer();
+            }
+        } else if (!isOldTile && newTile.tile().getProperties().contains(TileProperty.CHANGE_LAYER)) {
             entity.nextLayer();
         }
 
-        super.onChangeTile(oldTile, newTile, entity);
+        super.onChangeTile(oldTile, newTile, entity, isOldTile);
     }
 }
