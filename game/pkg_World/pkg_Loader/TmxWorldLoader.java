@@ -4,10 +4,14 @@ import game.pkg_Entity.FacingDirection;
 import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
 import game.pkg_Image.StaticSprite;
+import game.pkg_Object.DrawType;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
+import game.pkg_Tile.Collision;
+import game.pkg_Tile.CollisionType;
 import game.pkg_Tile.Tile;
+import game.pkg_Tile.TileProperty;
 import game.pkg_Util.Utils;
 import game.pkg_World.World;
 import org.w3c.dom.*;
@@ -18,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -83,18 +88,20 @@ public class TmxWorldLoader implements WorldLoader {
                     int id = firstId;
                     for (int y = 0; y < imageHeight; y += tileHeight) {
                         for (int x = 0; x < imageWidth; x += tileWidth) {
-                            Shape collision = null;
+                            List<Shape> collisions = new ArrayList<>();
+                            CollisionType collisionType = CollisionType.IF_SAME_LAYER;
                             Sprite sprite = null;
+                            List<TileProperty> properties = new ArrayList<>();
+                            DrawType drawType = DrawType.UNDER;
                             for (Element info : tileInfos) {
                                 int tileId = Integer.parseInt(info.getAttribute("id"));
                                 if (tileId != (id - firstId)) continue;
 
                                 // Collision
-                                NodeList objectGroup = info.getElementsByTagName("objectgroup");
-                                if (objectGroup.getLength() != 0) {
-                                    Element object = (Element) ((Element) objectGroup.item(0)).getElementsByTagName("object").item(0);
-
-                                    collision = loadBaseShape(object);
+                                for (Element objectGroup : getAllElementNode(info.getElementsByTagName("objectgroup"))) {
+                                    for (Element object : getAllElementNode(objectGroup.getElementsByTagName("object"))) {
+                                        collisions.add(loadBaseShape(object));
+                                    }
                                 }
 
                                 // Animations
@@ -115,6 +122,26 @@ public class TmxWorldLoader implements WorldLoader {
                                     sprite = new AnimatedSprite(sprites);
                                 }
 
+                                // Tiles properties
+                                for (var propertiesElement : getAllElementNode(info.getElementsByTagName("properties"))) {
+                                    for (var propertyElement : getAllElementNode(propertiesElement.getElementsByTagName("property"))) {
+                                        String name = propertyElement.getAttribute("name");
+                                        for (TileProperty tileProperty : TileProperty.values()) {
+                                            if (tileProperty.getId().equals(name)) {
+                                                properties.add(tileProperty);
+                                                break;
+                                            }
+                                        }
+
+                                        if (propertyElement.getAttribute("propertytype").equals("Collision")) {
+                                            collisionType = CollisionType.from(propertyElement.getAttribute("value"));
+                                        }
+                                        if (propertyElement.getAttribute("propertytype").equals("DrawType")) {
+                                            drawType = DrawType.from(propertyElement.getAttribute("value"));
+                                        }
+                                    }
+                                }
+
                                 break;
                             }
 
@@ -125,7 +152,10 @@ public class TmxWorldLoader implements WorldLoader {
                             textures.put(id, new Tile(
                                     id - firstId,
                                     sprite,
-                                    collision
+                                    collisionType,
+                                    collisions.toArray(new Shape[0]),
+                                    properties,
+                                    drawType
                             ));
                             id++;
                         }
@@ -225,12 +255,21 @@ public class TmxWorldLoader implements WorldLoader {
             tiles.putAll(tsxTextures);
         }
 
-        Map<Integer, Map<Vector2, Tile>> mapLayers = new HashMap<>();
-        for (Element layerElement : getAllElementNode(map.getElementsByTagName("layer"))) {
-            int layerId = Integer.parseInt(layerElement.getAttribute("id"));
+        Map<Integer, List<Map<Vector2, Tile>>> mapLayers = new HashMap<>();
+        int layerId = 0;
+        for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
+            List<Map<Vector2, Tile>> mapLayer = new ArrayList<>();
+            for (Element layerElement : getAllElementNode(groupElement.getElementsByTagName("layer"))) {
+                if (layerElement.getAttribute("visible").equals("0")) {
+                    continue;
+                }
 
-            // Extraire les données du CSV
-            mapLayers.put(layerId - 1, loadTilesFromCSV(layerElement));
+                // Extraire les données du CSV
+                mapLayer.add(loadTilesFromCSV(layerElement));
+            }
+
+            mapLayers.put(layerId, mapLayer);
+            layerId++;
         }
 
         Shape spawnPoint = null;

@@ -1,11 +1,10 @@
 package game.pkg_Player.pkg_Ui.pkg_Layer;
 
 import game.pkg_Entity.Entity;
-import game.pkg_Object.Vector2;
+import game.pkg_Object.DrawType;
+import game.pkg_Object.TileStateWithPos;
 import game.pkg_Player.Player;
 import game.pkg_Room.Room;
-import game.pkg_Tile.Tile;
-import game.pkg_World.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,15 +32,29 @@ public class GameLayer extends JPanel {
         g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         Room room = player.getPosition().room();
-        for (int layer : World.LAYERS) {
-            for (Map.Entry<Vector2, Tile> entry : room.getWorldsTilesCacheAtLayer(layer).entrySet()) {
-                entry.getValue().paint(g2d, entry.getKey());
-            }
 
-            for (Entity entity : room.getEntities()) {
-                if (entity.getLayer() == layer) {
-                    entity.paint(g2d);
+        Set<Integer> layers = room.getLayers();
+
+        draw(g2d, room, 0, DrawType.UNDER);
+        draw(g2d, room, 0, DrawType.ABOVE);
+
+        for (int layer = 1; layer < layers.size(); layer++) {
+            draw(g2d, room, layer, DrawType.UNDER);
+        }
+        for (int layer = 1; layer < layers.size(); layer++) {
+            draw(g2d, room, layer, DrawType.ABOVE);
+            for (Entity e : room.getEntities()) {
+                if (e.getLayer() == layer) {
+                    e.paint(g2d);
                 }
+            }
+        }
+    }
+
+    private void draw(Graphics2D g2d, Room room, int layer, DrawType drawType) {
+        for (TileStateWithPos state : room.getWorldsTilesCacheAtLayer(layer)) {
+            if (state.tile().getDrawType() == drawType) {
+                state.tile().paint(g2d, state.position().vector2());
             }
         }
     }

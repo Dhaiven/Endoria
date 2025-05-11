@@ -14,6 +14,7 @@ import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
+import java.awt.geom.Rectangle2D;
 import java.util.*;
 import java.util.function.Function;
 
@@ -36,9 +37,13 @@ public class Player extends Entity {
     private final PlayerEventManager eventManager;
     private final ActionProcessorManager actionProcessorManager;
 
-    // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, StaticSprite sprite, Room room) {
-        super(sprite, new Position(room.getSpawnPoint(), room), 2);
+        this(userInterface, sprite, new Rectangle2D.Double(0, 0, sprite.getWidth(), sprite.getHeight()), room);
+    }
+
+    // TODO: custom layer
+    public Player(Function<Player, UserInterface> userInterface, StaticSprite sprite, Rectangle2D rigidBody2D, Room room) {
+        super(sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 1);
 
         this.eventManager = new PlayerEventManager(this);
         this.settings = new PlayerSettings();

@@ -58,4 +58,18 @@ public enum FacingDirection {
 
         return null;
     }
+
+    public static FacingDirection fromVectors(Vector2 from, Vector2 to) {
+        if (from.x() > to.x()) {
+            return FacingDirection.WEST;
+        } else if (from.x() < to.x()) {
+            return FacingDirection.EAST;
+        } else if (from.y() > to.y()) {
+            return FacingDirection.NORTH;
+        } else if (from.y() < to.y()) {
+            return FacingDirection.SOUTH;
+        }
+
+        return null;
+    }
 }

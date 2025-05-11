@@ -15,7 +15,8 @@ public class WorldManager {
     public WorldManager() {
         this.registerLoader(new TmxWorldLoader());
 
-        loadWorld(new File(FileUtils.WORLD_RESOURCES + "museum" + "/" + "museum" + ".world"));
+        //loadWorld(new File(FileUtils.WORLD_RESOURCES + "museum" + "/" + "museum" + ".world"));
+        loadWorld(new File(FileUtils.WORLD_RESOURCES + "world1" + "/" + "world1" + ".world"));
     }
 
     public List<World> getWorlds() {

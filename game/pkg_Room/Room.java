@@ -16,6 +16,7 @@ import java.awt.geom.Area;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
  *  Cette classe représente une pièce
@@ -29,7 +30,7 @@ public class Room
     private final Shape shape;
     private final String name;
     private final Vector2 spawn;
-    private final Map<Vector2, Tile>[] tiles;
+    private final List<List<TileStateWithPos>> tiles = new ArrayList<>();
 
     private final HashMap<FacingDirection, List<Door>> exits = new HashMap<>();
 
@@ -47,17 +48,24 @@ public class Room
         this(shape, name, spawn, new HashMap<>());
     }
 
-    public Room(Shape shape, String name, Vector2 spawn, Map<Integer, Map<Vector2, Tile>> tiles) {
+    public Room(Shape shape, String name, Vector2 spawn, Map<Integer, List<Map<Vector2, Tile>>> tiles) {
         this.shape = shape;
         this.name = name;
         this.spawn = spawn;
 
-        this.tiles = new Map[World.LAYERS.length];
-        for (int i = 0; i < this.tiles.length; i++) {
-            if (tiles.containsKey(i)) {
-                this.tiles[i] = tiles.get(i);
-            } else {
-                this.tiles[i] = new HashMap<>();
+        for (var layerEntry : tiles.entrySet()) {
+            if (this.tiles.size() == layerEntry.getKey()) {
+                this.tiles.add(new ArrayList<>());
+            }
+
+            for (var subLayerEntry : layerEntry.getValue()) {
+                for (var state : subLayerEntry.entrySet()) {
+                    this.tiles.get(layerEntry.getKey()).add(new TileStateWithPos(
+                            state.getValue(),
+                            new Position(state.getKey(), this),
+                            layerEntry.getKey()
+                    ));
+                }
             }
         }
 
@@ -116,25 +124,43 @@ public class Room
         return this.shape.contains(vector.x(), vector.y());
     }
 
-    public Map<TileStateWithPos, Tile> getTiles() {
-        Map<TileStateWithPos, Tile> result = new HashMap<>();
-        for (int layer = 0; layer < this.tiles.length; layer++) {
-            for (Map.Entry<Vector2, Tile> entry : this.tiles[layer].entrySet()) {
-                result.put(
-                        new TileStateWithPos(entry.getValue(), new Position(entry.getKey(), this), layer),
-                        entry.getValue()
-                );
+    public List<List<TileStateWithPos>> getTiles() {
+        return tiles;
+    }
+
+    public TileStateWithPos getHighestTileAt(Vector2 vector) {
+        for (int layer = this.tiles.size() - 1; layer >= 0; layer--) {
+            for (TileStateWithPos state : tiles.get(layer)) {
+                if (state.position().vector2().equals(vector)) {
+                    return state;
+                }
             }
+        }
+
+        return null;
+    }
+
+    public TileStateWithPos getTileAt(Vector2 vector, int layer) {
+        for (TileStateWithPos entries : tiles.get(layer)) {
+            if (entries.position().vector2().equals(vector)) {
+                return entries;
+            }
+        }
+
+        return null;
+    }
+
+    public Set<Integer> getLayers() {
+        Set<Integer> result = new HashSet<>();
+        for (int layer = 0; layer < this.tiles.size(); layer++) {
+            result.add(layer);
         }
 
         return result;
     }
 
-    /**
-     * @return UnmodifiableMap
-     */
-    public Map<Vector2, Tile> getWorldsTilesCacheAtLayer(int layer) {
-        return Collections.unmodifiableMap(tiles[layer]);
+    public List<TileStateWithPos> getWorldsTilesCacheAtLayer(int layer) {
+        return tiles.get(layer);
     }
 
     public List<Entity> getEntities() {
@@ -154,19 +180,19 @@ public class Room
     }
 
     public void setTile(Tile tile, Vector2 position, int layer, Player player) {
-        Tile lastTile = tiles[layer].put(position, tile);
-        if (lastTile != null) {
-            lastTile.getBehaviors().forEach(behavior -> {
-                behavior.onDestroy(
-                        new TileStateWithPos(lastTile, new Position(position, this), layer),
-                        player
-                );
-            });
+        TileStateWithPos oldState = getTileAt(position, layer);
+        if (oldState != null) {
+            tiles.get(layer).remove(oldState);
         }
 
-        tile.getBehaviors().forEach(behavior -> {
-            behavior.onPlace(new TileStateWithPos(tile, new Position(position, this), layer), player);
-        });
+        TileStateWithPos newState = new TileStateWithPos(tile, new Position(position, this), layer);
+        tiles.get(layer).add(newState);
+
+        if (oldState != null) {
+            oldState.tile().getBehaviors().forEach(behavior -> behavior.onDestroy(oldState, player));
+        }
+
+        tile.getBehaviors().forEach(behavior -> behavior.onPlace(newState, player));
     }
 
     /**
@@ -304,7 +330,7 @@ public class Room
 
     @Override
     public int hashCode() {
-        return Objects.hash(shape, getName(), Arrays.hashCode(tiles), getExits(), entities, aItemList, isLoaded, getEntities());
+        return Objects.hash(shape, getName(), getExits(), entities, aItemList, isLoaded, getEntities());
     }
 
     @Override

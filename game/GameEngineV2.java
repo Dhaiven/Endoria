@@ -9,6 +9,7 @@ import game.pkg_Util.FileUtils;
 import game.pkg_World.WorldManager;
 
 import javax.imageio.ImageIO;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.*;
@@ -26,6 +27,9 @@ public class GameEngineV2 implements Runnable {
     private long lastTime = 0;
     private double deltaTime;
 
+    private long lastFps = 0;
+    private long fps = 0;
+
     private boolean isPaused = false;
 
     private boolean forceUpdate = false;
@@ -36,10 +40,15 @@ public class GameEngineV2 implements Runnable {
         CommandManager commandManager = new CommandManager();
 
         try {
-            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player.png"));
+            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player2.png"));
             var worldManager = new WorldManager();
 
-            player = new Player(player1 -> new UserInterface(player1, commandManager), new StaticSprite(playerSprite.getSubimage(0, 0, 64, 64)), worldManager.getWorld("museum").getSpawnRoom());
+            player = new Player(
+                    player1 -> new UserInterface(player1, commandManager),
+                    new StaticSprite(playerSprite.getSubimage(0, 0, 79, 91)),
+                    new Rectangle2D.Double(0, 103, 121, 24),
+                    worldManager.getWorld("world1").getSpawnRoom()
+            );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -71,6 +80,7 @@ public class GameEngineV2 implements Runnable {
 
     public void start() {
         lastTime = System.currentTimeMillis();
+        lastFps = System.currentTimeMillis();
 
         player.spawn();
         player.getUserInterface().repaint();
@@ -82,11 +92,17 @@ public class GameEngineV2 implements Runnable {
     // Méthode principale de la boucle de jeu
     @Override
     public void run() {
+        fps++;
         player.triggerKeys();
 
         boolean hasUpdate = forceUpdate;
         if (!isPaused) {
             long currentTimeMillis = System.currentTimeMillis();
+            if (currentTimeMillis - lastFps > 1000) {
+                System.out.println("FPS: " + fps);
+                lastFps = currentTimeMillis;
+                fps = 0;
+            }
             long deltaTime = currentTimeMillis - lastTime;
 
             this.currentTime += deltaTime;

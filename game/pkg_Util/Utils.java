@@ -7,8 +7,8 @@ import java.awt.geom.Rectangle2D;
 
 public class Utils {
 
-    public static final int TEXTURE_WIDTH = 64;
-    public static final int TEXTURE_HEIGHT = 64;
+    public static final int TEXTURE_WIDTH = 128;
+    public static final int TEXTURE_HEIGHT = 128;
 
     public static final double COLLISION_RADIUS = 0.01;
 

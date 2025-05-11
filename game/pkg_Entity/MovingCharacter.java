@@ -19,7 +19,7 @@ import java.util.Random;
 public abstract class MovingCharacter extends Character {
 
     public MovingCharacter(StaticSprite sprite, Position position) {
-        super(sprite, position, 2);
+        super(sprite, position, 1);
     }
 
     @Override

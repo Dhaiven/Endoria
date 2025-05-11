@@ -12,6 +12,8 @@ public class MathUtils {
     public static Double distance(Rectangle2D playerRigidbody, Shape obstacle, FacingDirection direction) {
         if (obstacle instanceof Polygon polygon) {
             return distance(playerRigidbody, polygon, direction);
+        } else if (obstacle instanceof Rectangle rectangle) {
+            return distance(playerRigidbody, rectangle, direction);
         }
 
         return distance(playerRigidbody, obstacle.getBounds(), direction);
