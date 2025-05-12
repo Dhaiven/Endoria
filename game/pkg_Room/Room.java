@@ -130,7 +130,9 @@ public class Room
 
     public TileStateWithPos getHighestTileAt(Vector2 vector) {
         for (int layer = this.tiles.size() - 1; layer >= 0; layer--) {
-            for (TileStateWithPos state : tiles.get(layer)) {
+            List<TileStateWithPos> subLayers = this.tiles.get(layer);
+            for (int subLayer = subLayers.size() - 1; subLayer >= 0; subLayer--) {
+                TileStateWithPos state = subLayers.get(subLayer);
                 if (state.position().vector2().equals(vector)) {
                     return state;
                 }

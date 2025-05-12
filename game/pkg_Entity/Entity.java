@@ -199,6 +199,12 @@ public class Entity extends PlaceableGameObject {
                     case IF_SAME_LAYER -> state.layer() != layer;
                     case IF_DIFFERENT_LAYER -> state.layer() == layer;
                     case IF_ADJACENT_LAYER -> Math.abs(state.layer() - layer) != 1;
+                    case IF_HIGHEST -> {
+                        var highestTile = position.room().getHighestTileAt(state.position().vector2());
+                        System.out.println(highestTile.tile().getId() != state.tile().getId());
+                        yield highestTile.layer() != state.layer() ||
+                                highestTile.tile().getId() != state.tile().getId();
+                    }
                     case IF_HIGHEST_AND_DIFFERENT_LAYER -> {
                         if (state.layer() == layer) {
                             yield true;

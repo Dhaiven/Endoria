@@ -287,7 +287,8 @@ public class TmxWorldLoader implements WorldLoader {
         }
 
         if (spawnPoint == null) {
-            throw new RuntimeException("Spawnpoint not found");
+            spawnPoint = new Ellipse2D.Double(0, 0, 0, 0);
+            //throw new RuntimeException("Spawnpoint not found");
         }
 
         int width = (int) (Integer.parseInt(mapElement.getAttribute("width")) * roomScale.x());
@@ -379,6 +380,8 @@ public class TmxWorldLoader implements WorldLoader {
                         throw new RuntimeException("DoorId is not initialized");
                     }
 
+                    System.out.println("addExit");
+                    System.out.println("toRoom: " +filesByRoom.get(toRoom.getName()));
                     room.addExit(
                             facing,
                             new Door(
@@ -395,13 +398,18 @@ public class TmxWorldLoader implements WorldLoader {
     private Shape loadDoorShape(File mapFile, int doorId) {
         Document map = createDocument(mapFile);
 
+        System.out.println(mapFile.getName());
         for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
+           System.out.println(groupElement.getAttribute("name"));
             if (!groupElement.getAttribute("name").equals("zone")) continue;
 
             for (Element objectGroupElement : getAllElementNode(groupElement.getElementsByTagName("objectgroup"))) {
+                System.out.println(objectGroupElement.getAttribute("name"));
                 if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
 
+                System.out.println("doorID " + doorId);
                 for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
+                    System.out.println("objectID " + object.getAttribute("id"));
                     if (object.getAttribute("id").equals(String.valueOf(doorId))) {
                         return loadBaseShape(object);
                     }
