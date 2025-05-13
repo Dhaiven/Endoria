@@ -2,8 +2,6 @@ package game;
 
 import game.pkg_Command.CommandManager;
 import game.pkg_Image.Animation;
-import game.pkg_Object.Position;
-import game.pkg_Object.Vector2;
 import game.pkg_Player.Player;
 import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Scheduler.Scheduler;
@@ -11,7 +9,6 @@ import game.pkg_Util.FileUtils;
 import game.pkg_World.WorldManager;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -115,7 +112,7 @@ public class GameEngineV2 implements Runnable {
 
             lastTime = currentTimeMillis;
 
-            hasUpdate = scheduler.onUpdate() || hasUpdate;
+            scheduler.onUpdate();
             hasUpdate = player.getPosition().room().onUpdate() || hasUpdate;
         }
 

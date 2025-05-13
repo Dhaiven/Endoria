@@ -13,21 +13,15 @@ public class Scheduler {
 
     }
 
-    public boolean onUpdate() {
-        boolean hasUpdate = false;
-
+    public void onUpdate() {
         while (!queue.isEmpty() && queue.peek().getNextRunTick() <= System.nanoTime()) {
             RunningTaskInfo taskInfo = queue.poll();
             if (taskInfo == null || !taskInfo.isRunning()) {
                 continue;
             }
 
-            if (runTask(taskInfo)) {
-                hasUpdate = true;
-            }
+            runTask(taskInfo);
         }
-
-        return hasUpdate;
     }
 
     public void addTask(Task task, int delay) {
@@ -47,11 +41,9 @@ public class Scheduler {
         return this.queue.add(taskInfo);
     }
 
-    protected boolean runTask(RunningTaskInfo info) {
-        boolean needUpdate = false;
-
+    protected void runTask(RunningTaskInfo info) {
         try {
-            needUpdate = info.getTask().onRun();
+            info.getTask().onRun();
         } catch (Exception exception) {
             cancelTask(info);
         } finally {
@@ -62,8 +54,6 @@ public class Scheduler {
                 cancelTask(info);
             }
         }
-
-        return needUpdate;
     }
 
     protected void cancelTask(RunningTaskInfo info) {

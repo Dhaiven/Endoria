@@ -3,8 +3,8 @@ package game.pkg_Player;
 import game.GameEngineV2;
 import game.pkg_Command.Command;
 import game.pkg_Entity.*;
+import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
-import game.pkg_Image.StaticSprite;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
@@ -15,8 +15,10 @@ import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -49,6 +51,15 @@ public class Player extends Entity {
         this.eventManager = new PlayerEventManager(this);
         this.settings = new PlayerSettings();
         this.actionProcessorManager = new ActionProcessorManager();
+
+        if (sprite instanceof AnimatedSprite animatedSprite) {
+            animatedSprite.setObserver((oldImage, newImage) -> GameEngineV2.getInstance().forceUpdate(new Rectangle(
+                    (int) (position.x() - sprite.getWidth() / 2d),
+                    (int) (position.y() - sprite.getHeight()),
+                    sprite.getWidth(),
+                    sprite.getHeight()
+            )));
+        }
 
         this.aUserInterface = userInterface.apply(this);
     }
