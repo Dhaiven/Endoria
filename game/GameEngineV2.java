@@ -1,14 +1,18 @@
 package game;
 
 import game.pkg_Command.CommandManager;
+import game.pkg_Image.Animation;
+import game.pkg_Object.Position;
+import game.pkg_Object.Vector2;
 import game.pkg_Player.Player;
 import game.pkg_Player.pkg_Ui.UserInterface;
-import game.pkg_Image.StaticSprite;
 import game.pkg_Scheduler.Scheduler;
 import game.pkg_Util.FileUtils;
 import game.pkg_World.WorldManager;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +37,7 @@ public class GameEngineV2 implements Runnable {
     private boolean isPaused = false;
 
     private boolean forceUpdate = false;
+    private Rectangle updateZone = null;
 
     public GameEngineV2() {
         instance = this;
@@ -40,13 +45,13 @@ public class GameEngineV2 implements Runnable {
         CommandManager commandManager = new CommandManager();
 
         try {
-            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player2.png"));
+            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "test2.png"));
             var worldManager = new WorldManager();
 
             player = new Player(
                     player1 -> new UserInterface(player1, commandManager),
-                    new StaticSprite(playerSprite.getSubimage(0, 0, 79, 91)),
-                    new Rectangle2D.Double(0, 103, 121, 24),
+                    Animation.generateAnimation(playerSprite, 6, 100),
+                    new Rectangle2D.Double(0, 93, 121, 24),
                     worldManager.getWorld("world1").getSpawnRoom()
             );
         } catch (IOException e) {
@@ -99,7 +104,7 @@ public class GameEngineV2 implements Runnable {
         if (!isPaused) {
             long currentTimeMillis = System.currentTimeMillis();
             if (currentTimeMillis - lastFps > 1000) {
-                //System.out.println("FPS: " + fps);
+                System.out.println("FPS: " + fps);
                 lastFps = currentTimeMillis;
                 fps = 0;
             }
@@ -115,8 +120,23 @@ public class GameEngineV2 implements Runnable {
         }
 
         if (hasUpdate) {
-            player.getUserInterface().repaint();
+            if (updateZone != null) {
+                player.getUserInterface().repaint(
+                        (int) updateZone.getX(),
+                        (int) updateZone.getY(),
+                        (int) updateZone.getWidth(),
+                        (int) updateZone.getHeight()
+                );
+            } else {
+                player.getUserInterface().repaint(
+                        (int) player.getPosition().x() - 200,
+                        (int) player.getPosition().y() - 200,
+                        400, 400
+                );
+            }
+
             forceUpdate = false;
+            updateZone = null;
         }
     }
 
@@ -127,7 +147,12 @@ public class GameEngineV2 implements Runnable {
     }
 
     public void forceUpdate() {
+        forceUpdate(null);
+    }
+
+    public void forceUpdate(Rectangle zone) {
         this.forceUpdate = true;
+        this.updateZone = zone;
     }
 
     public boolean isPaused() {

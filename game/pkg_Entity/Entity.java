@@ -1,6 +1,8 @@
 package game.pkg_Entity;
 
 import game.GameEngineV2;
+
+import game.pkg_Image.Sprite;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
@@ -14,6 +16,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+import java.util.Observer;
 
 import static game.pkg_Tile.CollisionType.*;
 
@@ -26,15 +29,15 @@ public class Entity extends PlaceableGameObject {
 
     protected boolean isSpawned = false;
 
-    public Entity(StaticSprite sprite, Position position, int layer) {
+    public Entity(Sprite sprite, Position position, int layer) {
         this(sprite, new Rectangle2D.Double(0, 0, sprite.getWidth(), sprite.getHeight()), position, layer, FacingDirection.NORTH);
     }
 
-    public Entity(StaticSprite sprite, Rectangle2D rigidBody2D, Position position, int layer) {
+    public Entity(Sprite sprite, Rectangle2D rigidBody2D, Position position, int layer) {
         this(sprite, rigidBody2D, position, layer, FacingDirection.NORTH);
     }
 
-    public Entity(StaticSprite sprite, Rectangle2D rigidBody2D, Position position, int layer, FacingDirection facing) {
+    public Entity(Sprite sprite, Rectangle2D rigidBody2D, Position position, int layer, FacingDirection facing) {
         super(sprite, position, layer);
         this.rigidBody2D = rigidBody2D;
         this.facing = facing;
@@ -160,7 +163,102 @@ public class Entity extends PlaceableGameObject {
             });
         }
 
-        GameEngineV2.getInstance().forceUpdate();
+        GameEngineV2.getInstance().forceUpdate(getMinimalRepaintArea(lastPosition.vector2(), position.vector2(), facing, 128, 128));
+    }
+
+    /**
+     * Repeint la zone minimale englobant l'ancienne et la nouvelle position de l'entité.
+     * Cette fonction prend en compte un point d'ancrage situé en bas au milieu de l'entité.
+     *
+     * @param oldPosition L'ancienne position de l'entité (Vector2), point d'ancrage en bas au milieu
+     * @param newPosition La nouvelle position de l'entité (Vector2), point d'ancrage en bas au milieu
+     * @param direction La direction vers laquelle l'entité est orientée (FacingDirection)
+     * @param entityWidth La largeur de l'entité
+     * @param entityHeight La hauteur de l'entité
+     * @return Le Rectangle minimal à repeindre
+     */
+    public Rectangle getMinimalRepaintArea(Vector2 oldPosition, Vector2 newPosition,
+                                           FacingDirection direction,
+                                           int entityWidth, int entityHeight) {
+
+        int padding = 5;
+
+        // Calcul des coordonnées en haut à gauche pour chaque position
+        // Comme le point d'ancrage est en bas au milieu, on soustrait la hauteur entière
+        // et la moitié de la largeur pour obtenir le coin supérieur gauche
+        int oldX = (int) (oldPosition.x() - (entityWidth / 2d) - padding);
+        int oldY = (int) (oldPosition.y() - entityHeight - padding);
+        int newX = (int) (newPosition.x() - (entityWidth / 2d) - padding);
+        int newY = (int) (newPosition.y() - entityHeight - padding);
+
+        // Calcul du rectangle contenant les deux positions
+        int minX = Math.min(oldX, newX);
+        int minY = Math.min(oldY, newY);
+        int maxX = Math.max(oldX + entityWidth + (padding * 2), newX + entityWidth + (padding * 2));
+        int maxY = Math.max(oldY + entityHeight + (padding * 2), newY + entityHeight + (padding * 2));
+
+        int width = maxX - minX;
+        int height = maxY - minY;
+
+        // Élargissement du rectangle dans la direction du mouvement
+
+        switch (direction) {
+            case NORTH:
+                // Élargit vers le haut (direction du regard)
+                minY -= padding;
+                height += padding;
+                break;
+            case SOUTH:
+                // Élargit vers le bas (direction du regard)
+                height += padding;
+                break;
+            case EAST:
+                // Élargit vers la droite (direction du regard)
+                width += padding;
+                break;
+            case WEST:
+                // Élargit vers la gauche (direction du regard)
+                minX -= padding;
+                width += padding;
+                break;
+        }
+
+        return new Rectangle(minX, minY, width, height);
+    }
+
+    // Calculer la région à repeindre
+    private Rectangle calculateDirtyRegion(Vector2 oldPosition, Vector2 newPosition, FacingDirection direction) {
+        // Ajuster en fonction de la direction
+        double diffX = Math.ceil(Math.abs(oldPosition.x() - newPosition.x()));
+        double diffY = Math.ceil(Math.abs(oldPosition.y() - newPosition.y()));
+
+        System.out.println(diffX + " " + diffY);
+        return switch (direction) {
+            case NORTH -> new Rectangle(
+                    (int) (oldPosition.x() - sprite.getWidth() / 2d),
+                    (int) (newPosition.y() - sprite.getHeight()),
+                    sprite.getWidth(),
+                    (int) (sprite.getHeight() + diffY)
+            );
+            case SOUTH -> new Rectangle(
+                    (int) (oldPosition.x() - sprite.getWidth() / 2d),
+                    (int) (oldPosition.y() - sprite.getHeight()),
+                    (int) (sprite.getWidth() + diffX),
+                    (int) (sprite.getHeight() + oldPosition.y() - newPosition.y())
+            );
+            case EAST -> new Rectangle(
+                    (int) (oldPosition.x() - sprite.getWidth() / 2d),
+                    (int) (oldPosition.y() - sprite.getHeight() - 2),
+                    (int) (sprite.getWidth()) + 10,
+                    sprite.getHeight() + 10
+            );
+            case WEST -> new Rectangle(
+                    (int) (newPosition.x() - sprite.getWidth() / 2d),
+                    (int) (oldPosition.y() - sprite.getHeight()),
+                    (int) (sprite.getWidth() + 10),
+                    sprite.getHeight()
+            );
+        };
     }
 
     private Vector2 convertToTileSystem(Vector2 position) {
@@ -201,7 +299,6 @@ public class Entity extends PlaceableGameObject {
                     case IF_ADJACENT_LAYER -> Math.abs(state.layer() - layer) != 1;
                     case IF_HIGHEST -> {
                         var highestTile = position.room().getHighestTileAt(state.position().vector2());
-                        System.out.println(highestTile.tile().getId() != state.tile().getId());
                         yield highestTile.layer() != state.layer() ||
                                 highestTile.tile().getId() != state.tile().getId();
                     }

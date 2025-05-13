@@ -20,7 +20,7 @@ public class AnimatedSprite extends Sprite {
         this.sprites = sprites;
         spriteIndex = firstSpriteIndex;
 
-        GameEngineV2.getInstance().getSchedulerService().addTask(new AnimationTask(this), 1, 1);
+        //GameEngineV2.getInstance().getSchedulerService().addTask(new AnimationTask(this), 1, 1);
     }
 
     @Override

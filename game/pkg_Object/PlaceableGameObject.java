@@ -1,5 +1,6 @@
 package game.pkg_Object;
 
+import game.pkg_Image.Sprite;
 import game.pkg_Image.StaticSprite;
 import java.awt.Graphics2D;
 
@@ -8,7 +9,7 @@ public class PlaceableGameObject extends GameObject {
     protected Position position;
     protected int layer;
 
-    public PlaceableGameObject(StaticSprite sprite, Position position, int layer) {
+    public PlaceableGameObject(Sprite sprite, Position position, int layer) {
         super(sprite);
         this.position = position;
         this.layer = layer;

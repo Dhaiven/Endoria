@@ -3,6 +3,7 @@ package game.pkg_Player;
 import game.GameEngineV2;
 import game.pkg_Command.Command;
 import game.pkg_Entity.*;
+import game.pkg_Image.Sprite;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
@@ -37,12 +38,12 @@ public class Player extends Entity {
     private final PlayerEventManager eventManager;
     private final ActionProcessorManager actionProcessorManager;
 
-    public Player(Function<Player, UserInterface> userInterface, StaticSprite sprite, Room room) {
+    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Room room) {
         this(userInterface, sprite, new Rectangle2D.Double(0, 0, sprite.getWidth(), sprite.getHeight()), room);
     }
 
     // TODO: custom layer
-    public Player(Function<Player, UserInterface> userInterface, StaticSprite sprite, Rectangle2D rigidBody2D, Room room) {
+    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Rectangle2D rigidBody2D, Room room) {
         super(sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 1);
 
         this.eventManager = new PlayerEventManager(this);
@@ -153,6 +154,7 @@ public class Player extends Entity {
     public void onChangeRoom(Door byDoor) {
         this.aLastRooms.push(new Door(null, new Vector2(this.position.x(), this.position.y()), this.position.room()));
         super.onChangeRoom(byDoor);
+        this.getUserInterface().repaint();
     }
 
     /**
