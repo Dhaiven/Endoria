@@ -38,7 +38,7 @@ public class GoCommand extends Command {
             return success(player, vNextDoors.get(0));
         }
 
-        // Si plusieurs salles, prends une aléatoire
+        // Si plusieurs salles
         if (args.length == 1) {
             player.getUserInterface().println("Il y a plusieurs portes dans cette direction");
             player.getUserInterface().println("Ajouter un paramètre parmis les salles suivante: ");
@@ -63,8 +63,6 @@ public class GoCommand extends Command {
         player.onChangeRoom(door);
         player.getUserInterface().println("Vous venez d'être téléporté !");
         //player.getGameEngine().printLocationInfo();
-
-        GameEngineV2.getInstance().forceUpdate();
         return true;
     }
 }

@@ -7,6 +7,7 @@ import game.pkg_Object.Vector2;
 import game.pkg_Tile.behavior.TileBehavior;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tile extends GameObject {
@@ -19,6 +20,10 @@ public class Tile extends GameObject {
     private final List<TileBehavior> behaviors;
     private final List<TileProperty> properties;
     private final DrawType drawType;
+
+    public Tile(int id, Sprite sprite) {
+        this(id, sprite, CollisionType.IF_SAME_LAYER, new Shape[0], new ArrayList<>(), DrawType.UNDER);
+    }
 
     public Tile(int id, Sprite sprite, CollisionType collisionType, Shape[] collisions, List<TileProperty> properties, DrawType drawType) {
         super(sprite);

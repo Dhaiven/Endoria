@@ -8,7 +8,9 @@ import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
 import game.pkg_Object.TileStateWithPos;
 import game.pkg_Object.Vector2;
+import game.pkg_Player.Player;
 import game.pkg_Room.Door;
+import game.pkg_Room.Room;
 import game.pkg_Util.MathUtils;
 import game.pkg_Util.Utils;
 
@@ -312,6 +314,10 @@ public class Entity extends PlaceableGameObject {
                 }) {
                     continue;
                 }
+                if (state.tile().getId() == 231) {
+                    System.out.println(state.tile().getCollisionType());
+                }
+
 
                 Rectangle2D playerCollision = getRigidBody2D();
                 playerCollision = new Rectangle2D.Double(
@@ -370,11 +376,22 @@ public class Entity extends PlaceableGameObject {
     }
 
     public void onChangeRoom(Door byDoor) {
+        Room lastRoom = position.room();
+
         this.position.room().getEntities().remove(this);
 
         this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
 
         this.position.room().getEntities().add(this);
+        Room newRoom = position.room();
+
+        for (Entity e : newRoom.getEntities()) {
+            if (e instanceof Player) {
+                System.out.println("forceUpdate");
+                GameEngineV2.getInstance().forceUpdate();
+                System.out.println("eeeeeeeeeeeeeeeeeeeeee");
+            }
+        }
     }
 
     public boolean onUpdate() {

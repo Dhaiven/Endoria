@@ -15,6 +15,7 @@ public class TerminalStateChangeActionProcessor extends ActionProcessor {
         if (!keyHasBeenReleased) return;
         keyHasBeenReleased = false;
 
+        System.out.println("key has been released");
         player.getUserInterface().getTerminalInterface().setEnable(!player.getUserInterface().getTerminalInterface().isEnable());
     }
 

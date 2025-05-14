@@ -18,6 +18,9 @@
             "values": [
                 "IF_SAME_LAYER",
                 "IF_DIFFERENT_LAYER",
+                "IF_ADJACENT_LAYER",
+                "IF_HIGHEST",
+                "IF_HIGHEST_AND_DIFFERENT_LAYER",
                 "ALL_LAYER"
             ],
             "valuesAsFlags": false

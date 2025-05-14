@@ -41,7 +41,7 @@ public class GameLayer extends JPanel {
     @Override
     public void repaint(long tm, int x, int y, int width, int height) {
         if (!boundsChanged) {
-            //bounds = new Rectangle(x, y, width, height);
+            bounds = new Rectangle(x, y, width, height);
             boundsChanged = true;
         }
 

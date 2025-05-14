@@ -58,36 +58,35 @@
         },
         "world/world1/room1.tmx": {
             "expandedGroupLayers": [
-                19,
-                23,
                 27,
-                20
+                19,
+                20,
+                23
             ],
             "expandedObjectLayers": [
                 27,
                 25
             ],
-            "scale": 1.4880859375,
-            "selectedLayer": 14,
+            "scale": 4,
+            "selectedLayer": 9,
             "viewCenter": {
-                "x": 383.7143982149889,
-                "y": -447.55479721748264
+                "x": 421.75,
+                "y": 106
             }
         },
         "world/world1/room2.tmx": {
             "expandedGroupLayers": [
-                10,
                 16
             ],
             "expandedObjectLayers": [
                 16,
                 15
             ],
-            "scale": 1.4880859375,
+            "scale": 0.5,
             "selectedLayer": 16,
             "viewCenter": {
-                "x": 383.7143982149889,
-                "y": -74.59246620291376
+                "x": 366,
+                "y": 162
             }
         },
         "world/world1/room3.tmx": {
@@ -95,14 +94,14 @@
                 9
             ],
             "expandedObjectLayers": [
-                10,
-                9
+                9,
+                10
             ],
-            "scale": 1.4880859375,
+            "scale": 0.5,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 383.7143982149889,
-                "y": 597.4117338233364
+                "x": 366,
+                "y": 610
             }
         }
     },

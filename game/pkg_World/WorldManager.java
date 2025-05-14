@@ -1,5 +1,7 @@
 package game.pkg_World;
 
+import game.pkg_Loader.WorldLoader;
+import game.pkg_Loader.pkg_Tiled.TiledWorldLoader;
 import game.pkg_Util.FileUtils;
 import game.pkg_World.pkg_Loader.*;
 
@@ -13,9 +15,8 @@ public class WorldManager {
     private final List<World> worlds = new ArrayList<>();
 
     public WorldManager() {
-        this.registerLoader(new TmxWorldLoader());
+        this.registerLoader(new TiledWorldLoader());
 
-        //loadWorld(new File(FileUtils.WORLD_RESOURCES + "museum" + "/" + "museum" + ".world"));
         loadWorld(new File(FileUtils.WORLD_RESOURCES + "world1" + "/" + "world1" + ".world"));
     }
 

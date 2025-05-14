@@ -125,11 +125,7 @@ public class GameEngineV2 implements Runnable {
                         (int) updateZone.getHeight()
                 );
             } else {
-                player.getUserInterface().repaint(
-                        (int) player.getPosition().x() - 200,
-                        (int) player.getPosition().y() - 200,
-                        400, 400
-                );
+                player.getUserInterface().repaint();
             }
 
             forceUpdate = false;

@@ -32,6 +32,8 @@ public class Room
     private final Vector2 spawn;
     private final List<List<TileStateWithPos>> tiles = new ArrayList<>();
 
+    private Vector2 roomScale;
+
     private final HashMap<FacingDirection, List<Door>> exits = new HashMap<>();
 
     /**
@@ -44,18 +46,19 @@ public class Room
 
     protected boolean isLoaded = false;
 
-    public Room(Shape shape, String name, Vector2 spawn) {
-        this(shape, name, new HashMap<>(), spawn);
+    public Room(Shape shape, String name, Vector2 roomScale, Vector2 spawn) {
+        this(shape, name, roomScale, new HashMap<>(), spawn);
     }
 
-    public Room(Shape shape, String name, Map<Integer, List<Map<Vector2, Tile>>> tiles) {
-        this(shape, name, tiles, null);
+    public Room(Shape shape, String name, Vector2 roomScale, Map<Integer, List<Map<Vector2, Tile>>> tiles) {
+        this(shape, name, roomScale, tiles, null);
     }
 
-    public Room(Shape shape, String name, Map<Integer, List<Map<Vector2, Tile>>> tiles, Vector2 spawn) {
+    public Room(Shape shape, String name, Vector2 roomScale, Map<Integer, List<Map<Vector2, Tile>>> tiles, Vector2 spawn) {
         this.shape = shape;
         this.name = name;
         this.spawn = spawn;
+        this.roomScale = roomScale;
 
         for (var layerEntry : tiles.entrySet()) {
             if (this.tiles.size() == layerEntry.getKey()) {
@@ -92,6 +95,10 @@ public class Room
 
     public String getName() {
         return name;
+    }
+
+    public Vector2 getRoomScale() {
+        return roomScale;
     }
 
     public void load() {

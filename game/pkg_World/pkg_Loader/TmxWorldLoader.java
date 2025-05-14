@@ -4,11 +4,11 @@ import game.pkg_Entity.FacingDirection;
 import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
 import game.pkg_Image.StaticSprite;
+import game.pkg_Loader.WorldLoader;
 import game.pkg_Object.DrawType;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
-import game.pkg_Tile.Collision;
 import game.pkg_Tile.CollisionType;
 import game.pkg_Tile.Tile;
 import game.pkg_Tile.TileProperty;
@@ -22,7 +22,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -297,6 +296,7 @@ public class TmxWorldLoader implements WorldLoader {
         Room room = new Room(
                 shape,
                 mapFile.getName().split("\\.")[0],
+                roomScale,
                 mapLayers,
                 spawnPoint
         );

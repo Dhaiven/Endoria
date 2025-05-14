@@ -1,7 +1,6 @@
 package game.pkg_Object;
 
 import game.pkg_Image.Sprite;
-import game.pkg_Image.StaticSprite;
 import java.awt.Graphics2D;
 
 public class PlaceableGameObject extends GameObject {
