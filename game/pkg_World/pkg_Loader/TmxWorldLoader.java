@@ -272,11 +272,15 @@ public class TmxWorldLoader implements WorldLoader {
             layerId++;
         }
 
-        Shape spawnPoint = null;
+        Vector2 spawnPoint = null;
         for (Element objectGroup : getAllElementNode(map.getElementsByTagName("objectgroup"))) {
             for (Element object : getAllElementNode(objectGroup.getElementsByTagName("object"))) {
                 if (object.getAttribute("name").equals("spawnpoint")) {
-                    spawnPoint = loadBaseShape(object);
+                    Rectangle2D spawnPointShape = loadBaseShape(object).getBounds2D();
+                    spawnPoint = new Vector2(
+                            (int) spawnPointShape.getX(),
+                            (int) spawnPointShape.getY()
+                    );
                     break;
                 }
             }
@@ -286,24 +290,15 @@ public class TmxWorldLoader implements WorldLoader {
             }
         }
 
-        if (spawnPoint == null) {
-            spawnPoint = new Ellipse2D.Double(0, 0, 0, 0);
-            //throw new RuntimeException("Spawnpoint not found");
-        }
-
         int width = (int) (Integer.parseInt(mapElement.getAttribute("width")) * roomScale.x());
         int height = (int) (Integer.parseInt(mapElement.getAttribute("height")) * roomScale.y());
-        Rectangle2D spawnPointBounds = spawnPoint.getBounds2D();
         Shape shape = new Rectangle(0, 0, width * tileWidth, height * tileHeight);
 
         Room room = new Room(
                 shape,
                 mapFile.getName().split("\\.")[0],
-                new Vector2(
-                        (int) spawnPointBounds.getX(),
-                        (int) spawnPointBounds.getY()
-                ),
-                mapLayers
+                mapLayers,
+                spawnPoint
         );
 
         rooms.put(room.getName(), room);
@@ -380,8 +375,6 @@ public class TmxWorldLoader implements WorldLoader {
                         throw new RuntimeException("DoorId is not initialized");
                     }
 
-                    System.out.println("addExit");
-                    System.out.println("toRoom: " +filesByRoom.get(toRoom.getName()));
                     room.addExit(
                             facing,
                             new Door(
@@ -398,18 +391,13 @@ public class TmxWorldLoader implements WorldLoader {
     private Shape loadDoorShape(File mapFile, int doorId) {
         Document map = createDocument(mapFile);
 
-        System.out.println(mapFile.getName());
         for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
-           System.out.println(groupElement.getAttribute("name"));
             if (!groupElement.getAttribute("name").equals("zone")) continue;
 
             for (Element objectGroupElement : getAllElementNode(groupElement.getElementsByTagName("objectgroup"))) {
-                System.out.println(objectGroupElement.getAttribute("name"));
                 if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
 
-                System.out.println("doorID " + doorId);
                 for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
-                    System.out.println("objectID " + object.getAttribute("id"));
                     if (object.getAttribute("id").equals(String.valueOf(doorId))) {
                         return loadBaseShape(object);
                     }
@@ -509,15 +497,6 @@ public class TmxWorldLoader implements WorldLoader {
             }
         }
     }*/
-
-    private Shape loadOffsetShape(Element object, Shape offset) {
-        Rectangle bounds = offset.getBounds();
-
-        int x = (int) Float.parseFloat(object.getAttribute("x")) - bounds.x;
-        int y = (int) Float.parseFloat(object.getAttribute("y")) - bounds.y;
-
-        return loadShape(object, x, y);
-    }
 
     private Shape loadBaseShape(Element object) {
         int x = (int) Float.parseFloat(object.getAttribute("x"));

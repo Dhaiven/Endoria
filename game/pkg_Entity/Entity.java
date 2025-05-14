@@ -89,7 +89,7 @@ public class Entity extends PlaceableGameObject {
          * TODO: changer en fonction de si on veut un mouvement plus rapide ou non
          * Actuellement c'est une valeur prise arbitrairement
          */
-        return 200;
+        return 205;
     }
 
     public void move(FacingDirection facing) {
@@ -313,15 +313,14 @@ public class Entity extends PlaceableGameObject {
                     continue;
                 }
 
+                Rectangle2D playerCollision = getRigidBody2D();
+                playerCollision = new Rectangle2D.Double(
+                        position.x() - sprite.getWidth() / 2d + playerCollision.getX() - state.position().x(),
+                        position.y() - sprite.getHeight() + playerCollision.getY() - state.position().y(),
+                        playerCollision.getWidth(),
+                        playerCollision.getHeight()
+                );
                 for (Shape collision : state.tile().getCollisions()) {
-                    Rectangle2D playerCollision = getRigidBody2D();
-                    playerCollision = new Rectangle2D.Double(
-                            position.x() - sprite.getWidth() / 2d + playerCollision.getX() - state.position().x(),
-                            position.y() - sprite.getHeight() + playerCollision.getY() - state.position().y(),
-                            playerCollision.getWidth(),
-                            playerCollision.getHeight()
-                    );
-
                     Double distance = MathUtils.distance(playerCollision, collision, direction);
                     if (distance != null && distance < Math.abs(direction.getVectorComponent(deltaPosition))) {
                         state.tile().getBehaviors().forEach(behavior -> behavior.onEntityCollide(state, this));
@@ -380,20 +379,5 @@ public class Entity extends PlaceableGameObject {
 
     public boolean onUpdate() {
         return false;
-    }
-
-    @Override
-    public void paint(Graphics2D g2d) {
-        super.paint(g2d);
-        Rectangle2D playerCollision = getRigidBody2D();
-        playerCollision = new Rectangle2D.Double(
-                position.x() - sprite.getWidth() / 2d + playerCollision.getX(),
-                position.y() - sprite.getHeight() + playerCollision.getY(),
-                playerCollision.getWidth(),
-                playerCollision.getHeight()
-        );
-
-        g2d.setColor(Color.BLACK);
-        //g2d.fill(playerCollision);
     }
 }

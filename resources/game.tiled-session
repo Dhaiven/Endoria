@@ -3,16 +3,49 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map/museum/museom.tmx",
+    "activeFile": "world/world1/room3.tmx",
     "expandedProjectPaths": [
     ],
-    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "TX Plant.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "TX Tileset Grass.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/FarmRPG/Road copiar.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Bridge_All.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Foam.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Rocks_01.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Rocks_02.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Rocks_03.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Rocks_04.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Shadows.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Tilemap_Elevation.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Tilemap_Flat.tsx": {
+            "scaleInDock": 1
+        },
+        "assets/tileset/TinySwords/Water.tsx": {
             "scaleInDock": 1
         },
         "map/museum/museom.tmx": {
@@ -22,15 +55,75 @@
                 "x": 480.4330827067669,
                 "y": 320.4812030075188
             }
+        },
+        "world/world1/room1.tmx": {
+            "expandedGroupLayers": [
+                19,
+                23,
+                27,
+                20
+            ],
+            "expandedObjectLayers": [
+                27,
+                25
+            ],
+            "scale": 1.4880859375,
+            "selectedLayer": 14,
+            "viewCenter": {
+                "x": 383.7143982149889,
+                "y": -447.55479721748264
+            }
+        },
+        "world/world1/room2.tmx": {
+            "expandedGroupLayers": [
+                10,
+                16
+            ],
+            "expandedObjectLayers": [
+                16,
+                15
+            ],
+            "scale": 1.4880859375,
+            "selectedLayer": 16,
+            "viewCenter": {
+                "x": 383.7143982149889,
+                "y": -74.59246620291376
+            }
+        },
+        "world/world1/room3.tmx": {
+            "expandedGroupLayers": [
+                9
+            ],
+            "expandedObjectLayers": [
+                10,
+                9
+            ],
+            "scale": 1.4880859375,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 383.7143982149889,
+                "y": 597.4117338233364
+            }
         }
     },
     "last.imagePath": "C:/Users/Hugo/Code/Cours/E1/IPO/Projet/resources/Pixel Art Top Down - Basic v1.1.2/Texture",
+    "last.objectTypesPath": "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/world/world1/propertytypes.json",
+    "last.worldFilePath": "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/world/world1",
+    "loadedWorlds": [
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/world/world1/world1.world"
+    ],
     "map.lastUsedFormat": "tmx",
     "openFiles": [
-        "map/museum/museom.tmx"
+        "world/world1/room1.tmx",
+        "world/world1/room2.tmx",
+        "world/world1/room3.tmx"
     ],
     "project": "game.tiled-project",
+    "property.type": "string",
     "recentFiles": [
+        "world/world1/room1.tmx",
+        "world/world1/room2.tmx",
+        "world/world1/room3.tmx",
         "map/museum/museom.tmx",
         "TX Plant.tsx"
     ],

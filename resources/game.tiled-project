@@ -10,5 +10,30 @@
     "properties": [
     ],
     "propertyTypes": [
+        {
+            "id": 2,
+            "name": "Collision",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "IF_SAME_LAYER",
+                "IF_DIFFERENT_LAYER",
+                "ALL_LAYER"
+            ],
+            "valuesAsFlags": false
+        },
+        {
+            "id": 3,
+            "name": "FacingDirection",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "NORTH",
+                "SOUTH",
+                "EAST",
+                "WEST"
+            ],
+            "valuesAsFlags": false
+        }
     ]
 }

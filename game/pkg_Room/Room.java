@@ -45,10 +45,14 @@ public class Room
     protected boolean isLoaded = false;
 
     public Room(Shape shape, String name, Vector2 spawn) {
-        this(shape, name, spawn, new HashMap<>());
+        this(shape, name, new HashMap<>(), spawn);
     }
 
-    public Room(Shape shape, String name, Vector2 spawn, Map<Integer, List<Map<Vector2, Tile>>> tiles) {
+    public Room(Shape shape, String name, Map<Integer, List<Map<Vector2, Tile>>> tiles) {
+        this(shape, name, tiles, null);
+    }
+
+    public Room(Shape shape, String name, Map<Integer, List<Map<Vector2, Tile>>> tiles, Vector2 spawn) {
         this.shape = shape;
         this.name = name;
         this.spawn = spawn;
