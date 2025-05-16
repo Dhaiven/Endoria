@@ -234,7 +234,6 @@ public class Entity extends PlaceableGameObject {
         double diffX = Math.ceil(Math.abs(oldPosition.x() - newPosition.x()));
         double diffY = Math.ceil(Math.abs(oldPosition.y() - newPosition.y()));
 
-        System.out.println(diffX + " " + diffY);
         return switch (direction) {
             case NORTH -> new Rectangle(
                     (int) (oldPosition.x() - sprite.getWidth() / 2d),
@@ -314,10 +313,6 @@ public class Entity extends PlaceableGameObject {
                 }) {
                     continue;
                 }
-                if (state.tile().getId() == 231) {
-                    System.out.println(state.tile().getCollisionType());
-                }
-
 
                 Rectangle2D playerCollision = getRigidBody2D();
                 playerCollision = new Rectangle2D.Double(

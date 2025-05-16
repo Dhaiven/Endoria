@@ -26,6 +26,17 @@
             "valuesAsFlags": false
         },
         {
+            "id": 4,
+            "name": "DrawType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "UNDER",
+                "ABOVE"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "id": 3,
             "name": "FacingDirection",
             "storageType": "string",

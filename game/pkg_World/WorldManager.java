@@ -15,7 +15,7 @@ public class WorldManager {
     private final List<World> worlds = new ArrayList<>();
 
     public WorldManager() {
-        this.registerLoader(new TiledWorldLoader());
+        this.registerLoader(new TmxWorldLoader());
 
         loadWorld(new File(FileUtils.WORLD_RESOURCES + "world1" + "/" + "world1" + ".world"));
     }

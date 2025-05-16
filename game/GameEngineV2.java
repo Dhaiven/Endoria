@@ -28,6 +28,8 @@ public class GameEngineV2 implements Runnable {
     private long lastTime = 0;
     private double deltaTime;
 
+    private long startTime;
+
     private long lastFps = 0;
     private long fps = 0;
 
@@ -82,13 +84,19 @@ public class GameEngineV2 implements Runnable {
 
     public void start() {
         lastTime = System.currentTimeMillis();
-        lastFps = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
 
         player.spawn();
-        player.getUserInterface().repaint();
+        player.getUserInterface().getGameLayer().repaint();
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         future = scheduler.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MILLISECONDS);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            long endTime = System.currentTimeMillis();
+            double elapsedSeconds = (endTime - startTime) / 1000.0;
+            System.out.println("Average fps = " + this.fps / elapsedSeconds);
+        }));
     }
 
     // Méthode principale de la boucle de jeu
@@ -100,11 +108,6 @@ public class GameEngineV2 implements Runnable {
         boolean hasUpdate = forceUpdate;
         if (!isPaused) {
             long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - lastFps > 1000) {
-                System.out.println("FPS: " + fps);
-                lastFps = currentTimeMillis;
-                fps = 0;
-            }
             long deltaTime = currentTimeMillis - lastTime;
 
             this.currentTime += deltaTime;
@@ -118,14 +121,14 @@ public class GameEngineV2 implements Runnable {
 
         if (hasUpdate) {
             if (updateZone != null) {
-                player.getUserInterface().repaint(
+                player.getUserInterface().getGameLayer().repaint(
                         (int) updateZone.getX(),
                         (int) updateZone.getY(),
                         (int) updateZone.getWidth(),
                         (int) updateZone.getHeight()
                 );
             } else {
-                player.getUserInterface().repaint();
+                player.getUserInterface().getGameLayer().repaint();
             }
 
             forceUpdate = false;
@@ -144,6 +147,13 @@ public class GameEngineV2 implements Runnable {
     }
 
     public void forceUpdate(Rectangle zone) {
+        if (this.forceUpdate) {
+            if (this.updateZone == null) return;
+
+            this.updateZone = zone.union(this.updateZone);
+            return;
+        }
+
         this.forceUpdate = true;
         this.updateZone = zone;
     }

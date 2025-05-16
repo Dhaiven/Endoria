@@ -9,7 +9,6 @@ import game.pkg_Player.pkg_Ui.pkg_Overlay.PauseOverlay;
 import game.pkg_Player.pkg_Ui.pkg_Overlay.SettingsOverlay;
 
 import javax.swing.*;
-import java.util.Iterator;
 import java.util.Stack;
 
 /**
@@ -49,14 +48,13 @@ public class UserInterface extends JFrame
 
         // Créer le panel de jeu qui sera toujours visible
         gameLayer = new GameLayer(player);
-        add(gameLayer);
 
         // Créer un JLayeredPane pour les overlays
         JLayeredPane overlayPane = new JLayeredPane();
         overlayPane.setOpaque(false);
         overlayPane.setLayout(null); // Nécessaire pour JLayeredPane
 
-        gameLayer.add(overlayPane);
+        overlayPane.add(gameLayer);
 
         // Créer les overlays
         pauseOverlay = new PauseOverlay(this, this);
@@ -69,6 +67,8 @@ public class UserInterface extends JFrame
         // Cacher les overlays au démarrage
         pauseOverlay.setVisible(false);
         settingsOverlay.setVisible(false);
+
+        add(overlayPane);
 
         addKeyListener(player.getEventManager());
         addWindowFocusListener(player.getEventManager());

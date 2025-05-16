@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "world/world1/room3.tmx",
+    "activeFile": "assets/tileset/TinySwords/Bridge_All.tsx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -19,7 +19,8 @@
             "scaleInDock": 1
         },
         "assets/tileset/TinySwords/Bridge_All.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 3
         },
         "assets/tileset/TinySwords/Foam.tsx": {
             "scaleInDock": 1
@@ -40,13 +41,16 @@
             "scaleInDock": 1
         },
         "assets/tileset/TinySwords/Tilemap_Elevation.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 3
         },
         "assets/tileset/TinySwords/Tilemap_Flat.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 3
         },
         "assets/tileset/TinySwords/Water.tsx": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 3
         },
         "map/museum/museom.tmx": {
             "scale": 0.8658854166666666,
@@ -58,10 +62,10 @@
         },
         "world/world1/room1.tmx": {
             "expandedGroupLayers": [
+                23,
                 27,
                 19,
-                20,
-                23
+                20
             ],
             "expandedObjectLayers": [
                 27,
@@ -94,8 +98,8 @@
                 9
             ],
             "expandedObjectLayers": [
-                9,
-                10
+                10,
+                9
             ],
             "scale": 0.5,
             "selectedLayer": 6,
@@ -115,14 +119,22 @@
     "openFiles": [
         "world/world1/room1.tmx",
         "world/world1/room2.tmx",
-        "world/world1/room3.tmx"
+        "world/world1/room3.tmx",
+        "assets/tileset/TinySwords/Bridge_All.tsx",
+        "assets/tileset/TinySwords/Water.tsx",
+        "assets/tileset/TinySwords/Tilemap_Flat.tsx",
+        "assets/tileset/TinySwords/Tilemap_Elevation.tsx"
     ],
     "project": "game.tiled-project",
-    "property.type": "string",
+    "property.type": "DrawType",
     "recentFiles": [
         "world/world1/room1.tmx",
         "world/world1/room2.tmx",
         "world/world1/room3.tmx",
+        "assets/tileset/TinySwords/Tilemap_Elevation.tsx",
+        "assets/tileset/TinySwords/Tilemap_Flat.tsx",
+        "assets/tileset/TinySwords/Water.tsx",
+        "assets/tileset/TinySwords/Bridge_All.tsx",
         "map/museum/museom.tmx",
         "TX Plant.tsx"
     ],

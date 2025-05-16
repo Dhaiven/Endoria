@@ -9,7 +9,7 @@ import game.pkg_Player.Player;
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class EgypteCharacter extends Character {
+public class  EgypteCharacter extends Character {
 
     public EgypteCharacter() {
         super(null, null, 0);
