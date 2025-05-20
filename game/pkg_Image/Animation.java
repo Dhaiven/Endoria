@@ -1,5 +1,11 @@
 package game.pkg_Image;
 
+import game.GameEngineV2;
+import game.pkg_Entity.Entity;
+import game.pkg_Entity.FacingDirection;
+import game.pkg_Image.pkg_Animation.AnimationManager;
+import game.pkg_Image.pkg_Animation.pkg_Action.MouvementAction;
+
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
@@ -20,5 +26,11 @@ public class Animation {
         }
 
         return new AnimatedSprite(animations);
+    }
+
+    public static AnimationManager test(Entity entity) {
+        return new AnimationManager()
+                .then(new MouvementAction(entity, FacingDirection.EAST, 70))
+                .start();
     }
 }

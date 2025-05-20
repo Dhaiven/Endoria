@@ -3,7 +3,6 @@ package game.pkg_Entity;
 import game.GameEngineV2;
 
 import game.pkg_Image.Sprite;
-import game.pkg_Image.StaticSprite;
 import game.pkg_Object.PlaceableGameObject;
 import game.pkg_Object.Position;
 import game.pkg_Object.TileStateWithPos;
@@ -18,9 +17,6 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import java.util.Observer;
-
-import static game.pkg_Tile.CollisionType.*;
 
 public class Entity extends PlaceableGameObject {
 
@@ -165,7 +161,9 @@ public class Entity extends PlaceableGameObject {
             });
         }
 
-        GameEngineV2.getInstance().forceUpdate(getMinimalRepaintArea(lastPosition.vector2(), position.vector2(), facing, 128, 128));
+        GameEngineV2.getInstance().forceUpdate(
+                getMinimalRepaintArea(lastPosition.vector2(), position.vector2(), facing, 128, 128)
+        );
     }
 
     /**
@@ -228,40 +226,6 @@ public class Entity extends PlaceableGameObject {
         return new Rectangle(minX, minY, width, height);
     }
 
-    // Calculer la région à repeindre
-    private Rectangle calculateDirtyRegion(Vector2 oldPosition, Vector2 newPosition, FacingDirection direction) {
-        // Ajuster en fonction de la direction
-        double diffX = Math.ceil(Math.abs(oldPosition.x() - newPosition.x()));
-        double diffY = Math.ceil(Math.abs(oldPosition.y() - newPosition.y()));
-
-        return switch (direction) {
-            case NORTH -> new Rectangle(
-                    (int) (oldPosition.x() - sprite.getWidth() / 2d),
-                    (int) (newPosition.y() - sprite.getHeight()),
-                    sprite.getWidth(),
-                    (int) (sprite.getHeight() + diffY)
-            );
-            case SOUTH -> new Rectangle(
-                    (int) (oldPosition.x() - sprite.getWidth() / 2d),
-                    (int) (oldPosition.y() - sprite.getHeight()),
-                    (int) (sprite.getWidth() + diffX),
-                    (int) (sprite.getHeight() + oldPosition.y() - newPosition.y())
-            );
-            case EAST -> new Rectangle(
-                    (int) (oldPosition.x() - sprite.getWidth() / 2d),
-                    (int) (oldPosition.y() - sprite.getHeight() - 2),
-                    (int) (sprite.getWidth()) + 10,
-                    sprite.getHeight() + 10
-            );
-            case WEST -> new Rectangle(
-                    (int) (newPosition.x() - sprite.getWidth() / 2d),
-                    (int) (oldPosition.y() - sprite.getHeight()),
-                    (int) (sprite.getWidth() + 10),
-                    sprite.getHeight()
-            );
-        };
-    }
-
     private Vector2 convertToTileSystem(Vector2 position) {
         return new Vector2(
                 (int) Utils.TEXTURE_WIDTH * (int) (position.x() / Utils.TEXTURE_WIDTH),
@@ -299,6 +263,10 @@ public class Entity extends PlaceableGameObject {
                     case IF_DIFFERENT_LAYER -> state.layer() == layer;
                     case IF_ADJACENT_LAYER -> Math.abs(state.layer() - layer) != 1;
                     case IF_HIGHEST -> {
+                        var highestTile = position.room().getHighestTileAt(state.position().vector2());
+                        yield highestTile.layer() != state.layer();
+                    }
+                    case IF_HIGHEST_SUBLAYER -> {
                         var highestTile = position.room().getHighestTileAt(state.position().vector2());
                         yield highestTile.layer() != state.layer() ||
                                 highestTile.tile().getId() != state.tile().getId();
@@ -371,8 +339,6 @@ public class Entity extends PlaceableGameObject {
     }
 
     public void onChangeRoom(Door byDoor) {
-        Room lastRoom = position.room();
-
         this.position.room().getEntities().remove(this);
 
         this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
@@ -382,9 +348,7 @@ public class Entity extends PlaceableGameObject {
 
         for (Entity e : newRoom.getEntities()) {
             if (e instanceof Player) {
-                System.out.println("forceUpdate");
                 GameEngineV2.getInstance().forceUpdate();
-                System.out.println("eeeeeeeeeeeeeeeeeeeeee");
             }
         }
     }

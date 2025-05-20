@@ -62,7 +62,7 @@ public class TiledRoomLoader implements Loader {
             }
 
             // Charger les textures du fichier .tsx référencé
-            TiledTileLoader tileLoader = new TiledTileLoader(firstId, roomScale, null);
+            TiledTileLoader tileLoader = new TiledTileLoader(firstId, roomScale);
             this.alreadyLoadedTiles.put(tsxFile.getPath(), tileLoader.load(tsxFile));
         }
 
@@ -99,6 +99,7 @@ public class TiledRoomLoader implements Loader {
                             (int) spawnPointShape.getX(),
                             (int) spawnPointShape.getY()
                     );
+
                     break;
                 }
             }

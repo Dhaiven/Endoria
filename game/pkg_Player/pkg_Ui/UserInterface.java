@@ -127,6 +127,7 @@ public class UserInterface extends JFrame
         } else {
             lastOpenedOverlays.peek().setVisible(true);
         }
+        GameEngineV2.getInstance().forceUpdate(overlay.getVisibleRect());
     }
 
     public void closeOpenedOverlay() {
@@ -140,6 +141,12 @@ public class UserInterface extends JFrame
         for (int i = toHide.size() - 1; i >= 0; i--) {
             toHide.get(i).setVisible(false);
         }
+    }
+
+    @Override
+    public void repaint(long time, int x, int y, int width, int height) {
+        getGameLayer().repaint(time, x, y, width, height);
+        super.repaint(time, x, y, width, height);
     }
 
     /**

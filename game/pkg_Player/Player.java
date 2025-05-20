@@ -4,7 +4,9 @@ import game.GameEngineV2;
 import game.pkg_Command.Command;
 import game.pkg_Entity.*;
 import game.pkg_Image.AnimatedSprite;
+import game.pkg_Image.Animation;
 import game.pkg_Image.Sprite;
+import game.pkg_Image.pkg_Animation.AnimationManager;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
@@ -46,7 +48,7 @@ public class Player extends Entity {
 
     // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Rectangle2D rigidBody2D, Room room) {
-        super(sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 1);
+        super(sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 0);
 
         this.eventManager = new PlayerEventManager(this);
         this.settings = new PlayerSettings();
@@ -62,6 +64,8 @@ public class Player extends Entity {
         }
 
         this.aUserInterface = userInterface.apply(this);
+
+        //Animation.test(this);
     }
 
     /**

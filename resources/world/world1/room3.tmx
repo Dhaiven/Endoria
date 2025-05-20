@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="12" height="7" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="3">
+ <tileset firstgid="1" source="../../assets/tileset/TinySwords/Bridge_All.tsx"/>
+ <tileset firstgid="13" source="../../assets/tileset/TinySwords/Tilemap_Elevation.tsx"/>
+ <tileset firstgid="45" source="../../assets/tileset/TinySwords/Tilemap_Flat.tsx"/>
+ <tileset firstgid="85" source="../../assets/tileset/TinySwords/Water.tsx"/>
+ <group id="7" name="Water">
+  <layer id="8" name="water" width="12" height="7">
+   <data encoding="csv">
+85,85,85,85,85,85,85,85,85,85,85,85,
+85,85,85,85,85,85,85,85,85,85,85,85,
+85,85,85,85,85,85,85,85,85,85,85,85,
+85,85,85,85,85,85,85,85,85,85,85,85,
+85,85,85,0,0,0,85,85,85,85,85,85,
+85,0,0,0,0,0,0,0,0,0,0,0,
+85,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <group id="2" name="Elevation 2">
+  <layer id="3" name="fondation E2" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,22,22,22,0,0,0,0,0,0,
+0,22,22,22,22,22,22,0,0,0,22,0,
+0,25,26,44,22,22,22,0,0,0,26,0
+</data>
+  </layer>
+  <layer id="4" name="groundMaterialE2" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,45,46,47,0,0,0,0,0,0,
+0,75,46,56,56,56,47,0,0,0,56,0,
+0,0,0,0,65,66,67,0,0,0,0,0
+</data>
+  </layer>
+  <layer id="5" name="bridgeE2" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,4,0,
+0,0,0,0,0,0,0,2,2,2,0,3,
+0,0,0,0,0,0,0,0,0,0,7,0
+</data>
+  </layer>
+ </group>
+ <group id="9" name="zone">
+  <objectgroup id="10" name="doors">
+   <object id="1" x="64.5124" y="321.218" width="36.9602" height="55.1043">
+    <properties>
+     <property name="facing" propertytype="FacingDirection" value="WEST"/>
+     <property name="toDoorId" type="int" value="2"/>
+     <property name="toRoomName" value="room2"/>
+    </properties>
+   </object>
+  </objectgroup>
+ </group>
+</map>

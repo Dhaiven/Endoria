@@ -20,7 +20,7 @@
         },
         "assets/tileset/TinySwords/Bridge_All.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 3
+            "scaleInEditor": 5.5
         },
         "assets/tileset/TinySwords/Foam.tsx": {
             "scaleInDock": 1
@@ -63,19 +63,19 @@
         "world/world1/room1.tmx": {
             "expandedGroupLayers": [
                 23,
+                20,
                 27,
-                19,
-                20
+                19
             ],
             "expandedObjectLayers": [
-                27,
-                25
+                25,
+                27
             ],
             "scale": 4,
             "selectedLayer": 9,
             "viewCenter": {
-                "x": 421.75,
-                "y": 106
+                "x": 522,
+                "y": 316
             }
         },
         "world/world1/room2.tmx": {
@@ -83,14 +83,14 @@
                 16
             ],
             "expandedObjectLayers": [
-                16,
-                15
+                15,
+                16
             ],
             "scale": 0.5,
             "selectedLayer": 16,
             "viewCenter": {
-                "x": 366,
-                "y": 162
+                "x": 1502,
+                "y": 252
             }
         },
         "world/world1/room3.tmx": {
@@ -98,14 +98,14 @@
                 9
             ],
             "expandedObjectLayers": [
-                10,
-                9
+                9,
+                10
             ],
             "scale": 0.5,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 366,
-                "y": 610
+                "x": 1502,
+                "y": 252
             }
         }
     },

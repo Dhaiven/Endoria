@@ -1,5 +1,7 @@
 package game.pkg_Tile;
 
+import game.GameEngineV2;
+import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
 import game.pkg_Object.DrawType;
 import game.pkg_Object.GameObject;

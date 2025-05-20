@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="12" height="7" tilewidth="64" tileheight="64" infinite="0" nextlayerid="32" nextobjectid="8">
+ <tileset firstgid="1" source="../../assets/tileset/TinySwords/Bridge_All.tsx"/>
+ <tileset firstgid="13" source="../../assets/tileset/TinySwords/Foam.tsx"/>
+ <tileset firstgid="85" source="../../assets/tileset/TinySwords/Rocks_01.tsx"/>
+ <tileset firstgid="117" source="../../assets/tileset/TinySwords/Rocks_02.tsx"/>
+ <tileset firstgid="149" source="../../assets/tileset/TinySwords/Rocks_03.tsx"/>
+ <tileset firstgid="181" source="../../assets/tileset/TinySwords/Rocks_04.tsx"/>
+ <tileset firstgid="213" source="../../assets/tileset/TinySwords/Shadows.tsx"/>
+ <tileset firstgid="222" source="../../assets/tileset/TinySwords/Tilemap_Elevation.tsx"/>
+ <tileset firstgid="254" source="../../assets/tileset/TinySwords/Tilemap_Flat.tsx"/>
+ <tileset firstgid="294" source="../../assets/tileset/TinySwords/Water.tsx"/>
+ <tileset firstgid="295" source="../../assets/tileset/FarmRPG/Road copiar.tsx"/>
+ <group id="19" name="Water">
+  <layer id="1" name="water" width="12" height="7">
+   <data encoding="csv">
+294,294,294,0,0,294,294,294,294,294,294,294,
+294,0,0,0,0,0,0,0,0,294,294,294,
+294,0,0,0,0,0,0,0,0,0,294,294,
+294,0,0,0,0,0,0,0,0,294,294,294,
+294,0,0,0,0,294,294,294,294,294,294,294,
+294,294,294,294,294,294,294,294,294,294,294,294,
+294,294,294,294,294,294,294,294,294,294,294,294
+</data>
+  </layer>
+  <layer id="2" name="foam" width="12" height="7">
+   <data encoding="csv">
+0,0,40,0,0,0,0,0,23,0,0,0,
+0,38,38,0,0,38,38,38,38,17,0,0,
+0,38,0,0,0,0,0,0,0,38,0,0,
+0,38,0,0,0,38,38,38,38,65,0,0,
+0,38,38,38,38,77,80,62,83,0,0,0,
+0,62,65,0,62,0,183,184,0,0,0,0,
+0,0,0,0,0,0,199,200,0,0,0,0
+</data>
+  </layer>
+  <layer id="5" name="foam 2" width="12" height="7">
+   <data encoding="csv">
+0,32,14,0,0,0,0,0,0,0,0,0,
+55,0,0,0,0,0,0,0,0,39,0,0,
+43,0,0,0,0,0,0,0,0,0,0,0,
+40,0,0,0,0,0,0,0,0,60,0,0,
+43,0,0,0,0,51,0,0,0,0,0,0,
+0,0,0,68,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <group id="20" name="Floor">
+  <layer id="4" name="floorMaterial" width="12" height="7">
+   <data encoding="csv">
+0,0,0,270,270,0,0,0,0,0,0,0,
+0,259,260,270,270,260,260,260,261,0,0,0,
+0,269,270,270,270,270,270,270,270,291,0,0,
+0,269,270,270,270,280,280,280,281,0,0,0,
+0,279,280,280,281,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+  <layer id="16" name="floorDecoration" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,263,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,263,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <group id="23" name="Elevation 1">
+  <layer id="18" name="shadowE1" width="12" height="7">
+   <data encoding="csv">
+0,0,0,217,217,0,0,0,0,0,0,0,
+0,0,0,220,216,217,217,217,0,0,0,0,
+0,0,0,0,216,217,217,217,218,0,217,217,
+0,0,0,0,0,220,220,220,0,0,220,220,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+  <layer id="31" name="shadowE1.2" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,220,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,12,12,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+  <layer id="14" name="fondationE1" width="12" height="7">
+   <data encoding="csv">
+0,0,0,234,235,222,223,224,0,0,0,0,
+0,0,0,0,0,230,231,232,0,0,238,240,
+0,0,0,0,0,234,253,236,0,0,242,244,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+  <layer id="15" name="groundMaterialE1" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,264,265,266,0,0,0,0,
+0,0,0,0,0,274,275,276,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+  <layer id="17" name="bridgeE1" width="12" height="7">
+   <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,2,2,3,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+  </layer>
+ </group>
+ <objectgroup id="24" name="spawnpoint">
+  <object id="1" name="spawnpoint" x="185" y="187">
+   <point/>
+  </object>
+ </objectgroup>
+ <group id="27" name="zone">
+  <objectgroup id="25" name="doors">
+   <object id="6" x="318.333" y="79" width="190.333" height="15.6667">
+    <properties>
+     <property name="facing" value="NORTH"/>
+     <property name="toDoorId" type="int" value="1"/>
+     <property name="toRoomName" value="room2"/>
+    </properties>
+   </object>
+  </objectgroup>
+ </group>
+</map>

@@ -2,6 +2,7 @@ package game;
 
 import game.pkg_Command.CommandManager;
 import game.pkg_Image.Animation;
+import game.pkg_Image.StaticSprite;
 import game.pkg_Player.Player;
 import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Scheduler.Scheduler;
@@ -9,6 +10,7 @@ import game.pkg_Util.FileUtils;
 import game.pkg_World.WorldManager;
 
 import javax.imageio.ImageIO;
+import javax.tools.Tool;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -40,18 +42,19 @@ public class GameEngineV2 implements Runnable {
 
     public GameEngineV2() {
         instance = this;
-
+        System.out.println(Toolkit.getDefaultToolkit().getScreenSize());
         CommandManager commandManager = new CommandManager();
 
         try {
-            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "test2.png"));
+            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player/idle/playerIdle2.png"));
             var worldManager = new WorldManager();
 
             player = new Player(
                     player1 -> new UserInterface(player1, commandManager),
-                    Animation.generateAnimation(playerSprite, 6, 100),
-                    new Rectangle2D.Double(0, 93, 121, 24),
-                    worldManager.getWorld("world1").getSpawnRoom()
+                    //Animation.generateAnimation(playerSprite, 6, 100),
+                    new StaticSprite(playerSprite),
+                    new Rectangle2D.Double(0, 38, 48, 10),
+                    worldManager.getWorld("forestWorld").getSpawnRoom()
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -80,6 +83,10 @@ public class GameEngineV2 implements Runnable {
         }
 
         return GameState.PLAY;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public void start() {
@@ -121,18 +128,18 @@ public class GameEngineV2 implements Runnable {
 
         if (hasUpdate) {
             if (updateZone != null) {
-                player.getUserInterface().getGameLayer().repaint(
+                player.getUserInterface().repaint(
                         (int) updateZone.getX(),
                         (int) updateZone.getY(),
                         (int) updateZone.getWidth(),
                         (int) updateZone.getHeight()
                 );
+                updateZone = null;
             } else {
-                player.getUserInterface().getGameLayer().repaint();
+                player.getUserInterface().repaint();
             }
 
             forceUpdate = false;
-            updateZone = null;
         }
     }
 

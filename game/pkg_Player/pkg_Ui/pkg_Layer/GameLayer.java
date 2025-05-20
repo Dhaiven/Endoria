@@ -6,7 +6,6 @@ import game.pkg_Object.TileStateWithPos;
 import game.pkg_Player.Player;
 import game.pkg_Room.Room;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -55,7 +54,6 @@ public class GameLayer extends Canvas {
     @Override
     public void addNotify() {
         super.addNotify();
-        System.out.println("addNotify");
         createBufferStrategy(3);
         bufferStrategy = getBufferStrategy();
 
@@ -109,14 +107,14 @@ public class GameLayer extends Canvas {
         Room room = player.getPosition().room();
         Set<Integer> layers = room.getLayers();
 
-        draw(g2d, room, 0, DrawType.UNDER);
-        draw(g2d, room, 0, DrawType.ABOVE);
+        //draw(g2d, room, 0, DrawType.UNDER);
+        //draw(g2d, room, 0, DrawType.ABOVE);
 
-        for (int layer = 1; layer < layers.size(); layer++) {
+        for (int layer = 0; layer < layers.size(); layer++) {
             draw(g2d, room, layer, DrawType.UNDER);
         }
 
-        for (int layer = 1; layer < layers.size(); layer++) {
+        for (int layer = 0; layer < layers.size(); layer++) {
             draw(g2d, room, layer, DrawType.ABOVE);
             for (Entity e : room.getEntities()) {
                 if (e.getLayer() == layer) {

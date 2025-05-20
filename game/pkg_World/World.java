@@ -24,7 +24,8 @@ public class World {
         }
 
         if (spawnRoom == null) {
-            throw new RuntimeException("No spawn room found");
+            spawnRoom = rooms.get(0);
+            //throw new RuntimeException("No spawn room found");
         }
     }
 

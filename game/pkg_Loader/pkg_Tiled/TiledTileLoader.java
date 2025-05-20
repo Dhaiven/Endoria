@@ -28,12 +28,11 @@ public class TiledTileLoader implements Loader {
 
     private final int firstId;
     private final Vector2 roomScale;
-    private final List<Sprite> sprites;
+    private final List<Sprite> sprites = new ArrayList<>();
 
-    public TiledTileLoader(final int firstId, final Vector2 roomScale, final List<Sprite> sprites) {
+    public TiledTileLoader(final int firstId, final Vector2 roomScale) {
         this.firstId = firstId;
         this.roomScale = roomScale;
-        this.sprites = sprites;
     }
 
     @Override
@@ -72,12 +71,17 @@ public class TiledTileLoader implements Loader {
                 int imageHeight = Integer.parseInt(imageElement.getAttribute("height"));
 
                 // Extraire toutes les sous-images correspondant aux tuiles
+                for (int y = 0; y < imageHeight; y += tileHeight) {
+                    for (int x = 0; x < imageWidth; x += tileWidth) {
+                        this.sprites.add(new StaticSprite(sourceImage.getSubimage(x, y, tileWidth, tileHeight)));
+                    }
+                }
+
+                // Extraire toutes les tiles
                 int id = 0;
                 for (int y = 0; y < imageHeight; y += tileHeight) {
                     for (int x = 0; x < imageWidth; x += tileWidth) {
-                        textures.put(id, loadTile(
-                                id, sourceImage, x, y, tileWidth, tileHeight, tileInfos.get(id)
-                        ));
+                        textures.put(id, loadTile(id, tileInfos.get(id)));
                         id++;
                     }
                 }
@@ -87,17 +91,14 @@ public class TiledTileLoader implements Loader {
         return textures;
     }
 
-    private Tile loadTile(int id, BufferedImage sourceImage, int x, int y, int width, int height) {
-        Sprite sprite = new StaticSprite(sourceImage.getSubimage(x, y, width, height));
-
-        return new Tile(firstId + id, sprite);
+    private Tile loadTile(int id) {
+        return new Tile(firstId + id, this.sprites.get(id));
     }
 
-    private Tile loadTile(int id, BufferedImage sourceImage, int x, int y, int width, int height, Element info) {
+    private Tile loadTile(int id, Element info) {
         if (info == null) {
-            return loadTile(id, sourceImage, x, y, width, height);
+            return loadTile(id);
         }
-        System.out.println("info is not null");
 
         // Collision
         List<Shape> collisions = new ArrayList<>();
@@ -118,14 +119,14 @@ public class TiledTileLoader implements Loader {
                 int spriteTileId = Integer.parseInt(frame.getAttribute("tileid"));
 
                 sprites.add(new AbstractMap.SimpleEntry<>(
-                        this.sprites.get(spriteTileId + firstId),
+                        this.sprites.get(spriteTileId),
                         Double.parseDouble(frame.getAttribute("duration"))
                 ));
             }
 
             sprite = new AnimatedSprite(sprites);
         } else {
-            sprite = new StaticSprite(sourceImage.getSubimage(x, y, width, height));
+            sprite = this.sprites.get(id);
         }
 
         // Tiles properties

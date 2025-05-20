@@ -1,0 +1,41 @@
+[
+    {
+        "id": 2,
+        "name": "Collision",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "IF_SAME_LAYER",
+            "IF_DIFFERENT_LAYER",
+            "IF_ADJACENT_LAYER",
+            "IF_HIGHEST",
+            "IF_HIGHEST_AND_DIFFERENT_LAYER",
+            "ALL_LAYER"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "id": 4,
+        "name": "DrawType",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "UNDER",
+            "ABOVE"
+        ],
+        "valuesAsFlags": false
+    },
+    {
+        "id": 3,
+        "name": "FacingDirection",
+        "storageType": "string",
+        "type": "enum",
+        "values": [
+            "NORTH",
+            "SOUTH",
+            "EAST",
+            "WEST"
+        ],
+        "valuesAsFlags": false
+    }
+]
