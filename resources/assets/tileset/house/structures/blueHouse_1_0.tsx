@@ -1,79 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.10" tiledversion="1.11.2" name="forest_ [bridgeHorizontal]" tilewidth="16" tileheight="16" tilecount="72" columns="12">
- <image source="../../sprite/forest/forest_ [bridgeHorizontal].png" width="192" height="96"/>
- <tile id="13">
+<tileset version="1.10" tiledversion="1.11.2" name="blueHouse_1_0" tilewidth="16" tileheight="16" tilecount="400" columns="25">
+ <image source="../../../sprite/house/structures/blueHouse_1_0.png" width="400" height="256"/>
+ <tile id="26">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4" y="0.0434783" width="11.8696" height="11.913"/>
+   <object id="1" x="3.96875" y="5.9375" width="12.0313" height="10.0938"/>
   </objectgroup>
  </tile>
- <tile id="14">
+ <tile id="27">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="-0.0434783" y="0.0434783" width="16" height="11.9565"/>
+   <object id="1" x="-0.03125" y="5.875" width="16.0938" height="10.0938"/>
   </objectgroup>
  </tile>
- <tile id="15">
+ <tile id="28">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="-0.0434783" y="0.0434783" width="16.0435" height="12"/>
+   <object id="1" x="0.15625" y="5.875" width="15.8438" height="10.0938"/>
   </objectgroup>
  </tile>
- <tile id="16">
+ <tile id="29">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="-0.0869565" y="-0.0869565" width="16.0435" height="12.0435"/>
+   <object id="1" x="0" y="5.78125" width="16" height="10.2188"/>
   </objectgroup>
  </tile>
- <tile id="17">
+ <tile id="30">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0.0434783" y="0.0869565" width="12.913" height="11.8261"/>
+   <object id="1" x="0.03125" y="5.84375" width="11.875" height="10.1563"/>
   </objectgroup>
  </tile>
- <tile id="18">
+ <tile id="51">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="2.95652" y="0" width="13.0435" height="11.9565"/>
+   <object id="1" x="3.03125" y="0.03125" width="12.9688" height="15.9375"/>
   </objectgroup>
  </tile>
- <tile id="19">
+ <tile id="55">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0" y="-0.0434783" width="15.9565" height="11.9565"/>
+   <object id="1" x="0.09375" y="0" width="13.6875" height="16.0313"/>
   </objectgroup>
  </tile>
- <tile id="20">
+ <tile id="76">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="-0.173913" y="-0.130435" width="12.1304" height="12.087"/>
+   <object id="1" x="2.90625" y="0.09375" width="13.125" height="15.9063"/>
   </objectgroup>
  </tile>
- <tile id="37">
+ <tile id="80">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="4.08696" y="-0.0434783" width="12" height="11.9565"/>
+   <object id="1" x="-0.0625" y="-0.03125" width="14" height="16.0313"/>
   </objectgroup>
  </tile>
- <tile id="38">
+ <tile id="101">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="4.03125" y="0.0625" width="11.875" height="15.875"/>
+  </objectgroup>
+ </tile>
+ <tile id="105">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="-0.0625" y="0" width="14.0313" height="16.0313"/>
+  </objectgroup>
+ </tile>
+ <tile id="126">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="4" y="0.03125" width="11.9375" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="130">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
@@ -81,39 +105,17 @@
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
  </tile>
- <tile id="39">
+ <tile id="151">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="0.0434783" y="0.0869565" width="15.9565" height="14.913"/>
+   <object id="1" x="4" y="-0.03125">
+    <polygon points="0,0 -0.03125,2.9375 3.25,3 3.09375,16 11.9688,15.9688 11.875,0.0625"/>
+   </object>
   </objectgroup>
  </tile>
- <tile id="40">
-  <properties>
-   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
-  </properties>
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="-0.0434783" y="0.0434783" width="16.087" height="14.9565"/>
-  </objectgroup>
- </tile>
- <tile id="41">
-  <properties>
-   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
-  </properties>
-  <objectgroup draworder="index" id="2">
-   <object id="1" x="0.0869565" y="0.0434783" width="13" height="14.8261"/>
-  </objectgroup>
- </tile>
- <tile id="42">
-  <properties>
-   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
-  </properties>
-  <objectgroup draworder="index" id="2">
-   <object id="2" x="3.04348" y="-0.0434783" width="12.9565" height="15"/>
-  </objectgroup>
- </tile>
- <tile id="43">
+ <tile id="155">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
@@ -121,12 +123,44 @@
    <object id="1" x="0" y="0" width="16" height="16"/>
   </objectgroup>
  </tile>
- <tile id="44">
+ <tile id="176">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
   </properties>
   <objectgroup draworder="index" id="2">
-   <object id="1" x="-0.173913" y="0" width="12.1304" height="11.913"/>
+   <object id="1" x="7.09375" y="0.125" width="8.875" height="9.84375"/>
+  </objectgroup>
+ </tile>
+ <tile id="177">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="-0.0625" y="0" width="16.0625" height="9.0625"/>
+  </objectgroup>
+ </tile>
+ <tile id="178">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0.0625" y="-0.03125" width="15.9375" height="9.03125"/>
+  </objectgroup>
+ </tile>
+ <tile id="179">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0.09375" y="0.03125" width="15.9688" height="8.90625"/>
+  </objectgroup>
+ </tile>
+ <tile id="180">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_SAME_LAYER"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="-0.125" y="-0.03125" width="9.09375" height="9.96875"/>
   </objectgroup>
  </tile>
 </tileset>

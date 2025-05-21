@@ -12,7 +12,11 @@ public class ChangeLayerTileBehavior extends TileBehavior {
             if (newTile.layer() > entity.getLayer()) {
                 entity.nextLayer();
             } else {
-                entity.previousLayer();
+                //TODO: remove this condition if we add multiple change layer in succession
+                if (!oldTile.tile().getProperties().contains(TileProperty.CHANGE_LAYER)) {
+                    entity.previousLayer();
+                }
+
             }
         }
 

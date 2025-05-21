@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "forestWorld/forestWorld.tmx",
+    "activeFile": "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_2_0.tsx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
@@ -13,24 +13,24 @@
             "scaleInEditor": 4
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forestPath_.tsx": {
-            "scaleInDock": 4,
+            "scaleInDock": 2,
             "scaleInEditor": 4
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeAnimatedTiles].tsx": {
-            "scaleInDock": 4,
+            "scaleInDock": 2,
             "scaleInEditor": 4
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeHorizontal].tsx": {
-            "scaleInDock": 3,
-            "scaleInEditor": 4
+            "scaleInDock": 2,
+            "scaleInEditor": 5.5
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeVertical].tsx": {
             "scaleInDock": 3,
             "scaleInEditor": 4
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [fencesAndWalls].tsx": {
-            "scaleInDock": 3,
-            "scaleInEditor": 4
+            "scaleInDock": 4,
+            "scaleInEditor": 5.5
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [fountain].tsx": {
             "scaleInDock": 1,
@@ -41,8 +41,20 @@
             "scaleInEditor": 4
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_.tsx": {
-            "scaleInDock": 4,
-            "scaleInEditor": 4
+            "scaleInDock": 0.75,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/forestVillageObjects_.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/forestVillageStructures_ [stallsWatchtower].tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/furnace_.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
         },
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/interior/books_.tsx": {
             "scaleInDock": 5.5,
@@ -60,16 +72,211 @@
             "scaleInDock": 4,
             "scaleInEditor": 4
         },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/picnicBlanket_.tsx": {
+            "scaleInDock": 5.5,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/stallObjects_.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_0_0.tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_1_0.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_2_0.tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_3_0.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_4_0.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueShop_0.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 5.5
+        },
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/tableObjects_.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
+        },
         "forestWorld/forestWorld.tmx": {
             "expandedGroupLayers": [
+                6,
                 2,
-                6
+                14,
+                10
             ],
-            "scale": 2,
+            "expandedObjectLayers": [
+                13,
+                14
+            ],
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 631.1666666666666,
+                "y": 75.33333333333333
+            }
+        },
+        "forestWorld/forestWorld10.tmx": {
+            "expandedGroupLayers": [
+                6,
+                3
+            ],
+            "expandedObjectLayers": [
+                6,
+                5
+            ],
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 101,
+                "y": -182
+            }
+        },
+        "forestWorld/forestWorld2.tmx": {
+            "expandedGroupLayers": [
+                4,
+                3,
+                2
+            ],
+            "expandedObjectLayers": [
+                13,
+                14
+            ],
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 490.33333333333337,
+                "y": 200
+            }
+        },
+        "forestWorld/forestWorld3.tmx": {
+            "expandedGroupLayers": [
+                9,
+                4,
+                2,
+                3,
+                7
+            ],
+            "expandedObjectLayers": [
+                9,
+                10
+            ],
+            "scale": 3,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 103.66666666666666,
+                "y": -0.6666666666666714
+            }
+        },
+        "forestWorld/forestWorld4.tmx": {
+            "expandedGroupLayers": [
+                8,
+                3
+            ],
+            "expandedObjectLayers": [
+                6,
+                7
+            ],
+            "scale": 1.5,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 919.6666666666666,
+                "y": 488
+            }
+        },
+        "forestWorld/forestWorld5.tmx": {
+            "expandedGroupLayers": [
+                3,
+                7
+            ],
+            "expandedObjectLayers": [
+                6,
+                5
+            ],
+            "scale": 1,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 356.5,
+                "y": 162
+            }
+        },
+        "forestWorld/forestWorld6.tmx": {
+            "expandedGroupLayers": [
+                3,
+                10
+            ],
+            "expandedObjectLayers": [
+                6,
+                7
+            ],
+            "scale": 0.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": -244,
+                "y": 682
+            }
+        },
+        "forestWorld/forestWorld7.tmx": {
+            "expandedGroupLayers": [
+                5,
+                3,
+                2,
+                7
+            ],
+            "expandedObjectLayers": [
+                8,
+                7
+            ],
+            "scale": 5.5,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 278,
-                "y": 117.25
+                "x": 260.3636363636364,
+                "y": -14.545454545454547
+            }
+        },
+        "forestWorld/forestWorld8.tmx": {
+            "expandedGroupLayers": [
+                9,
+                5,
+                2,
+                3
+            ],
+            "expandedObjectLayers": [
+                5,
+                7
+            ],
+            "scale": 0.75,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 624.6666666666667,
+                "y": 200
+            }
+        },
+        "forestWorld/forestWorld9.tmx": {
+            "expandedGroupLayers": [
+                5,
+                3,
+                7
+            ],
+            "expandedObjectLayers": [
+                8,
+                7
+            ],
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 119.16666666666666,
+                "y": 1.3333333333333286
             }
         },
         "museomWorld/museomInterior.tmx": {
@@ -101,8 +308,12 @@
         }
     },
     "frame.defaultDuration": 500,
-    "last.imagePath": "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/sprite/forest",
+    "last.imagePath": "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/sprite/house",
     "last.objectTypesPath": "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/world/propertytypes.json",
+    "last.worldFilePath": "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/world/forestWorld",
+    "loadedWorlds": [
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/world/forestWorld/forestWorld.world"
+    ],
     "map.height": 18,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
@@ -110,31 +321,46 @@
     "map.width": 32,
     "openFiles": [
         "forestWorld/forestWorld.tmx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeAnimatedTiles].tsx",
+        "forestWorld/forestWorld2.tmx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_2_0.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_3_0.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_4_0.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueShop_0.tsx",
+        "forestWorld/forestWorld3.tmx",
+        "forestWorld/forestWorld4.tmx",
+        "forestWorld/forestWorld5.tmx",
+        "forestWorld/forestWorld6.tmx",
+        "forestWorld/forestWorld7.tmx",
+        "forestWorld/forestWorld8.tmx",
+        "forestWorld/forestWorld9.tmx",
+        "forestWorld/forestWorld10.tmx",
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeHorizontal].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeVertical].tsx",
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [fencesAndWalls].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [fountain].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [resources].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forestDesert_.tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forestPath_.tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_.tsx"
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/forestVillageObjects_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/forestVillageStructures_ [stallsWatchtower].tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/furnace_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/picnicBlanket_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/stallObjects_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/tableObjects_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_0_0.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_1_0.tsx"
     ],
     "project": "game.tiled-project",
     "property.type": "Collision",
     "recentFiles": [
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_.tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forestPath_.tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forestDesert_.tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [resources].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [fountain].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [fencesAndWalls].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeVertical].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeHorizontal].tsx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [bridgeAnimatedTiles].tsx",
         "forestWorld/forestWorld.tmx",
-        "museumInterior/museumInterior.tmx",
-        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/interior/tableObjects_.tsx"
+        "forestWorld/forestWorld2.tmx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_1_0.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_0_0.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/tableObjects_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/stallObjects_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/picnicBlanket_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/furnace_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/forestVillageStructures_ [stallsWatchtower].tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/forestVillageObjects_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_.tsx",
+        "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/forest/forest_ [fencesAndWalls].tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

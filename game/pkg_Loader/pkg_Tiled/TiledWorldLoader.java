@@ -83,7 +83,7 @@ public class TiledWorldLoader implements WorldLoader {
     }
 
     private void loadDoors(Room room, File mapFile) {
-        System.out.println("Loading doors for " + mapFile.getName());
+        System.out.println("Loading doors for " + room.getName());
         Document map = createDocument(mapFile);
 
         for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
@@ -122,6 +122,7 @@ public class TiledWorldLoader implements WorldLoader {
                     if (toDoorId == null) {
                         throw new RuntimeException("DoorId is not initialized");
                     }
+                    System.out.println("Adding door " + toDoorId + " to room " + toRoom.getName());
 
                     room.addExit(
                             facing,
@@ -151,6 +152,7 @@ public class TiledWorldLoader implements WorldLoader {
                 if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
 
                 for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
+                    System.out.println("Adding door " + object.getAttribute("id"));
                     if (object.getAttribute("id").equals(String.valueOf(doorId))) {
                         return loadBaseShape(object, roomScale);
                     }

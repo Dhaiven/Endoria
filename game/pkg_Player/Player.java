@@ -48,7 +48,7 @@ public class Player extends Entity {
 
     // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Rectangle2D rigidBody2D, Room room) {
-        super(sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 0);
+        super(sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 1);
 
         this.eventManager = new PlayerEventManager(this);
         this.settings = new PlayerSettings();

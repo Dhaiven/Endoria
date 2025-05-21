@@ -1,9 +1,74 @@
 {
-     "maps": [
+    "maps": [
         {
             "fileName": "forestWorld.tmx",
+            "height": 0,
+            "width": 0,
             "x": 0,
             "y": 0
+        },
+        {
+            "fileName": "forestWorld2.tmx",
+            "height": 288,
+            "width": 512,
+            "x": 0,
+            "y": -288
+        },
+        {
+            "fileName": "forestWorld3.tmx",
+            "height": 288,
+            "width": 512,
+            "x": -512,
+            "y": -288
+        },
+        {
+            "fileName": "forestWorld4.tmx",
+            "height": 288,
+            "width": 512,
+            "x": -512,
+            "y": -576
+        },
+        {
+            "fileName": "forestWorld5.tmx",
+            "height": 288,
+            "width": 512,
+            "x": 0,
+            "y": -576
+        },
+        {
+            "fileName": "forestWorld6.tmx",
+            "height": 288,
+            "width": 512,
+            "x": 512,
+            "y": -576
+        },
+        {
+            "fileName": "forestWorld7.tmx",
+            "height": 288,
+            "width": 512,
+            "x": 512,
+            "y": -288
+        },
+        {
+            "fileName": "forestWorld8.tmx",
+            "height": 288,
+            "width": 512,
+            "x": -512,
+            "y": 0
+        },
+        {
+            "fileName": "forestWorld9.tmx",
+            "height": 288,
+            "width": 512,
+            "x": 512,
+            "y": 0
+        },
+        {
+            "fileName": "forestWorld10.tmx",
+            "height": 288,
+            "width": 512,
+            "x": 0,
+            "y": 288
         }
     ],
     "onlyShowAdjacentMaps": false,

@@ -143,6 +143,12 @@ public class Entity extends PlaceableGameObject {
 
         if (exit != null) {
             this.onChangeRoom(exit);
+
+            position = switch (facing) {
+                case NORTH, SOUTH -> new Position(lastPosition.x(), position.y(), position.room());
+                case EAST, WEST -> new Position(position.x(), lastPosition.y(), position.room());
+            };
+            GameEngineV2.getInstance().forceUpdate();
         } else {
             this.position = new Position(newPosition, this.position.room());
         }
@@ -242,7 +248,7 @@ public class Entity extends PlaceableGameObject {
         /**
          * TODO: custom shape for room
          */
-        if (!position.room().contains(new Vector2(rayCasting.getX2(), rayCasting.getY2()))) {
+        /**if (!position.room().contains(new Vector2(rayCasting.getX2(), rayCasting.getY2()))) {
             Double distance = MathUtils.distance(rigidBody2D, getRectangleSide(position.room().getArea().getBounds(), direction), direction);
 
             if (distance != null && distance < Math.abs(direction.getVectorComponent(deltaPosition))) {
@@ -252,7 +258,7 @@ public class Entity extends PlaceableGameObject {
 
                 return null;
             }
-        }
+        }*/
 
         for (List<TileStateWithPos> states : position.room().getTiles()) {
             for (TileStateWithPos state : states) {
@@ -302,7 +308,6 @@ public class Entity extends PlaceableGameObject {
                     }
                 }
             }
-
         }
 
         return deltaPosition;
@@ -342,6 +347,7 @@ public class Entity extends PlaceableGameObject {
         this.position.room().getEntities().remove(this);
 
         this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
+        //this.position = new Position(this.position.vector2(), byDoor.getTo());
 
         this.position.room().getEntities().add(this);
         Room newRoom = position.room();

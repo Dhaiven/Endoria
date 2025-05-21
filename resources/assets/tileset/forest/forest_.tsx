@@ -49,6 +49,24 @@
    </object>
   </objectgroup>
  </tile>
+ <tile id="28">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_HIGHEST"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="4.04993" y="3.96613" width="2.9327" height="11.9543"/>
+   <object id="2" x="3.9382" y="3.9382" width="12.0101" height="8.01606"/>
+  </objectgroup>
+ </tile>
+ <tile id="29">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_HIGHEST"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="0.0279305" y="3.99406" width="12.9598" height="8.18364"/>
+   <object id="2" x="9.02156" y="4.07786" width="3.88234" height="11.7588"/>
+  </objectgroup>
+ </tile>
  <tile id="45">
   <properties>
    <property name="collision" propertytype="Collision" value="IF_HIGHEST"/>
@@ -63,6 +81,24 @@
   </properties>
   <objectgroup draworder="index" id="2">
    <object id="2" x="4.03125" y="0" width="2.9375" height="16"/>
+  </objectgroup>
+ </tile>
+ <tile id="50">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_HIGHEST"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="3.96613" y="-0.0279305" width="2.9327" height="13.0156"/>
+   <object id="2" x="3.96613" y="8.9657" width="11.8984" height="4.04993"/>
+  </objectgroup>
+ </tile>
+ <tile id="51">
+  <properties>
+   <property name="collision" propertytype="Collision" value="IF_HIGHEST"/>
+  </properties>
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="9.07742" y="-0.0279305" width="3.99406" height="13.0715"/>
+   <object id="2" x="0" y="8.9657" width="13.0436" height="4.04993"/>
   </objectgroup>
  </tile>
  <tile id="67">
@@ -133,6 +169,7 @@
  </tile>
  <tile id="91">
   <properties>
+   <property name="changeLayer" type="bool" value="true"/>
    <property name="collision" propertytype="Collision" value="IF_HIGHEST"/>
   </properties>
   <objectgroup draworder="index" id="2">
@@ -143,6 +180,7 @@
  </tile>
  <tile id="92">
   <properties>
+   <property name="changeLayer" type="bool" value="true"/>
    <property name="collision" propertytype="Collision" value="IF_HIGHEST"/>
   </properties>
   <objectgroup draworder="index" id="2">

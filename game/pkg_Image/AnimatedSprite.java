@@ -6,11 +6,8 @@ import game.pkg_Scheduler.Task;
 import java.awt.Image;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class AnimatedSprite extends Sprite {
-
-    private static boolean START = false;
 
     private final List<Map.Entry<Sprite, Double>> sprites;
     private int spriteIndex;
@@ -30,10 +27,8 @@ public class AnimatedSprite extends Sprite {
         this.spriteIndex = firstSpriteIndex;
 
         this.task = new AnimationTask(this, observer);
-        if (!START) {
-            //GameEngineV2.getInstance().getSchedulerService().addTask(this.task, 1, 1);
-            START = true;
-        }
+        //TODO
+        //GameEngineV2.getInstance().getSchedulerService().addTask(this.task, 1, 1);
     }
 
     @Override
