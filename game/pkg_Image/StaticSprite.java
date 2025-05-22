@@ -1,5 +1,6 @@
 package game.pkg_Image;
 
+import game.pkg_Object.Vector2i;
 import game.pkg_Util.Utils;
 
 import java.awt.Image;
@@ -9,10 +10,11 @@ public class StaticSprite extends Sprite {
     private final Image image;
 
     public StaticSprite(Image image) {
-        if (image.getWidth(null) != Utils.TEXTURE_WIDTH || image.getHeight(null) != Utils.TEXTURE_HEIGHT) {
+        Vector2i textureSize = Utils.TEXTURE_SIZE;
+        if (image.getWidth(null) != textureSize.x() || image.getHeight(null) != textureSize.y()) {
             image = image.getScaledInstance(
-                    Utils.TEXTURE_WIDTH,
-                    Utils.TEXTURE_HEIGHT,
+                    textureSize.x(),
+                    textureSize.y(),
                     Image.SCALE_DEFAULT
             );
         }

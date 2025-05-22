@@ -2,6 +2,7 @@ package game.pkg_Loader.pkg_Tiled;
 
 import game.pkg_Loader.Loader;
 import game.pkg_Object.Vector2;
+import game.pkg_Object.Vector2i;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.Utils;
@@ -43,9 +44,10 @@ public class TiledRoomLoader implements Loader {
         int tileWidth = Integer.parseInt(mapElement.getAttribute("tilewidth"));
         int tileHeight = Integer.parseInt(mapElement.getAttribute("tileheight"));
 
+        Vector2i screenSize = Utils.TEXTURE_SIZE;
         Vector2 roomScale = new Vector2(
-                (double) Utils.TEXTURE_WIDTH / tileWidth,
-                (double) Utils.TEXTURE_HEIGHT / tileHeight
+                (double) screenSize.x() / tileWidth,
+                (double) screenSize.y() / tileHeight
         );
 
         // On récupère tous les tilesets
@@ -73,10 +75,10 @@ public class TiledRoomLoader implements Loader {
             }
         }
 
-        Map<Integer, List<Map<Vector2, Tile>>> mapLayers = new HashMap<>();
+        Map<Integer, List<Map<Vector2i, Tile>>> mapLayers = new HashMap<>();
         int layerId = 0;
         for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
-            List<Map<Vector2, Tile>> mapLayer = new ArrayList<>();
+            List<Map<Vector2i, Tile>> mapLayer = new ArrayList<>();
             for (Element layerElement : getAllElementNode(groupElement.getElementsByTagName("layer"))) {
                 if (layerElement.getAttribute("visible").equals("0")) {
                     continue;
@@ -122,7 +124,7 @@ public class TiledRoomLoader implements Loader {
         );
     }
 
-    private Map<Vector2, Tile> loadTilesFromCSV(Element csvElement, Map<Integer, Tile> tiles) {
+    private Map<Vector2i, Tile> loadTilesFromCSV(Element csvElement, Map<Integer, Tile> tiles) {
         Element data = (Element) csvElement.getElementsByTagName("data").item(0);
         String csvData = data.getTextContent().trim();
 
@@ -132,18 +134,15 @@ public class TiledRoomLoader implements Loader {
         int width = Integer.parseInt(csvElement.getAttribute("width"));
         int height = Integer.parseInt(csvElement.getAttribute("height"));
 
-        Map<Vector2, Tile> result = new HashMap<>();
+        Map<Vector2i, Tile> result = new HashMap<>();
         // Pour chaque ID de tile, on associe l'image correspondante
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 int tileId = Integer.parseInt(ids[row * width + column].trim());
                 if (!tiles.containsKey(tileId)) continue;
-
+                System.out.println(Utils.TEXTURE_SIZE);
                 result.put(
-                        new Vector2(
-                                column * Utils.TEXTURE_WIDTH,
-                                row * Utils.TEXTURE_HEIGHT
-                        ),
+                        new Vector2i(column, row).pow(Utils.TEXTURE_SIZE),
                         tiles.get(tileId)
                 );
             }
@@ -151,4 +150,6 @@ public class TiledRoomLoader implements Loader {
 
         return result;
     }
+
+
 }

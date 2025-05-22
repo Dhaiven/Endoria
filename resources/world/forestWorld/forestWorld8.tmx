@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="4">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="5">
  <tileset firstgid="1" source="../../assets/tileset/forest/forest_.tsx"/>
  <tileset firstgid="199" source="../../assets/tileset/forest/forestPath_.tsx"/>
  <tileset firstgid="239" source="../../assets/tileset/house/structures/blueHouse_4_0.tsx"/>
@@ -99,4 +99,12 @@
    </object>
   </objectgroup>
  </group>
+ <objectgroup id="10" name="entities">
+  <object id="4" x="206" y="116.5">
+   <properties>
+    <property name="entity" value="moving"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
 </map>

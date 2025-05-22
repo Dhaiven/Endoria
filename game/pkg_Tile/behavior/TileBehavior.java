@@ -1,11 +1,9 @@
 package game.pkg_Tile.behavior;
 
 import game.pkg_Entity.Entity;
-import game.pkg_Entity.FacingDirection;
 import game.pkg_Player.Player;
 import game.pkg_Item.Item;
 import game.pkg_Object.TileStateWithPos;
-import game.pkg_Tile.TileProperty;
 
 public class TileBehavior {
 

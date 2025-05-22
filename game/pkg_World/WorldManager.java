@@ -3,7 +3,6 @@ package game.pkg_World;
 import game.pkg_Loader.WorldLoader;
 import game.pkg_Loader.pkg_Tiled.TiledWorldLoader;
 import game.pkg_Util.FileUtils;
-import game.pkg_World.pkg_Loader.*;
 
 import java.io.File;
 import java.util.ArrayList;

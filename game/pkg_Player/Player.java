@@ -64,8 +64,6 @@ public class Player extends Entity {
         }
 
         this.aUserInterface = userInterface.apply(this);
-
-        //Animation.test(this);
     }
 
     /**

@@ -22,11 +22,6 @@ public class World {
                 break;
             }
         }
-
-        if (spawnRoom == null) {
-            spawnRoom = rooms.get(0);
-            //throw new RuntimeException("No spawn room found");
-        }
     }
 
     public String getName() {

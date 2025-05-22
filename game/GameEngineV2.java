@@ -1,16 +1,15 @@
 package game;
 
 import game.pkg_Command.CommandManager;
-import game.pkg_Image.Animation;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Player.Player;
 import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Scheduler.Scheduler;
+import game.pkg_Tile.TileManager;
 import game.pkg_Util.FileUtils;
 import game.pkg_World.WorldManager;
 
 import javax.imageio.ImageIO;
-import javax.tools.Tool;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -24,6 +23,7 @@ public class GameEngineV2 implements Runnable {
     private ScheduledFuture<?> future;
 
     private final Scheduler scheduler = new Scheduler();
+    private final TileManager tileManager = new TileManager();
     private final Player player;
 
     private long currentTime = 0;
@@ -69,6 +69,10 @@ public class GameEngineV2 implements Runnable {
         return scheduler;
     }
 
+    public TileManager getTileManager() {
+        return tileManager;
+    }
+
     public long getCurrentTime() {
         return currentTime;
     }
@@ -112,7 +116,6 @@ public class GameEngineV2 implements Runnable {
         fps++;
         player.triggerKeys();
 
-        boolean hasUpdate = forceUpdate;
         if (!isPaused) {
             long currentTimeMillis = System.currentTimeMillis();
             long deltaTime = currentTimeMillis - lastTime;
@@ -123,10 +126,10 @@ public class GameEngineV2 implements Runnable {
             lastTime = currentTimeMillis;
 
             scheduler.onUpdate();
-            hasUpdate = player.getPosition().room().onUpdate() || hasUpdate;
+            player.getPosition().room().onUpdate();
         }
 
-        if (hasUpdate) {
+        if (forceUpdate) {
             if (updateZone != null) {
                 player.getUserInterface().repaint(
                         (int) updateZone.getX(),

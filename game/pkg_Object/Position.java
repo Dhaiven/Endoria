@@ -10,6 +10,10 @@ public record Position(double x, double y, Room room) {
         this(vector.x(), vector.y(), room);
     }
 
+    public Position(Vector2i vector, Room room) {
+        this(vector.x(), vector.y(), room);
+    }
+
     public Vector2 vector2() {
         return new Vector2(x, y);
     }

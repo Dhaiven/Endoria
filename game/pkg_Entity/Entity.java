@@ -48,14 +48,12 @@ public class Entity extends PlaceableGameObject {
     public void previousLayer() {
         if (position.room().getLayers().contains(layer - 1)) {
             this.layer -= 1;
-            System.out.println("previousLayer " + layer);
         }
     }
 
     public void nextLayer() {
         if (position.room().getLayers().contains(layer + 1)) {
             this.layer += 1;
-            System.out.println("nextLayer " + layer);
         }
     }
 
@@ -100,42 +98,13 @@ public class Entity extends PlaceableGameObject {
             return;
         }
 
-        var oldTile = position.room().getHighestTileAt(convertToTileSystem(position.vector2()));
+        var oldTile = position.room().getHighestTileAt(Utils.convertToTileSystem(position.vector2()));
 
         Vector2 newPosition = new Vector2(
                 position.x() + deltaPosition.x(),
                 position.y() + deltaPosition.y()
         );
-        var newTile = position.room().getHighestTileAt(convertToTileSystem(newPosition));
-
-        /**if (oldTile == newTile) {
-            boolean canMove = true;
-            for (TileBehavior behavior : oldTile.tile().getBehaviors()) {
-                if (!behavior.canMove(oldTile, this)) {
-                    canMove = false;
-                }
-            }
-
-            if (!canMove) {
-                return;
-            }
-        } else {
-            boolean canChangeTile = true;
-            for (TileBehavior behavior : oldTile.tile().getBehaviors()) {
-                if (!behavior.canChangeTile(oldTile, newTile, this)) {
-                    canChangeTile = false;
-                }
-            }
-            for (TileBehavior behavior : newTile.tile().getBehaviors()) {
-                if (!behavior.canChangeTile(oldTile, newTile, this)) {
-                    canChangeTile = false;
-                }
-            }
-
-            if (!canChangeTile) {
-                return;
-            }
-        }*/
+        var newTile = position.room().getHighestTileAt(Utils.convertToTileSystem(newPosition));
 
         this.lastPosition = position;
 
@@ -232,18 +201,13 @@ public class Entity extends PlaceableGameObject {
         return new Rectangle(minX, minY, width, height);
     }
 
-    private Vector2 convertToTileSystem(Vector2 position) {
-        return new Vector2(
-                (int) Utils.TEXTURE_WIDTH * (int) (position.x() / Utils.TEXTURE_WIDTH),
-                (int) Utils.TEXTURE_HEIGHT * (int) (position.y() / Utils.TEXTURE_HEIGHT)
-        );
-    }
+
 
     private Vector2 checkCollision(Vector2 deltaPosition, FacingDirection direction) {
         Rectangle2D rigidBody2D = getRigidBody2D().getBounds2D();
         rigidBody2D = new Rectangle2D.Double(position.x() - sprite.getWidth() / 2d, position.y() - sprite.getHeight(), rigidBody2D.getMaxX(), rigidBody2D.getMaxY());
 
-        Line2D rayCasting = getRayCastFromRectangleSide(rigidBody2D, direction, deltaPosition);
+        Line2D rayCasting = Utils.getRayCastFromRectangleSide(rigidBody2D, direction, deltaPosition);
 
         /**
          * TODO: custom shape for room
@@ -313,41 +277,10 @@ public class Entity extends PlaceableGameObject {
         return deltaPosition;
     }
 
-    private Vector2 getSidedPosition(Rectangle2D rectangle, FacingDirection direction) {
-        return switch (direction) {
-            case NORTH -> new Vector2(rectangle.getCenterX(), rectangle.getMinY());
-            case SOUTH -> new Vector2(rectangle.getCenterX(), rectangle.getMaxY());
-            case EAST  -> new Vector2(rectangle.getMaxX(), rectangle.getCenterY());
-            case WEST  -> new Vector2(rectangle.getMinX(), rectangle.getCenterY());
-        };
-    }
-
-    private Line2D getRectangleSide(Rectangle2D rectangle, FacingDirection direction) {
-        return switch (direction) {
-            case NORTH -> new Line2D.Double(rectangle.getX(), rectangle.getY(), rectangle.getMaxX(), rectangle.getY());
-            case SOUTH -> new Line2D.Double(rectangle.getX(), rectangle.getMaxY(), rectangle.getMaxX(), rectangle.getMaxY());
-            case EAST  -> new Line2D.Double(rectangle.getMaxX(), rectangle.getY(), rectangle.getMaxX(), rectangle.getMaxY());
-            case WEST  -> new Line2D.Double(rectangle.getX(), rectangle.getY(), rectangle.getX(), rectangle.getMaxY());
-        };
-    }
-
-    private Line2D getRayCastFromRectangleSide(Rectangle2D rectangle, FacingDirection direction, Vector2 deltaPosition) {
-        Vector2 start = getSidedPosition(rectangle, direction);
-
-        // Créer le segment de raycast
-        return new Line2D.Double(
-                start.x(),
-                start.y(),
-                start.x() + deltaPosition.x(),
-                start.y() + deltaPosition.y()
-        );
-    }
-
     public void onChangeRoom(Door byDoor) {
         this.position.room().getEntities().remove(this);
 
         this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
-        //this.position = new Position(this.position.vector2(), byDoor.getTo());
 
         this.position.room().getEntities().add(this);
         Room newRoom = position.room();
@@ -359,7 +292,5 @@ public class Entity extends PlaceableGameObject {
         }
     }
 
-    public boolean onUpdate() {
-        return false;
-    }
+    public void onUpdate() { }
 }

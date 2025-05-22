@@ -2,6 +2,7 @@ package game.pkg_Room;
 
 import game.pkg_Entity.Entity;
 import game.pkg_Entity.FacingDirection;
+import game.pkg_Object.Vector2i;
 import game.pkg_Player.Player;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
@@ -50,11 +51,11 @@ public class Room
         this(shape, name, roomScale, new HashMap<>(), spawn);
     }
 
-    public Room(Shape shape, String name, Vector2 roomScale, Map<Integer, List<Map<Vector2, Tile>>> tiles) {
+    public Room(Shape shape, String name, Vector2 roomScale, Map<Integer, List<Map<Vector2i, Tile>>> tiles) {
         this(shape, name, roomScale, tiles, null);
     }
 
-    public Room(Shape shape, String name, Vector2 roomScale, Map<Integer, List<Map<Vector2, Tile>>> tiles, Vector2 spawn) {
+    public Room(Shape shape, String name, Vector2 roomScale, Map<Integer, List<Map<Vector2i, Tile>>> tiles, Vector2 spawn) {
         this.shape = shape;
         this.name = name;
         this.spawn = spawn;
@@ -120,15 +121,10 @@ public class Room
         entities.clear();
     }
 
-    public boolean onUpdate() {
-        boolean hasUpdate = false;
+    public void onUpdate() {
         for (Entity entity : entities) {
-           if (entity.onUpdate()) {
-               hasUpdate = true;
-           }
+           entity.onUpdate();
         }
-
-        return hasUpdate;
     }
 
     public boolean contains(Vector2 vector) {

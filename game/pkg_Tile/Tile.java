@@ -1,7 +1,6 @@
 package game.pkg_Tile;
 
 import game.GameEngineV2;
-import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
 import game.pkg_Object.DrawType;
 import game.pkg_Object.GameObject;
@@ -37,8 +36,7 @@ public class Tile extends GameObject {
         this.properties = properties;
         this.drawType = drawType;
 
-        // TODO: pas redéfinir le tilemaneger, surement le mattre dans le GameEngine
-        this.behaviors = (new TileManager()).getTileBehaviors(this);
+        this.behaviors = GameEngineV2.getInstance().getTileManager().getTileBehaviors(this);
     }
 
     public int getId() {
