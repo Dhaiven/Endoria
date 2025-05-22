@@ -15,6 +15,7 @@ public class CommandManager
     public CommandManager() {
         this.commandExecutor = new CommandExecutor(this);
 
+        this.register(new AleaCommand());
         this.register(new BackCommand());
         this.register(new GoCommand());
         this.register(new HelpCommand(this));

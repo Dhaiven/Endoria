@@ -22,7 +22,7 @@ public class TestCommand extends Command {
             return false;
         }
 
-        File file = new File(args[0] + ".txt");
+        File file = new File("game/" + args[0] + ".txt");
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line;
             while ((line = br.readLine()) != null) {

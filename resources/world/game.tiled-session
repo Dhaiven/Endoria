@@ -146,17 +146,18 @@
             "expandedGroupLayers": [
                 2,
                 3,
-                4
+                4,
+                13
             ],
             "expandedObjectLayers": [
                 14,
                 13
             ],
             "scale": 0.33,
-            "selectedLayer": 2,
+            "selectedLayer": 12,
             "viewCenter": {
-                "x": -263.6363636363636,
-                "y": 143.939393939394
+                "x": 1150.0000000000002,
+                "y": 145.45454545454538
             }
         },
         "forestWorld/forestWorld3.tmx": {
@@ -181,33 +182,35 @@
         "forestWorld/forestWorld4.tmx": {
             "expandedGroupLayers": [
                 8,
-                3
+                3,
+                6
             ],
             "expandedObjectLayers": [
                 7,
                 6
             ],
             "scale": 0.33,
-            "selectedLayer": 3,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 254.54545454545456,
-                "y": 143.939393939394
+                "x": 1662.121212121212,
+                "y": 433.3333333333335
             }
         },
         "forestWorld/forestWorld5.tmx": {
             "expandedGroupLayers": [
                 7,
-                3
+                3,
+                5
             ],
             "expandedObjectLayers": [
                 5,
                 6
             ],
             "scale": 0.33,
-            "selectedLayer": 3,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 254.54545454545456,
-                "y": 143.939393939394
+                "x": 1150.0000000000002,
+                "y": 433.3333333333335
             }
         },
         "forestWorld/forestWorld6.tmx": {
@@ -273,11 +276,11 @@
                 8,
                 7
             ],
-            "scale": 0.75,
-            "selectedLayer": 8,
+            "scale": 0.33,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 78,
-                "y": -5.333333333333371
+                "x": 428.78787878787875,
+                "y": -115.15151515151524
             }
         },
         "museomWorld/museomInterior.tmx": {

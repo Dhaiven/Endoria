@@ -10,6 +10,7 @@ import game.pkg_Object.Vector2;
 import game.pkg_Object.Vector2i;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
+import game.pkg_Room.TransporterRoom;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.Utils;
 import org.w3c.dom.Document;
@@ -121,13 +122,27 @@ public class TiledRoomLoader implements Loader {
         int height = (int) (Integer.parseInt(mapElement.getAttribute("height")) * roomScale.y());
         Shape shape = new Rectangle(0, 0, width * tileWidth, height * tileHeight);
 
-        Room room = new Room(
-                shape,
-                mapFile.getName().split("\\.")[0],
-                roomScale,
-                mapLayers,
-                spawnPoint
-        );
+        String name = mapFile.getName().split("\\.")[0];
+
+        Room room;
+        //TODO: allow possibility to add transporter room in config
+        if (name.equals("forestWorld9")) {
+            room = new TransporterRoom(
+                    shape,
+                    name,
+                    roomScale,
+                    mapLayers,
+                    spawnPoint
+            );
+        } else {
+            room = new Room(
+                    shape,
+                    name,
+                    roomScale,
+                    mapLayers,
+                    spawnPoint
+            );
+        }
         loadEntities(room, mapFile, roomScale);
 
         return room;

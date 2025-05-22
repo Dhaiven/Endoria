@@ -1,9 +1,6 @@
 package game.pkg_Command;
 
-import game.GameEngineV2;
 import game.pkg_Player.Player;
-
-import javax.swing.*;
 
 /**
  * @author  DEBELLE Hugp

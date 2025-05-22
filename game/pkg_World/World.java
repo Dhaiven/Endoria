@@ -28,6 +28,10 @@ public class World {
         return name;
     }
 
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
     public Room getSpawnRoom() {
         return spawnRoom;
     }

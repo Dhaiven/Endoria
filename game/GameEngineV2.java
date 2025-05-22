@@ -31,15 +31,12 @@ public class GameEngineV2 implements Runnable {
     private long lastTime = 0;
     private double deltaTime;
 
-    private long startTime;
-
-    private long lastFps = 0;
-    private long fps = 0;
-
     private boolean isPaused = false;
 
     private boolean forceUpdate = false;
     private Rectangle updateZone = null;
+
+    private String alea = null;
 
     public GameEngineV2() {
         instance = this;
@@ -50,10 +47,9 @@ public class GameEngineV2 implements Runnable {
 
             player = new Player(
                     player1 -> new UserInterface(player1, commandManager),
-                    //Animation.generateAnimation(playerSprite, 6, 100),
                     new StaticSprite(playerSprite),
                     new Rectangle2D.Double(0, 38, 48, 10),
-                    worldManager.getWorld("forestWorld").getSpawnRoom()
+                    worldManager.getWorld("forestWorld")
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -96,9 +92,16 @@ public class GameEngineV2 implements Runnable {
         return player;
     }
 
+    public String getAlea() {
+        return alea;
+    }
+
+    public void setAlea(String alea) {
+        this.alea = alea;
+    }
+
     public void start() {
         lastTime = System.currentTimeMillis();
-        startTime = System.currentTimeMillis();
 
         player.spawn();
         player.getUserInterface().getGameLayer().repaint();
@@ -106,17 +109,18 @@ public class GameEngineV2 implements Runnable {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         future = scheduler.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MILLISECONDS);
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            long endTime = System.currentTimeMillis();
-            double elapsedSeconds = (endTime - startTime) / 1000.0;
-            System.out.println("Average fps = " + this.fps / elapsedSeconds);
-        }));
+        player.getUserInterface().println("Bienvenue dans le monde de Endoria");
+        player.getUserInterface().println("Votre objectif: trouver le diamand secrét de musée !");
+        player.getUserInterface().println("Besoin d'aide ? Taper help");
+        player.getUserInterface().println("");
+        player.getUserInterface().println("Bonne chance !!!");
+        player.getUserInterface().println("");
+        player.getUserInterface().printLocationInfo();
     }
 
     // Méthode principale de la boucle de jeu
     @Override
     public void run() {
-        fps++;
         player.triggerKeys();
 
         if (!isPaused) {

@@ -2,6 +2,7 @@ package game.pkg_Loader.pkg_Tiled;
 
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Item.Beamer;
+import game.pkg_Item.Item;
 import game.pkg_Item.Key;
 import game.pkg_Item.MagicCookie;
 import game.pkg_Loader.LoaderUtils;
@@ -198,6 +199,7 @@ public class TiledWorldLoader implements WorldLoader {
      */
     private void loadItems(Room room) {
         switch (room.getName()) {
+            case "forestWorld4" -> room.getItemList().addItem(new Item(null, "diamond", "Le diamand convoité !", 150));
             case "forestWorld8" -> room.getItemList().addItem(new Key());
             case "forestWorld9" -> room.getItemList().addItem(new Beamer());
             case "forestWorld10" -> room.getItemList().addItem(new MagicCookie());

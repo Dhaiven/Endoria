@@ -7,6 +7,7 @@ import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
+import game.pkg_Loader.WorldLoader;
 import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Player.pkg_Action.Action;
@@ -14,6 +15,7 @@ import game.pkg_Player.pkg_Action.pkg_Processor.ActionProcessorManager;
 import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
+import game.pkg_World.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +33,7 @@ import java.util.function.Function;
 public class Player extends Entity {
 
     private UserInterface aUserInterface;
+    private final World world;
 
     private Stack<Door> aLastRooms = new Stack<>();
 
@@ -41,14 +44,15 @@ public class Player extends Entity {
     private final PlayerEventManager eventManager;
     private final ActionProcessorManager actionProcessorManager;
 
-    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Room room) {
-        this(userInterface, sprite, new Rectangle2D.Double(0, 0, sprite.getWidth(), sprite.getHeight()), room);
+    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, World world) {
+        this(userInterface, sprite, new Rectangle2D.Double(0, 0, sprite.getWidth(), sprite.getHeight()), world);
     }
 
     // TODO: custom layer
-    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Rectangle2D rigidBody2D, Room room) {
-        super("Player", sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 1);
+    public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Rectangle2D rigidBody2D, World world) {
+        super("Player", sprite, rigidBody2D, new Position(world.getSpawnRoom().getSpawnPoint(), world.getSpawnRoom()), 1);
 
+        this.world = world;
         this.eventManager = new PlayerEventManager(this);
         this.settings = new PlayerSettings();
         this.actionProcessorManager = new ActionProcessorManager();
@@ -70,6 +74,13 @@ public class Player extends Entity {
      */
     public UserInterface getUserInterface() {
         return this.aUserInterface;
+    }
+
+    /**
+     * @return le monde qui contient toutes les pièces
+     */
+    public World getWorld() {
+        return world;
     }
 
     /**

@@ -235,7 +235,7 @@ public class Room {
     /**
      * Fonction qui retourne toutes les sorties possibles
      */
-    public HashMap<FacingDirection, List<Door>> getExits() {
+    public Map<FacingDirection, List<Door>> getExits() {
         return this.exits;
     }
 
