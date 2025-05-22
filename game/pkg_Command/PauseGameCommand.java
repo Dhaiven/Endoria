@@ -11,6 +11,7 @@ public class PauseGameCommand extends Command {
     @Override
     public boolean execute(Player player, String[] args) {
         player.getUserInterface().getPauseOverlay().setVisible(true);
+        player.getUserInterface().print("Le jeu est en pause");
         return false;
     }
 }

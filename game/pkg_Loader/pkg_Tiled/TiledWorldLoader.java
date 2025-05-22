@@ -1,10 +1,14 @@
 package game.pkg_Loader.pkg_Tiled;
 
 import game.pkg_Entity.FacingDirection;
+import game.pkg_Item.Beamer;
+import game.pkg_Item.Key;
+import game.pkg_Item.MagicCookie;
 import game.pkg_Loader.LoaderUtils;
 import game.pkg_Loader.WorldLoader;
 import game.pkg_Object.Vector2;
 import game.pkg_Room.Door;
+import game.pkg_Room.LockDoor;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.Utils;
@@ -77,13 +81,13 @@ public class TiledWorldLoader implements WorldLoader {
 
         for (Room room : rooms.values()) {
             loadDoors(room, filesByRoom.get(room.getName()));
+            loadItems(room);
         }
 
         return new World(world.getName().split("\\.")[0], this.rooms.values().stream().toList());
     }
 
     private void loadDoors(Room room, File mapFile) {
-        System.out.println("Loading doors for " + room.getName());
         Document map = createDocument(mapFile);
 
         for (Element groupElement : getAllElementNode(map.getElementsByTagName("group"))) {
@@ -97,6 +101,7 @@ public class TiledWorldLoader implements WorldLoader {
                     Room toRoom = null;
                     Integer toDoorId = null;
                     FacingDirection facing = null;
+                    boolean needKey = false;
                     for (Element properties : getAllElementNode(object.getElementsByTagName("properties"))) {
                         for (Element property : getAllElementNode(properties.getChildNodes())) {
                             Object value = loadProperty(property);
@@ -112,31 +117,42 @@ public class TiledWorldLoader implements WorldLoader {
                                 case "facing":
                                     facing = LoaderUtils.loadEnum(property.getAttribute("value"), FacingDirection.class);
                                     break;
+                                case "needKey":
+                                    needKey = true;
+                                    break;
                             }
                         }
                     }
 
-                    if (toRoom == null) {
-                        throw new RuntimeException("toRoom is not initialized");
-                    }
-                    if (toDoorId == null) {
-                        throw new RuntimeException("DoorId is not initialized");
-                    }
-                    System.out.println("Adding door " + toDoorId + " to room " + toRoom.getName());
+                    if (toRoom == null || toDoorId == null) continue;
 
-                    room.addExit(
-                            facing,
-                            new Door(
-                                    doorShape,
-                                    Utils.getCenterPosition(
-                                            Objects.requireNonNull(
-                                                    loadDoorShape(filesByRoom.get(toRoom.getName()), toDoorId, room.getRoomScale()
-                                                    )
-                                            )
-                                    ),
-                                    toRoom
-                            )
-                    );
+                    Door door;
+                    if (needKey) {
+                        door = new LockDoor(
+                                doorShape,
+                                Utils.getCenterPosition(
+                                        Objects.requireNonNull(
+                                                loadDoorShape(filesByRoom.get(toRoom.getName()), toDoorId, room.getRoomScale()
+                                                )
+                                        )
+                                ),
+                                toRoom,
+                                new Key()
+                        );
+                    } else {
+                        door = new Door(
+                                doorShape,
+                                Utils.getCenterPosition(
+                                        Objects.requireNonNull(
+                                                loadDoorShape(filesByRoom.get(toRoom.getName()), toDoorId, room.getRoomScale()
+                                                )
+                                        )
+                                ),
+                                toRoom
+                        );
+                    }
+
+                    room.addExit(facing, door);
                 }
             }
         }
@@ -152,7 +168,6 @@ public class TiledWorldLoader implements WorldLoader {
                 if (!objectGroupElement.getAttribute("name").equals("doors")) continue;
 
                 for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
-                    System.out.println("Adding door " + object.getAttribute("id"));
                     if (object.getAttribute("id").equals(String.valueOf(doorId))) {
                         return loadBaseShape(object, roomScale);
                     }
@@ -173,7 +188,19 @@ public class TiledWorldLoader implements WorldLoader {
             case "int" -> Integer.parseInt(value);
             case "float" -> Float.parseFloat(value);
             case "color" -> Color.decode(value);
+            case "bool" -> Boolean.parseBoolean(value);
             default -> null; //TODO: custom object
         };
+    }
+
+    /**
+     * TODO: Load items with a config
+     */
+    private void loadItems(Room room) {
+        switch (room.getName()) {
+            case "forestWorld8" -> room.getItemList().addItem(new Key());
+            case "forestWorld9" -> room.getItemList().addItem(new Beamer());
+            case "forestWorld10" -> room.getItemList().addItem(new MagicCookie());
+        }
     }
 }

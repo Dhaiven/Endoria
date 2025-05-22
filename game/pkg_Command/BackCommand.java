@@ -3,6 +3,8 @@ package game.pkg_Command;
 import game.GameEngineV2;
 import game.pkg_Player.Player;
 
+import javax.swing.*;
+
 /**
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
@@ -21,8 +23,7 @@ public class BackCommand extends Command {
         }
 
         if (player.back()) {
-            //player.getGameEngine().printLocationInfo();
-            GameEngineV2.getInstance().forceUpdate();
+            player.getUserInterface().printLocationInfo();
             return true;
         }
 

@@ -10,17 +10,12 @@ public class BaseStep implements AnimationStep {
     }
 
     public void start() {
-        System.out.println("startBaseStep");
         for (AnimationAction action : actions) {
-            System.out.println("action");
             action.start();
-            System.out.println("action2");
         }
-        System.out.println("endBaseStep");
     }
 
     public void update(long elapsed) {
-        System.out.println("update2");
         for (AnimationAction action : actions) {
             action.update(elapsed);
         }

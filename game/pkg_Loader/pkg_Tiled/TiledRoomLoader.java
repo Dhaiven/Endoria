@@ -1,8 +1,14 @@
 package game.pkg_Loader.pkg_Tiled;
 
+import game.pkg_Entity.Entity;
+import game.pkg_Entity.FacingDirection;
+import game.pkg_Entity.MovingCharacter;
 import game.pkg_Loader.Loader;
+import game.pkg_Loader.LoaderUtils;
+import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Object.Vector2i;
+import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 import game.pkg_Tile.Tile;
 import game.pkg_Util.Utils;
@@ -115,13 +121,16 @@ public class TiledRoomLoader implements Loader {
         int height = (int) (Integer.parseInt(mapElement.getAttribute("height")) * roomScale.y());
         Shape shape = new Rectangle(0, 0, width * tileWidth, height * tileHeight);
 
-        return new Room(
+        Room room = new Room(
                 shape,
                 mapFile.getName().split("\\.")[0],
                 roomScale,
                 mapLayers,
                 spawnPoint
         );
+        loadEntities(room, mapFile, roomScale);
+
+        return room;
     }
 
     private Map<Vector2i, Tile> loadTilesFromCSV(Element csvElement, Map<Integer, Tile> tiles) {
@@ -140,7 +149,7 @@ public class TiledRoomLoader implements Loader {
             for (int column = 0; column < width; column++) {
                 int tileId = Integer.parseInt(ids[row * width + column].trim());
                 if (!tiles.containsKey(tileId)) continue;
-                System.out.println(Utils.TEXTURE_SIZE);
+
                 result.put(
                         new Vector2i(column, row).pow(Utils.TEXTURE_SIZE),
                         tiles.get(tileId)
@@ -151,5 +160,40 @@ public class TiledRoomLoader implements Loader {
         return result;
     }
 
+    private void loadEntities(Room room, File mapFile, Vector2 roomScale) {
+        Document map = createDocument(mapFile);
 
+        for (Element objectGroupElement : getAllElementNode(map.getElementsByTagName("objectgroup"))) {
+            if (!objectGroupElement.getAttribute("name").equals("entities")) continue;
+
+            for (Element object : getAllElementNode(objectGroupElement.getElementsByTagName("object"))) {
+                Vector2 spawnPoint = loadVector(object, roomScale);
+                String name = "";
+                boolean isMoving = false;
+                for (Element properties : getAllElementNode(object.getElementsByTagName("properties"))) {
+                    for (Element property : getAllElementNode(properties.getChildNodes())) {
+                        String propertyName = property.getAttribute("name");
+                        String propertyValue = property.getAttribute("value");
+                        switch (propertyName) {
+                            case "entity" -> {
+                                if (propertyValue.equals("moving")) {
+                                    isMoving = true;
+                                }
+                            }
+                            case "name" -> name = propertyValue;
+                        }
+                    }
+                }
+
+                Entity entity;
+                if (isMoving) {
+                    entity = new MovingCharacter(name, null, new Position(spawnPoint, room));
+                } else {
+                    entity = new Entity(name, null, new Position(spawnPoint, room), 2);
+                }
+
+                room.addEntity(entity);
+            }
+        }
+    }
 }

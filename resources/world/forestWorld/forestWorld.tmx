@@ -152,13 +152,7 @@
      <property name="toRoomName" value="forestWorld10"/>
     </properties>
    </object>
-   <object id="4" x="457.909" y="281.909" width="27.4545" height="5.90909">
-    <properties>
-     <property name="facing" propertytype="FacingDirection" value="SOUTH"/>
-     <property name="toDoorId" type="int" value="3"/>
-     <property name="toRoomName" value="forestWorld10"/>
-    </properties>
-   </object>
+   <object id="4" x="457.909" y="281.909" width="27.4545" height="5.90909"/>
    <object id="6" x="0.25" y="108.25" width="6.125" height="22.5">
     <properties>
      <property name="facing" propertytype="FacingDirection" value="WEST"/>

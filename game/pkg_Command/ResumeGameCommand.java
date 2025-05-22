@@ -11,6 +11,7 @@ public class ResumeGameCommand extends Command {
     @Override
     public boolean execute(Player player, String[] args) {
         player.getUserInterface().closeAllOpenedOverlays();
+        player.getUserInterface().print("Le jeu reprend !");
         return false;
     }
 }

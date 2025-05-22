@@ -1,5 +1,6 @@
 package game.pkg_Room;
 
+import game.pkg_Entity.Character;
 import game.pkg_Entity.Entity;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Object.Vector2i;
@@ -9,9 +10,6 @@ import game.pkg_Object.Position;
 import game.pkg_Object.TileStateWithPos;
 import game.pkg_Object.Vector2;
 import game.pkg_Tile.Tile;
-import game.pkg_Tile.behavior.TileBehavior;
-import game.pkg_World.World;
-
 import java.awt.*;
 import java.awt.geom.Area;
 import java.util.*;
@@ -20,13 +18,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 /**
- *  Cette classe représente une pièce
+ * Cette classe représente une pièce
  *
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
  */
-public class Room
-{
+public class Room {
 
     private final Shape shape;
     private final String name;
@@ -172,10 +169,6 @@ public class Room
         return tiles.get(layer);
     }
 
-    public List<Entity> getEntities() {
-        return entities;
-    }
-
     public void setTile(Tile tile, int row, int column, int layer) {
         setTile(tile, row, column, layer, null);
     }
@@ -283,45 +276,92 @@ public class Room
 
     /**
      * @return tous les personnages de la classe
-     *
-    public HashMap<String, Character> getCharacters() {
+     */
+    public List<Entity> getEntities() {
         return this.entities;
+    }
+
+    /**
+     * Get an entity with this name
+     * @param pName entity's name
+     * @return Entity if she exists else null
+     */
+    public Entity getEntityByName(String pName) {
+        for (Entity entity : this.entities) {
+            if (entity.getName().equals(pName)) {
+                return entity;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Ajoute un personnage dans cette pièce
+     */
+    public void addEntity(Entity pEntity) {
+        System.out.println("Adding entity " + pEntity.getName());
+        this.entities.add(pEntity);
+    }
+
+    /**
+     * Supprime un personnage présent dans cette pièce
+     */
+    public void removeEntity(Entity pEntity) {
+        this.entities.remove(pEntity);
+    }
+
+    /**
+     * @return tous les personnages de la classe
+     */
+    public List<Entity> getCharacters() {
+        return this.entities.stream().filter(entity -> entity instanceof Character).collect(Collectors.toList());
     }
 
     /**
      * Get un personnage en fonction de son nom
      * @param pName le nom du personnage
      * @return Character si le personage exist else null
-     *
+     */
     public Character getaCharacterByName(String pName) {
-        return this.entities.get(pName);
+        for (Entity entity : this.entities) {
+            if (entity instanceof Character) {
+                if (entity.getName().equals(pName)) {
+                    return (Character) entity;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
      * Ajoute un personnage dans cette pièce
-     *
+     */
     public void addCharacter(Character pCharacter) {
-        this.entities.put(pCharacter.getName(), pCharacter);
+        this.addEntity(pCharacter);
     }
 
     /**
      * Supprime un personnage présent dans cette pièce
-     *
+     */
     public void removeCharacter(Character pCharacter) {
-        this.entities.remove(pCharacter.getName());
+        this.removeEntity(pCharacter);
     }
 
     /**
-     * @return un String de tous les personnages disposables
-     *
+     * @return String de tous les personnages disposables
+     */
     public String getCharacterString() {
         StringBuilder result = new StringBuilder();
-        for (String name : this.entities.keySet()) {
-            result.append(name).append(" ");
+        for (Entity entity : this.entities) {
+            if (entity instanceof Character) {
+                result.append(entity.getName()).append(" ");
+            }
         }
 
         return result.toString();
-    }*/
+    }
 
     /**
      * @return tous les items disponibles dans cette pièce
@@ -333,8 +373,7 @@ public class Room
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof Room room)) return false;
-        return Objects.equals(shape, room.shape) &&
-                Objects.equals(getName(), room.getName());
+        return Objects.equals(getName(), room.getName());
     }
 
     @Override

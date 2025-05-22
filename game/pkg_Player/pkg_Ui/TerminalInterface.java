@@ -25,14 +25,13 @@ public class TerminalInterface implements ActionListener {
 
         // Création de la fenêtre secondaire (JDialog)
         this.aDialog = new JDialog(ownerFrame, "Terminal", false);
-        this.aDialog.setSize(300, 200);
+        this.aDialog.setSize(400, 300);
         this.aDialog.setLocationRelativeTo(ownerFrame); // Centre sur le premier JFrame
         this.aDialog.addKeyListener(player.getEventManager());
 
         // Zone de texte et champ d'entrée
         this.aEntryField = new JTextField(34);
         this.aEntryField.addActionListener(this);
-        this.aEntryField.requestFocus();
 
         this.aLog = new JTextArea();
         this.aLog.setEditable(false);
@@ -41,15 +40,20 @@ public class TerminalInterface implements ActionListener {
         vListScroller.setPreferredSize(new Dimension(200, 200));
         vListScroller.setMinimumSize(new Dimension(100, 100));
 
+        var aButton = new JButton("Help");
+        aButton.addActionListener(e -> commandManager.getCommandExecutor().interpretCommand(player, "help"));
+
         // Création du panel pour la zone de log et champ d'entrée
         JPanel vPanel = new JPanel();
         vPanel.setLayout(new BorderLayout());
         vPanel.add(vListScroller, BorderLayout.CENTER); // Met le log dans le centre
         vPanel.add(this.aEntryField, BorderLayout.SOUTH);
+        vPanel.add(aButton, BorderLayout.EAST);
 
         // Ajout des composants au JFrame
         this.aDialog.add(vPanel);
-        //this.aDialog.setVisible(true);
+
+        this.aDialog.setVisible(true);
     }
 
     public boolean isEnable() {

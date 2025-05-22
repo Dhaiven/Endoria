@@ -110,20 +110,20 @@
         },
         "forestWorld/forestWorld.tmx": {
             "expandedGroupLayers": [
-                6,
                 2,
                 14,
-                10
+                10,
+                6
             ],
             "expandedObjectLayers": [
-                13,
-                14
+                14,
+                13
             ],
-            "scale": 0.33,
-            "selectedLayer": 1,
+            "scale": 2,
+            "selectedLayer": 9,
             "viewCenter": {
-                "x": 256.0606060606061,
-                "y": 143.939393939394
+                "x": 536.25,
+                "y": -94
             }
         },
         "forestWorld/forestWorld10.tmx": {
@@ -135,22 +135,22 @@
                 5,
                 6
             ],
-            "scale": 1.5,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": -202.33333333333337,
-                "y": -244
+                "x": 590,
+                "y": -145.33333333333337
             }
         },
         "forestWorld/forestWorld2.tmx": {
             "expandedGroupLayers": [
-                3,
                 2,
+                3,
                 4
             ],
             "expandedObjectLayers": [
-                13,
-                14
+                14,
+                13
             ],
             "scale": 0.33,
             "selectedLayer": 2,
@@ -161,15 +161,15 @@
         },
         "forestWorld/forestWorld3.tmx": {
             "expandedGroupLayers": [
-                9,
-                3,
                 2,
                 7,
-                4
+                3,
+                4,
+                9
             ],
             "expandedObjectLayers": [
-                9,
-                10
+                10,
+                9
             ],
             "scale": 0.33,
             "selectedLayer": 3,
@@ -180,12 +180,12 @@
         },
         "forestWorld/forestWorld4.tmx": {
             "expandedGroupLayers": [
-                3,
-                8
+                8,
+                3
             ],
             "expandedObjectLayers": [
-                6,
-                7
+                7,
+                6
             ],
             "scale": 0.33,
             "selectedLayer": 3,
@@ -196,8 +196,8 @@
         },
         "forestWorld/forestWorld5.tmx": {
             "expandedGroupLayers": [
-                3,
-                7
+                7,
+                3
             ],
             "expandedObjectLayers": [
                 5,
@@ -213,25 +213,26 @@
         "forestWorld/forestWorld6.tmx": {
             "expandedGroupLayers": [
                 3,
-                10
+                10,
+                6
             ],
             "expandedObjectLayers": [
-                6,
-                7
+                7,
+                6
             ],
-            "scale": 0.33,
-            "selectedLayer": 5,
+            "scale": 0.75,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 254.54545454545456,
-                "y": 143.939393939394
+                "x": -351.33333333333326,
+                "y": 866.6666666666666
             }
         },
         "forestWorld/forestWorld7.tmx": {
             "expandedGroupLayers": [
-                5,
-                3,
                 2,
-                7
+                7,
+                3,
+                5
             ],
             "expandedObjectLayers": [
                 8,
@@ -246,37 +247,37 @@
         },
         "forestWorld/forestWorld8.tmx": {
             "expandedGroupLayers": [
-                9,
-                5,
+                2,
                 3,
-                2
+                5,
+                9
             ],
             "expandedObjectLayers": [
-                5,
-                7
+                7,
+                5
             ],
-            "scale": 0.33,
-            "selectedLayer": 3,
+            "scale": 0.75,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 254.54545454545456,
-                "y": 143.939393939394
+                "x": 672.6666666666667,
+                "y": 142.66666666666663
             }
         },
         "forestWorld/forestWorld9.tmx": {
             "expandedGroupLayers": [
-                5,
+                7,
                 3,
-                7
+                5
             ],
             "expandedObjectLayers": [
                 8,
                 7
             ],
-            "scale": 0.33,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": 8,
             "viewCenter": {
-                "x": 254.54545454545456,
-                "y": 143.939393939394
+                "x": 78,
+                "y": -5.333333333333371
             }
         },
         "museomWorld/museomInterior.tmx": {
@@ -347,7 +348,7 @@
         "C:/Users/Hugo/Code/Cours/E1/IPO/zuul4/resources/assets/tileset/house/structures/blueHouse_1_0.tsx"
     ],
     "project": "game.tiled-project",
-    "property.type": "string",
+    "property.type": "bool",
     "recentFiles": [
         "forestWorld/forestWorld.tmx",
         "forestWorld/forestWorld2.tmx",

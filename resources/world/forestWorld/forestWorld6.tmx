@@ -133,6 +133,7 @@
    <object id="3" x="-0.125" y="27.25" width="4.25" height="19.75">
     <properties>
      <property name="facing" propertytype="FacingDirection" value="WEST"/>
+     <property name="needKey" type="bool" value="true"/>
      <property name="toDoorId" type="int" value="1"/>
      <property name="toRoomName" value="forestWorld5"/>
     </properties>

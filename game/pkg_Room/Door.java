@@ -32,7 +32,7 @@ public class Door {
     }
 
     /**
-     * @return la salle vers Raquel cette porte nous amène
+     * @return la salle vers laquel cette porte nous amène
      */
     public Room getTo() {
         return to;

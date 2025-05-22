@@ -20,6 +20,8 @@ import java.util.List;
 
 public class Entity extends PlaceableGameObject {
 
+    private final String name;
+
     protected FacingDirection facing;
     protected final Rectangle2D rigidBody2D;
 
@@ -27,18 +29,24 @@ public class Entity extends PlaceableGameObject {
 
     protected boolean isSpawned = false;
 
-    public Entity(Sprite sprite, Position position, int layer) {
-        this(sprite, new Rectangle2D.Double(0, 0, sprite.getWidth(), sprite.getHeight()), position, layer, FacingDirection.NORTH);
+    public Entity(String name, Sprite sprite, Position position, int layer) {
+        this(name, sprite, new Rectangle2D.Double(0, 0, sprite.getWidth(), sprite.getHeight()), position, layer, FacingDirection.NORTH);
     }
 
-    public Entity(Sprite sprite, Rectangle2D rigidBody2D, Position position, int layer) {
-        this(sprite, rigidBody2D, position, layer, FacingDirection.NORTH);
+    public Entity(String name, Sprite sprite, Rectangle2D rigidBody2D, Position position, int layer) {
+        this(name, sprite, rigidBody2D, position, layer, FacingDirection.NORTH);
     }
 
-    public Entity(Sprite sprite, Rectangle2D rigidBody2D, Position position, int layer, FacingDirection facing) {
+    public Entity(String name, Sprite sprite, Rectangle2D rigidBody2D, Position position, int layer, FacingDirection facing) {
         super(sprite, position, layer);
+
+        this.name = name;
         this.rigidBody2D = rigidBody2D;
         this.facing = facing;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getLayer() {
@@ -63,11 +71,11 @@ public class Entity extends PlaceableGameObject {
 
     public void spawn() {
         isSpawned = true;
-        position.room().getEntities().add(this);
+        position.room().addEntity(this);
     }
 
     public void despawn() {
-        position.room().getEntities().remove(this);
+        position.room().removeEntity(this);
         isSpawned = false;
     }
 
@@ -117,7 +125,6 @@ public class Entity extends PlaceableGameObject {
                 case NORTH, SOUTH -> new Position(lastPosition.x(), position.y(), position.room());
                 case EAST, WEST -> new Position(position.x(), lastPosition.y(), position.room());
             };
-            GameEngineV2.getInstance().forceUpdate();
         } else {
             this.position = new Position(newPosition, this.position.room());
         }
@@ -277,12 +284,12 @@ public class Entity extends PlaceableGameObject {
         return deltaPosition;
     }
 
-    public void onChangeRoom(Door byDoor) {
-        this.position.room().getEntities().remove(this);
+    public boolean onChangeRoom(Door byDoor) {
+        this.position.room().removeEntity(this);
 
         this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
 
-        this.position.room().getEntities().add(this);
+        this.position.room().addEntity(this);
         Room newRoom = position.room();
 
         for (Entity e : newRoom.getEntities()) {
@@ -290,6 +297,8 @@ public class Entity extends PlaceableGameObject {
                 GameEngineV2.getInstance().forceUpdate();
             }
         }
+
+        return true;
     }
 
     public void onUpdate() { }

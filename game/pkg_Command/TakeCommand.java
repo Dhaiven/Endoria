@@ -20,7 +20,7 @@ public class TakeCommand extends Command {
         }
         
         if (player.take(args[0])) {
-            //player.getGameEngine().printLocationInfo();
+            player.getUserInterface().printLocationInfo();
             return true;
         }
 

@@ -4,9 +4,7 @@ import game.GameEngineV2;
 import game.pkg_Command.Command;
 import game.pkg_Entity.*;
 import game.pkg_Image.AnimatedSprite;
-import game.pkg_Image.Animation;
 import game.pkg_Image.Sprite;
-import game.pkg_Image.pkg_Animation.AnimationManager;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
 import game.pkg_Object.Position;
@@ -17,6 +15,7 @@ import game.pkg_Player.pkg_Ui.UserInterface;
 import game.pkg_Room.Door;
 import game.pkg_Room.Room;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.*;
@@ -24,7 +23,7 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- *  Cette classe représente un Joueur
+ * Cette classe représente un Joueur
  *
  * @author  DEBELLE Hugp
  * @version 2.0 (Février 2025)
@@ -36,7 +35,7 @@ public class Player extends Entity {
     private Stack<Door> aLastRooms = new Stack<>();
 
     private ItemList aItemList = new ItemList();
-    private int aMaxWeight;
+    private int aMaxWeight = 100;
 
     private final PlayerSettings settings;
     private final PlayerEventManager eventManager;
@@ -48,7 +47,7 @@ public class Player extends Entity {
 
     // TODO: custom layer
     public Player(Function<Player, UserInterface> userInterface, Sprite sprite, Rectangle2D rigidBody2D, Room room) {
-        super(sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 1);
+        super("Player", sprite, rigidBody2D, new Position(room.getSpawnPoint(), room), 1);
 
         this.eventManager = new PlayerEventManager(this);
         this.settings = new PlayerSettings();
@@ -141,15 +140,13 @@ public class Player extends Entity {
         if (vNextDoors.isEmpty()) {
             return false;
         } else if (vNextDoors.size() == 1) {
-            this.onChangeRoom(vNextDoors.get(0));
-        } else {
-            // Si plusieurs salles, prends une aléatoire
-            Random rand = new Random();
-            int index = rand.nextInt(vNextDoors.size());
-            this.onChangeRoom(vNextDoors.get(index));
+            return this.onChangeRoom(vNextDoors.get(0));
         }
 
-        return true;
+        // Si plusieurs salles, prends une aléatoire
+        Random rand = new Random();
+        int index = rand.nextInt(vNextDoors.size());
+        return this.onChangeRoom(vNextDoors.get(index));
     }
 
     /**
@@ -158,16 +155,33 @@ public class Player extends Entity {
      * @return boolean true s'il est dans la nouvelle piece else false
      */
     public boolean goRoom(Room pRoom) {
-        this.aLastRooms.push(new Door(null, new Vector2(this.position.x(), this.position.y()), pRoom));
-        //this.changeRoom(pRoom);
-        return true;
+        return this.onChangeRoom(new Door(null, new Vector2(this.position.x(), this.position.y()), pRoom));
     }
 
     @Override
-    public void onChangeRoom(Door byDoor) {
-        this.aLastRooms.push(new Door(null, new Vector2(this.position.x(), this.position.y()), this.position.room()));
+    public boolean onChangeRoom(Door byDoor) {
+        if (!byDoor.canPass(this)) {
+            return false;
+        }
+
+        Door door = new Door(null, new Vector2(this.position.x(), this.position.y()), this.getCurrentRoom());
+        this.aLastRooms.push(door);
         super.onChangeRoom(byDoor);
-        this.getUserInterface().repaint();
+
+        for (Entity entity : this.position.room().getEntities()) {
+            if (entity instanceof MovingCharacter character) {
+                character.onInteract(this);
+            }
+        }
+
+        // TODO: remove sleep
+        // We add sleep because we have a bug with command
+        try { Thread.sleep(10); } catch (InterruptedException ignored) {}
+        SwingUtilities.invokeLater(() -> {
+            GameEngineV2.getInstance().forceUpdate();
+        });
+
+        return true;
     }
 
     /**
@@ -175,6 +189,7 @@ public class Player extends Entity {
      * @return true si le joueur a réussi à back else false
      */
     public boolean back() {
+        System.out.println(aLastRooms);
         if (this.aLastRooms.isEmpty()) {
             return false;
         }
@@ -185,9 +200,21 @@ public class Player extends Entity {
             return false;
         }
 
-        // Met super et pas this car on veut pas que ça ajoute
-        // la salle actuelle comme la dernière
         super.onChangeRoom(vLastDoor);
+
+        for (Entity entity : this.position.room().getEntities()) {
+            if (entity instanceof MovingCharacter character) {
+                character.onInteract(this);
+            }
+        }
+
+        // TODO: remove sleep
+        // We add sleep because we have a bug with command
+        try { Thread.sleep(10); } catch (InterruptedException ignored) {}
+        SwingUtilities.invokeLater(() -> {
+            GameEngineV2.getInstance().forceUpdate();
+        });
+
         return true;
     }
 

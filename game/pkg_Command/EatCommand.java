@@ -27,7 +27,7 @@ public class EatCommand extends Command {
         }
 
         player.use(item);
-        player.getUserInterface().println("Vous venez de manger cette item");
+        player.getUserInterface().println("Vous venez de manger cet item");
         return true;
     }
 }

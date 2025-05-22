@@ -29,7 +29,7 @@ public class ChargeCommand extends Command {
             return false;
         }
 
-        player.getUserInterface().println("Vous n'avez pas de beamer à chargé");
+        player.getUserInterface().println("Vous n'avez pas de beamer à charger");
         return false;
     }
 }

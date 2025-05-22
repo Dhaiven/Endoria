@@ -29,6 +29,7 @@ public class TalkCommand extends Command {
                 }
             }
         }
+
         player.getUserInterface().println("Ce personnage n'existe pas");
         return false;
     }

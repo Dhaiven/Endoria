@@ -22,6 +22,7 @@ public class GameEngineV2 implements Runnable {
 
     private ScheduledFuture<?> future;
 
+    private final CommandManager commandManager = new CommandManager();
     private final Scheduler scheduler = new Scheduler();
     private final TileManager tileManager = new TileManager();
     private final Player player;
@@ -42,8 +43,6 @@ public class GameEngineV2 implements Runnable {
 
     public GameEngineV2() {
         instance = this;
-        System.out.println(Toolkit.getDefaultToolkit().getScreenSize());
-        CommandManager commandManager = new CommandManager();
 
         try {
             var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player/idle/playerIdle2.png"));
@@ -63,6 +62,10 @@ public class GameEngineV2 implements Runnable {
 
     public static GameEngineV2 getInstance() {
         return instance;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 
     public Scheduler getSchedulerService() {
@@ -159,6 +162,10 @@ public class GameEngineV2 implements Runnable {
     public void forceUpdate(Rectangle zone) {
         if (this.forceUpdate) {
             if (this.updateZone == null) return;
+            if (zone == null) {
+                this.updateZone = null;
+                return;
+            }
 
             this.updateZone = zone.union(this.updateZone);
             return;

@@ -29,6 +29,7 @@ public class HelpCommand extends Command {
         for (Command command : this.aCommandWord.getCommands().values()) {
             player.getUserInterface().println(command.getName() + " - " + command.getDescription());
         }
+
         return true;
     }
 }

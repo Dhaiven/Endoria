@@ -19,6 +19,6 @@ public class MagicCookie extends Item {
     @Override
     public void onUse(Player player) {
         super.onUse(player);
-        player.setMaxWeight(100);
+        player.setMaxWeight(player.getMaxWeight() + 100);
     }
 }

@@ -69,10 +69,6 @@ public class UserInterface extends JFrame
         settingsOverlay.setVisible(false);
 
         add(overlayPane);
-
-        addKeyListener(player.getEventManager());
-        addWindowFocusListener(player.getEventManager());
-
         setVisible(true);
 
         this.terminalInterface = new TerminalInterface(this, player, commandManager);
@@ -145,8 +141,24 @@ public class UserInterface extends JFrame
 
     @Override
     public void repaint(long time, int x, int y, int width, int height) {
-        getGameLayer().repaint(time, x, y, width, height);
+        if (width == getWidth() && height == getHeight()) {
+            System.out.println("repaint");
+            getGameLayer().repaint();
+        } else {
+            getGameLayer().repaint(time, x, y, width, height);
+        }
+
         super.repaint(time, x, y, width, height);
+    }
+
+    /**
+     * Procédure affichant la room actualle ansi que toutes les sorties disponibles
+     */
+    public void printLocationInfo() {
+        this.println(this.player.getCurrentRoom().getLongDescription());
+        //if (this.aCurrentPlayer.getCurrentRoom().getImageName() != null) {
+        //this.aGui.showImage(this.aCurrentPlayer.getCurrentRoom().getImageName());
+        //}
     }
 
     /**

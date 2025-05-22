@@ -21,7 +21,6 @@ public abstract class Overlay extends JPanel {
 
     @Override
     public void setVisible(boolean aFlag) {
-        System.out.println(aFlag);
         if (aFlag == isVisible()) return;
 
         super.setVisible(aFlag);

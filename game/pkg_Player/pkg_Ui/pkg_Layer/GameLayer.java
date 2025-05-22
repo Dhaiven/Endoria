@@ -7,8 +7,7 @@ import game.pkg_Player.Player;
 import game.pkg_Room.Room;
 
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.Set;
@@ -47,6 +46,19 @@ public class GameLayer extends Canvas {
             public void componentHidden(ComponentEvent e) {}
         });
 
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+            if (isFocusOwner()) {
+                // Redirige vers ton gestionnaire
+                switch (e.getID()) {
+                    case KeyEvent.KEY_PRESSED -> player.getEventManager().keyPressed(e);
+                    case KeyEvent.KEY_RELEASED -> player.getEventManager().keyReleased(e);
+                    case KeyEvent.KEY_TYPED -> player.getEventManager().keyTyped(e);
+                }
+                return true; // Événement consommé
+            }
+            return false;
+        });
+
         cacheImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
         patchImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
     }
@@ -56,8 +68,6 @@ public class GameLayer extends Canvas {
         super.addNotify();
         createBufferStrategy(3);
         bufferStrategy = getBufferStrategy();
-
-        render();
     }
 
     @Override
@@ -106,9 +116,7 @@ public class GameLayer extends Canvas {
     private void render(Graphics2D g2d) {
         Room room = player.getPosition().room();
         Set<Integer> layers = room.getLayers();
-
-        //draw(g2d, room, 0, DrawType.UNDER);
-        //draw(g2d, room, 0, DrawType.ABOVE);
+        System.out.println("Room layers: " + room.getName());
 
         for (int layer = 0; layer < layers.size(); layer++) {
             draw(g2d, room, layer, DrawType.UNDER);

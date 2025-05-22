@@ -103,6 +103,7 @@
   <object id="4" x="206" y="116.5">
    <properties>
     <property name="entity" value="moving"/>
+    <property name="name" value="Marchand"/>
    </properties>
    <point/>
   </object>

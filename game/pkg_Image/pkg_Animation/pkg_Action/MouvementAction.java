@@ -29,12 +29,8 @@ public class MouvementAction implements AnimationAction {
 
     @Override
     public void update(long elapsedTime) {
-        System.out.println(GameEngineV2.getInstance().getCurrentTime());
         if (GameEngineV2.getInstance().getCurrentTime() >= lasUpdateTime) {
-            System.out.println(GameEngineV2.getInstance().getCurrentTime());
-            System.out.println(entity);
             this.entity.move(this.direction, 1);
-            System.out.println("this.entity");
             lasUpdateTime = GameEngineV2.getInstance().getCurrentTime() + 1;
         }
     }
@@ -43,7 +39,6 @@ public class MouvementAction implements AnimationAction {
     public boolean isFinished() {
         double startPosition = this.direction.getVectorComponent(this.startPosition);
         double actualPositon = this.direction.getVectorComponent(this.entity.getPosition().vector2());
-        System.out.println(Math.abs(actualPositon - startPosition) >= this.amount);
         return Math.abs(actualPositon - startPosition) >= this.amount;
     }
 }

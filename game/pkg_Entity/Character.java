@@ -1,8 +1,11 @@
 package game.pkg_Entity;
 
+import game.pkg_Image.Sprite;
 import game.pkg_Player.Player;
 import game.pkg_Image.StaticSprite;
 import game.pkg_Object.Position;
+
+import java.awt.geom.Rectangle2D;
 
 /**
  * Classe représentant un PNJ
@@ -12,14 +15,13 @@ import game.pkg_Object.Position;
  */
 public abstract class Character extends Entity {
 
-    public Character(StaticSprite sprite, Position position, int layer) {
-        super(sprite, position, layer);
+    public Character(String name, StaticSprite sprite, Position position, int layer) {
+        super(name, sprite, position, layer);
     }
 
-    /**
-     * @return le nom du personnage
-     */
-    abstract public String getName();
+    public Character(String name, Sprite sprite, Rectangle2D rigidBody2D, Position position, int layer, FacingDirection facing) {
+        super(name, sprite, rigidBody2D, position, layer, facing);
+    }
 
     /**
      * Procédure appellé quand le joueur "intéragis" avec ce personnage

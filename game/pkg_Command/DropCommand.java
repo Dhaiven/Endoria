@@ -20,7 +20,7 @@ public class DropCommand extends Command {
         }
 
         if (player.drop(args[0])) {
-            //player.getGameEngine().printLocationInfo();
+            player.getUserInterface().printLocationInfo();
             return true;
         }
 

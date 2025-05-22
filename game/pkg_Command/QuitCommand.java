@@ -16,12 +16,12 @@ public class QuitCommand extends Command {
     @Override
     public boolean execute(Player player, String[] args) {
         if (args.length != 0) {
-            player.getUserInterface().println("Thank you for playing.  Good bye.");
+            player.getUserInterface().println("Merci d'avoir jouer");
             GameEngineV2.getInstance().stop();
             return true;
         }
         
-        player.getUserInterface().println("Quit what?");
+        player.getUserInterface().println("Quitter quoi ?");
         return false;
     }
 }

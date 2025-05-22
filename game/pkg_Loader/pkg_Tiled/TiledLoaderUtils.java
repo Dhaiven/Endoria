@@ -13,6 +13,7 @@ import java.awt.geom.Ellipse2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class TiledLoaderUtils {
 
@@ -91,5 +92,12 @@ public class TiledLoaderUtils {
         }
 
         return new Rectangle(startAtX, startAtY, width, height);
+    }
+
+    public static Vector2 loadVector(Element object, Vector2 roomScale) {
+        return new Vector2(
+                Float.parseFloat(object.getAttribute("x")),
+                Float.parseFloat(object.getAttribute("y"))
+        ).pow(roomScale);
     }
 }

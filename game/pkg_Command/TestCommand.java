@@ -1,5 +1,6 @@
 package game.pkg_Command;
 
+import game.GameEngineV2;
 import game.pkg_Player.Player;
 
 import java.io.*;
@@ -25,10 +26,9 @@ public class TestCommand extends Command {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String line;
             while ((line = br.readLine()) != null) {
-                //player.getGameEngine().interpretCommand(line);
+                GameEngineV2.getInstance().getCommandManager().getCommandExecutor().interpretCommand(player, line, true);
             }
-        } catch (FileNotFoundException e) {
-
+        } catch (FileNotFoundException ignored) {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

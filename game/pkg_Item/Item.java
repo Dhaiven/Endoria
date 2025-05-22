@@ -12,9 +12,9 @@ import game.pkg_Image.StaticSprite;
  */
 public class Item extends GameObject {
 
-    private String aName;
-    private String aDescription;
-    private int aWeight;
+    private final String aName;
+    private final String aDescription;
+    private final int aWeight;
 
     public Item(StaticSprite sprite, String pName, String pDescription, int pWeight) {
         super(sprite);

@@ -1,11 +1,12 @@
 package game.pkg_Command;
 
-import game.GameEngineV2;
 import game.pkg_Entity.FacingDirection;
 import game.pkg_Player.Player;
 import game.pkg_Room.Door;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author  DEBELLE Hugp
@@ -31,11 +32,23 @@ public class GoCommand extends Command {
         }
 
         List<Door> vNextDoors = player.getPosition().room().getExits(direction);
+        System.out.println(vNextDoors);
         if (vNextDoors.isEmpty()) {
             player.getUserInterface().println("Il n'y a pas de porte dans cette direction");
             return false;
         } else if (vNextDoors.size() == 1) {
-            return success(player, vNextDoors.get(0));
+            return teleport(player, vNextDoors.get(0));
+        }
+
+        Set<String> toRooms = new HashSet<>();
+        for (Door door : vNextDoors) {
+            toRooms.add(door.getTo().getName());
+        }
+
+        // Si plusieurs portes qui pointe vers la même salle,
+        // on prend la premiere
+        if (toRooms.size() == 1) {
+            return teleport(player, vNextDoors.get(0));
         }
 
         // Si plusieurs salles
@@ -51,7 +64,7 @@ public class GoCommand extends Command {
 
         for (Door door : vNextDoors) {
             if (door.getTo().getName().equals(args[1])) {
-                return success(player, door);
+                return teleport(player, door);
             }
         }
 
@@ -59,10 +72,14 @@ public class GoCommand extends Command {
         return false;
     }
 
-    private boolean success(Player player, Door door) {
-        player.onChangeRoom(door);
+    private boolean teleport(Player player, Door door) {
+        if (!player.onChangeRoom(door)) {
+            player.getUserInterface().println("Vous ne pouvez pas vous téléporter");
+            return false;
+        }
+
         player.getUserInterface().println("Vous venez d'être téléporté !");
-        //player.getGameEngine().printLocationInfo();
+        player.getUserInterface().printLocationInfo();
         return true;
     }
 }
