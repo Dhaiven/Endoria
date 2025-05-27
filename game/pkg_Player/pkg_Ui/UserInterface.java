@@ -142,7 +142,6 @@ public class UserInterface extends JFrame
     @Override
     public void repaint(long time, int x, int y, int width, int height) {
         if (width == getWidth() && height == getHeight()) {
-            System.out.println("repaint");
             getGameLayer().repaint();
         } else {
             getGameLayer().repaint(time, x, y, width, height);

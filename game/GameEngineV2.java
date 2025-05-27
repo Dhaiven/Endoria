@@ -27,9 +27,12 @@ public class GameEngineV2 implements Runnable {
     private final TileManager tileManager = new TileManager();
     private final Player player;
 
+    private long start = 0;
     private long currentTime = 0;
     private long lastTime = 0;
     private double deltaTime;
+
+    private int fps = 0;
 
     private boolean isPaused = false;
 
@@ -102,12 +105,24 @@ public class GameEngineV2 implements Runnable {
 
     public void start() {
         lastTime = System.currentTimeMillis();
+        start = lastTime;
 
         player.spawn();
         player.getUserInterface().getGameLayer().repaint();
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         future = scheduler.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MILLISECONDS);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            long endTime = System.currentTimeMillis();
+            double elapsedSeconds = (endTime - start) / 1000.0;
+            if (elapsedSeconds > 0) {
+                double averageFPS = fps / elapsedSeconds;
+                System.out.println("FPS moyen: " + averageFPS);
+            } else {
+                System.out.println("Durée trop courte pour calculer les FPS moyens.");
+            }
+        }));
 
         player.getUserInterface().println("Bienvenue dans le monde de Endoria");
         player.getUserInterface().println("Votre objectif: trouver le diamand secrét de musée !");
@@ -121,6 +136,7 @@ public class GameEngineV2 implements Runnable {
     // Méthode principale de la boucle de jeu
     @Override
     public void run() {
+        fps++;
         player.triggerKeys();
 
         if (!isPaused) {

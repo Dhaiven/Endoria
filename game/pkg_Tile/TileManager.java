@@ -14,6 +14,7 @@ public class TileManager {
     private final HashMap<Predicate<Tile>, List<TileBehavior>> tilesBehaviors = new HashMap<>();
 
     public TileManager() {
+        this.register(tile -> true, new TileBehavior());
         this.register(tile -> tile.getCollisions().length != 0, new CollisionTileBehavior());
         this.registerTileProperty(TileProperty.CHANGE_LAYER, new ChangeLayerTileBehavior());
     }

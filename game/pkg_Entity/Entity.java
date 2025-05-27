@@ -286,6 +286,7 @@ public class Entity extends PlaceableGameObject {
 
     public boolean onChangeRoom(Door byDoor) {
         this.position.room().removeEntity(this);
+        this.lastPosition = this.position;
 
         this.position = new Position(byDoor.getSpawnPosition(), byDoor.getTo());
 

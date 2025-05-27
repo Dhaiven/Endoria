@@ -7,7 +7,6 @@ import game.pkg_Image.AnimatedSprite;
 import game.pkg_Image.Sprite;
 import game.pkg_Item.Item;
 import game.pkg_Item.ItemList;
-import game.pkg_Loader.WorldLoader;
 import game.pkg_Object.Position;
 import game.pkg_Object.Vector2;
 import game.pkg_Player.pkg_Action.Action;
@@ -58,6 +57,7 @@ public class Player extends Entity {
         this.actionProcessorManager = new ActionProcessorManager();
 
         if (sprite instanceof AnimatedSprite animatedSprite) {
+            GameEngineV2.getInstance().getSchedulerService().getAnimationTask().addSprite(getCurrentRoom(), animatedSprite);
             animatedSprite.setObserver((oldImage, newImage) -> GameEngineV2.getInstance().forceUpdate(new Rectangle(
                     (int) (position.x() - sprite.getWidth() / 2d),
                     (int) (position.y() - sprite.getHeight()),
@@ -185,6 +185,18 @@ public class Player extends Entity {
             }
         }
 
+        boolean hasPlayer = false;
+        for (Entity entity : this.lastPosition.room().getEntities()) {
+            if (entity instanceof Player) {
+                hasPlayer = true;
+                break;
+            }
+        }
+        if (!hasPlayer) {
+            this.lastPosition.room().unload();
+        }
+        this.position.room().load();
+
         // TODO: remove sleep
         // We add sleep because we have a bug with command
         try { Thread.sleep(10); } catch (InterruptedException ignored) {}
@@ -200,7 +212,6 @@ public class Player extends Entity {
      * @return true si le joueur a réussi à back else false
      */
     public boolean back() {
-        System.out.println(aLastRooms);
         if (this.aLastRooms.isEmpty()) {
             return false;
         }

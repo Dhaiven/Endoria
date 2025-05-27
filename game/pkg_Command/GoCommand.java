@@ -32,7 +32,6 @@ public class GoCommand extends Command {
         }
 
         List<Door> vNextDoors = player.getPosition().room().getExits(direction);
-        System.out.println(vNextDoors);
         if (vNextDoors.isEmpty()) {
             player.getUserInterface().println("Il n'y a pas de porte dans cette direction");
             return false;

@@ -9,8 +9,14 @@ public class Scheduler {
 
     protected final PriorityBlockingQueue<RunningTaskInfo> queue = new PriorityBlockingQueue<>(10, COMPARATOR);
 
-    public Scheduler() {
+    private final AnimationTask animationTask = new AnimationTask();
 
+    public Scheduler() {
+        addTask(animationTask, 1, 10);
+    }
+
+    public AnimationTask getAnimationTask() {
+        return animationTask;
     }
 
     public void onUpdate() {

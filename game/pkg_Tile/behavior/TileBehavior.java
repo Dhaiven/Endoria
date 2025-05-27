@@ -1,9 +1,13 @@
 package game.pkg_Tile.behavior;
 
+import game.GameEngineV2;
 import game.pkg_Entity.Entity;
+import game.pkg_Image.AnimatedSprite;
 import game.pkg_Player.Player;
 import game.pkg_Item.Item;
 import game.pkg_Object.TileStateWithPos;
+
+import java.awt.*;
 
 public class TileBehavior {
 
@@ -15,7 +19,15 @@ public class TileBehavior {
      * @param player le joueur qui l'a placé ou null
      */
     public void onPlace(TileStateWithPos state, Player player) {
-
+        if (state.tile().getSprite() instanceof AnimatedSprite animatedSprite) {
+            GameEngineV2.getInstance().getSchedulerService().getAnimationTask().addSprite(state.position().room(),  animatedSprite);
+            animatedSprite.setObserver((oldImage, newImage) -> GameEngineV2.getInstance().forceUpdate(new Rectangle(
+                    (int) state.position().x(),
+                    (int) state.position().y(),
+                    animatedSprite.getWidth(),
+                    animatedSprite.getHeight()
+            )));
+        }
     }
 
     /**

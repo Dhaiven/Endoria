@@ -65,11 +65,15 @@ public class Room {
 
             for (var subLayerEntry : layerEntry.getValue()) {
                 for (var state : subLayerEntry.entrySet()) {
-                    this.tiles.get(layerEntry.getKey()).add(new TileStateWithPos(
+                    var value = new TileStateWithPos(
                             state.getValue(),
                             new Position(state.getKey(), this),
                             layerEntry.getKey()
-                    ));
+                    );
+                    this.tiles.get(layerEntry.getKey()).add(value);
+                    state.getValue().getBehaviors().forEach(behavior -> {
+                        behavior.onPlace(value, null);
+                    });
                 }
             }
         }
@@ -78,6 +82,8 @@ public class Room {
             this.exits.put(direction, new ArrayList<>());
         }
     }
+
+
 
     public Shape getShape() {
         return shape;
@@ -97,6 +103,10 @@ public class Room {
 
     public Vector2 getRoomScale() {
         return roomScale;
+    }
+
+    public boolean isLoaded() {
+        return isLoaded;
     }
 
     public void load() {
@@ -177,8 +187,16 @@ public class Room {
         setTile(tile, new Vector2(column * tile.getSprite().getHeight(), row * tile.getSprite().getWidth()), layer, player);
     }
 
+    public void setTile(Tile tile, Vector2i position, int layer) {
+        setTile(tile, new Vector2(position.x(), position.y()), layer);
+    }
+
     public void setTile(Tile tile, Vector2 position, int layer) {
         setTile(tile, position, layer, null);
+    }
+
+    public void setTile(Tile tile, Vector2i position, int layer, Player player) {
+        setTile(tile, new Vector2(position.x(), position.y()), layer, player);
     }
 
     public void setTile(Tile tile, Vector2 position, int layer, Player player) {
@@ -300,7 +318,6 @@ public class Room {
      * Ajoute un personnage dans cette pièce
      */
     public void addEntity(Entity pEntity) {
-        System.out.println("Adding entity " + pEntity.getName());
         this.entities.add(pEntity);
     }
 

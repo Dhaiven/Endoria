@@ -116,7 +116,6 @@ public class GameLayer extends Canvas {
     private void render(Graphics2D g2d) {
         Room room = player.getPosition().room();
         Set<Integer> layers = room.getLayers();
-        System.out.println("Room layers: " + room.getName());
 
         for (int layer = 0; layer < layers.size(); layer++) {
             draw(g2d, room, layer, DrawType.UNDER);
