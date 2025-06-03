@@ -1,137 +1,201 @@
 package game;
 
-import game.pkg_Player.Player;
-import game.pkg_Player.pkg_Ui.UserInterface;
-import game.pkg_Room.Room;
+import game.image.StaticSprite;
+import game.player.Player;
+import game.player.ui.UserInterface;
+import game.scheduler.Scheduler;
+import game.tile.TileManager;
+import game.util.FileUtils;
+import game.world.WorldManager;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.*;
 
-/**
- *  This class is part of the "World of Zuul" application.
- *  "World of Zuul" is a very simple, text based adventure game.
- *
- *  This class creates all rooms, creates the parser and starts
- *  the game.  It also evaluates and executes the commands that
- *  the parser returns.
- *
- * @author  Michael Kolling and David J. Barnes
- * @version 1.0 (Jan 2003) DB edited (2019)
- */
-public class GameEngine
-{
-    private UserInterface aGui;
+public class GameEngine implements Runnable {
 
-    public Player aCurrentPlayer;
+    private static GameEngine instance;
 
-    private List<Room> aRooms = new ArrayList<>();
+    private ScheduledFuture<?> future;
+
+    private final Scheduler scheduler = new Scheduler();
+    private final TileManager tileManager = new TileManager();
+    private final Player player;
+
+    private long start = 0;
+    private long currentTime = 0;
+    private long lastTime = 0;
+    private double deltaTime;
+
+    private int fps = 0;
+
+    private boolean isPaused = false;
+
+    private boolean forceUpdate = false;
+    private Rectangle updateZone = null;
+
     private String alea = null;
 
-    /**
-     * Constructor for objects of class GameEngine
-     */
-    public GameEngine()
-    {
-        //this.createRooms();
+    public GameEngine() {
+        instance = this;
+
+        try {
+            var playerSprite = ImageIO.read(new File(FileUtils.ASSETS_RESOURCES + "player/idle/playerIdle2.png"));
+            var worldManager = new WorldManager();
+
+            player = new Player(
+                    UserInterface::new,
+                    new StaticSprite(playerSprite),
+                    new Rectangle2D.Double(0, 38, 48, 10),
+                    worldManager.getWorld("forestWorld")
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void setGUI( final UserInterface pUserInterface )
-    {
-        this.aGui = pUserInterface;
-        this.printWelcome();
+    public static GameEngine getInstance() {
+        return instance;
+    }
+
+    public Scheduler getSchedulerService() {
+        return scheduler;
+    }
+
+    public TileManager getTileManager() {
+        return tileManager;
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    public double getDeltaTime() {
+        return deltaTime;
+    }
+
+    public GameState getGameState() {
+        if (isPaused) {
+            return GameState.PAUSE;
+        }
+
+        return GameState.PLAY;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public String getAlea() {
+        return alea;
+    }
+
+    public void setAlea(String alea) {
+        this.alea = alea;
+    }
+
+    public void start() {
+        lastTime = System.currentTimeMillis();
+        start = lastTime;
+
+        player.spawn();
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        future = scheduler.scheduleWithFixedDelay(this, 0, 1, TimeUnit.MILLISECONDS);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            long endTime = System.currentTimeMillis();
+            double elapsedSeconds = (endTime - start) / 1000.0;
+            if (elapsedSeconds > 0) {
+                double averageFPS = fps / elapsedSeconds;
+                System.out.println("FPS moyen: " + averageFPS);
+            } else {
+                System.out.println("Durée trop courte pour calculer les FPS moyens.");
+            }
+        }));
+    }
+
+    // Méthode principale de la boucle de jeu
+    @Override
+    public void run() {
+        fps++;
+        player.triggerKeys();
+
+        if (!isPaused) {
+            long currentTimeMillis = System.currentTimeMillis();
+            long deltaTime = currentTimeMillis - lastTime;
+
+            this.currentTime += deltaTime;
+            this.deltaTime = deltaTime / 1_000.0; // Conversion en secondes
+
+            lastTime = currentTimeMillis;
+
+            scheduler.onUpdate();
+            player.getPosition().world().onUpdate();
+        }
+
+        if (forceUpdate) {
+            if (updateZone != null) {
+                player.getUserInterface().repaint(
+                        (int) updateZone.getX(),
+                        (int) updateZone.getY(),
+                        (int) updateZone.getWidth(),
+                        (int) updateZone.getHeight()
+                );
+                updateZone = null;
+            } else {
+                player.getUserInterface().repaint();
+            }
+
+            forceUpdate = false;
+        }
+    }
+
+    // Méthode pour arrêter complètement la boucle de jeu
+    public void stop() {
+        future.cancel(false);
+        System.exit(0);
+    }
+
+    public void forceUpdate() {
+        forceUpdate(null);
+    }
+
+    public void forceUpdate(Rectangle zone) {
+        if (this.forceUpdate) {
+            if (this.updateZone == null) return;
+            if (zone == null) {
+                this.updateZone = null;
+                return;
+            }
+
+            this.updateZone = zone.union(this.updateZone);
+            return;
+        }
+
+        this.forceUpdate = true;
+        this.updateZone = zone;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     /**
-     * Procédure affichant le message au marriage du jeu
+     * Met le jeu en pose au prochain frmerate
      */
-    private void printWelcome() {
-        this.aGui.println("Welcome to the World of Zuul!\nYour goal: solve puzzles.\nType 'help' if you need help.\n\n");
-        this.printLocationInfo();
+    public void pause() {
+        isPaused = true;
     }
 
     /**
-     * Procédure affichant la room actualle ansi que toutes les sorties disponibles
+     * Reprend le jeu au prochain frame rate
      */
-    public void printLocationInfo() {
-        this.aGui.println(this.aCurrentPlayer.getCurrentRoom().getLongDescription());
-        //if (this.aCurrentPlayer.getCurrentRoom().getImageName() != null) {
-            //this.aGui.showImage(this.aCurrentPlayer.getCurrentRoom().getImageName());
-        //}
-    }
-
-    /**
-     * Procédure pour créer toutes les rooms
-     */
-    /**private void createRooms() {
-        Room main = new Room("Main Room", "game/images/mainImage.png");
-        main.getItemList().addItem(new Item("test", "1er item test", 2));
-        main.getItemList().addItem(new Item("arme", "une arme", 17));
-
-        Room prehistoric = new Room("Prehistoric", "game/images/prehistoricImage.png");
-        prehistoric.getItemList().addItem(new MagicCookie());
-
-        Room moyenAge = new Room("Moyen Age", "game/images/moyenAgeImage.png");
-        moyenAge.getItemList().addItem(new Beamer());
-
-        Room antiquity = new Room("Antiquity", "game/images/antiquityImage.png");
-
-        Room egypte = new Room("Egypte", "game/images/egypteImage.png");
-        egypte.addCharacter(new EgypteCharacter("egypte"));
-
-        Room romaine = new TransporterRoom(this, "Romaine", "game/images/romanImage.png");
-        romaine.addCharacter(new MovingCharacter("moving"));
-
-        Room grece = new Room("Grece", "game/images/greceImage.png");
-
-        Room maya = new Room("Maya", "game/images/mayaImage.png");
-        Item prehistoricKey = new Item("key", "prehistoric key", 1);
-        maya.getItemList().addItem(prehistoricKey);
-
-        Room china = new Room("China", "game/images/chinaImage.png");
-
-        main.setExit("north", moyenAge);
-        main.setExit("south", maya);
-        main.setExit("east", egypte);
-        main.setLockedExit("west", prehistoric, prehistoricKey);
-        main.setExit("up", china);
-
-        prehistoric.setExit("east", main);
-
-        moyenAge.setExit("south", main);
-        moyenAge.setExit("east", antiquity);
-
-        antiquity.setExit("south", egypte);
-
-        egypte.setExit("west", main);
-        egypte.setExit("north", antiquity);
-        egypte.setExit("south", grece);
-
-        grece.setExit("north", egypte);
-        grece.setExit("west", romaine);
-
-        romaine.setExit("east", grece);
-
-        maya.setExit("north", main);
-
-        china.setExit("down", main);
-
-        this.aRooms.add(main);
-        this.aRooms.add(moyenAge);
-        this.aRooms.add(antiquity);
-        this.aRooms.add(egypte);
-        this.aRooms.add(romaine);
-        this.aRooms.add(grece);
-        this.aRooms.add(maya);
-        this.aRooms.add(china);
-        this.aRooms.add(prehistoric);
-
-        this.aCurrentPlayer = new Player(this, "Joueur 1", main, 18);
-    }*/
-
-    /**
-     * @return toutes les rooms créent
-     */
-    public List<Room> getRooms() {
-        return this.aRooms;
+    public void resume() {
+        isPaused = false;
+        lastTime = System.currentTimeMillis();
     }
 }

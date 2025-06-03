@@ -1,9 +1,9 @@
-import game.GameEngineV2;
+import game.GameEngine;
 
 public final class Game {
 
     public static void main(String[] args) {
-        var gameEngine = new GameEngineV2();
+        var gameEngine = new GameEngine();
         gameEngine.start();
     }
 }
