@@ -1,5 +1,0 @@
-go north
-back
-go south
-take cookie
-drop cookie
